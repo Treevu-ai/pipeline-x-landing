@@ -12,10 +12,12 @@ export default function CTA() {
             Sin tarjeta de crédito. Sin setup complicado. Solo escribe tu búsqueda y Pipeline_X hace el resto.
           </p>
           <a
-            href="#precios"
+            href="https://t.me/Pipeline_X_bot"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block px-10 py-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-lg transition-all hover:scale-105"
           >
-            Empezar gratis →
+            Solicitar una demo →
           </a>
         </div>
       </div>

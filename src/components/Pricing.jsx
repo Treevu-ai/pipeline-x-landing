@@ -11,7 +11,7 @@ const PLANS = [
       'Exportar CSV',
       'Soporte por email',
     ],
-    cta: 'Empezar gratis',
+    cta: 'Solicitar demo',
     popular: false,
   },
   {
@@ -27,7 +27,7 @@ const PLANS = [
       'Enriquecimiento de contactos',
       'Soporte prioritario',
     ],
-    cta: 'Empezar con Pro',
+    cta: 'Solicitar demo',
     popular: true,
   },
   {
@@ -93,7 +93,9 @@ export default function Pricing() {
               </ul>
 
               <a
-                href="#"
+                href="https://t.me/Pipeline_X_bot"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`w-full py-3 rounded-xl font-semibold text-sm text-center transition-all ${
                   plan.popular
                     ? 'bg-purple-500 hover:bg-purple-400 text-white hover:scale-105'

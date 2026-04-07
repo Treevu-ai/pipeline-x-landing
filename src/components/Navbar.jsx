@@ -10,8 +10,8 @@ export default function Navbar() {
           <a href="#features" className="hover:text-white transition-colors">Features</a>
           <a href="#precios" className="hover:text-white transition-colors">Precios</a>
         </div>
-        <a href="#precios" className="text-sm font-medium px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 transition-colors text-white">
-          Empezar gratis
+        <a href="https://t.me/Pipeline_X_bot" target="_blank" rel="noopener noreferrer" className="text-sm font-medium px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 transition-colors text-white">
+          Solicitar demo
         </a>
       </div>
     </nav>

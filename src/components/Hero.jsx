@@ -49,8 +49,8 @@ export default function Hero() {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-          <a href="#precios" className="px-8 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold transition-all hover:scale-105 glow-border">
-            Empezar gratis →
+          <a href="https://t.me/Pipeline_X_bot" target="_blank" rel="noopener noreferrer" className="px-8 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold transition-all hover:scale-105 glow-border">
+            Solicitar una demo →
           </a>
           <a href="#como-funciona" className="px-8 py-3 rounded-xl glass text-slate-300 hover:text-white font-medium transition-colors">
             Ver demo ↓
