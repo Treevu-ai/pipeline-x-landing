@@ -204,17 +204,22 @@ function Hero({ onOpenForm }) {
       className="relative overflow-hidden"
       style={{ minHeight: '100svh' }}
     >
-      {/* Imagen de Lima fija — parallax real */}
+      {/* Imagen de Lima fija — parallax real.
+          IMPORTANTE: filter en el mismo elemento que background-attachment:fixed
+          rompe el parallax (crea stacking context). Se separan en dos capas. */}
       <div
         className="absolute inset-0"
         style={{
           backgroundImage: `url(${HERO_IMG})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: 'center 30%',
           backgroundAttachment: 'fixed',
-          filter: 'brightness(0.18) saturate(0.2)',
         }}
       />
+
+      {/* Overlay oscuro desaturado — capa separada para no romper el parallax */}
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.58)', mixBlendMode: 'multiply' }} />
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.15)', backdropFilter: 'saturate(0.25)' }} />
 
       {/* Grid sutil */}
       <div className="absolute inset-0 pointer-events-none" style={{
@@ -224,7 +229,7 @@ function Hero({ onOpenForm }) {
 
       {/* Viñeta perimetral */}
       <div className="absolute inset-0 pointer-events-none" style={{
-        background: 'radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,0.75) 100%)',
+        background: 'radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.65) 100%)',
       }} />
 
       {/* Gradiente inferior para transición suave */}
