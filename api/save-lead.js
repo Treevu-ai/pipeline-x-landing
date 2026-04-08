@@ -14,9 +14,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const token = process.env.NOTION_TOKEN
+  const token = process.env.NOTION_PIPELINE_TOKEN
   if (!token) {
-    return res.status(500).json({ error: 'NOTION_TOKEN not configured' })
+    return res.status(500).json({ error: 'NOTION_PIPELINE_TOKEN not configured' })
   }
 
   const { nombre, whatsapp, tipo, ciudad } = req.body || {}
