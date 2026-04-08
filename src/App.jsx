@@ -447,9 +447,9 @@ const COLS = [
 ]
 
 function CellVal({ val, hi }) {
-  if (val === true)  return <span style={{ color: hi ? '#fff' : '#000', fontWeight: 700 }}>✓</span>
-  if (val === false) return <span style={{ color: hi ? '#ffffff66' : '#00000055' }}>✗</span>
-  return <span style={{ color: hi ? '#fff' : '#000', fontWeight: hi ? 700 : 400 }}>{val}</span>
+  if (val === true)  return <span style={{ color: hi ? '#000' : '#e5e5e5', fontWeight: 700 }}>✓</span>
+  if (val === false) return <span style={{ color: hi ? '#00000066' : '#ffffff55' }}>✗</span>
+  return <span style={{ color: hi ? '#000' : '#e5e5e5', fontWeight: hi ? 700 : 400 }}>{val}</span>
 }
 
 function Comparison({ onOpenForm }) {
