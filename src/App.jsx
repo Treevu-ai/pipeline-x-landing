@@ -305,18 +305,6 @@ function Hero({ onOpenForm }) {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 mt-4 border border-white/8">
-            {[
-              { n: '01', t: 'Nos dices industria + ciudad' },
-              { n: '02', t: 'Reporte listo en 24 h' },
-              { n: '03', t: 'Lo entregas con tu marca' },
-            ].map(({ n, t }) => (
-              <div key={n} className="px-3 py-3 border-r border-white/8 last:border-r-0">
-                <div className="font-mono text-xs mb-1 text-white/50 tracking-widest">{n}</div>
-                <div className="font-mono text-xs text-white/85 leading-snug">{t}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>
@@ -339,12 +327,7 @@ const STEPS = [
   {
     n: '03',
     title: 'Recibes el reporte',
-    body: 'En menos de 24 h por @Pipeline_X_bot: CSV + reporte HTML listo para presentar a tu cliente con tu logo.',
-  },
-  {
-    n: '04',
-    title: 'Tú cobras, nosotros trabajamos',
-    body: 'Tu cliente paga S/400–600 por el servicio. Tú nos pagas S/149/mes. El resto es tu margen.',
+    body: 'En menos de 24 h por @Pipeline_X_bot: CSV + HTML listo para presentar con tu logo. Tú lo entregas, tú cobras.',
   },
 ]
 
@@ -365,13 +348,6 @@ function HowItWorks({ onOpenForm }) {
               <p className="font-mono text-sm text-white/80 leading-relaxed">{body}</p>
             </div>
           ))}
-        </div>
-        <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          <button onClick={onOpenForm}
-            className="font-mono font-bold text-sm text-black bg-white px-7 py-3.5 hover:bg-white/90 active:scale-95 transition-all tracking-wide">
-            Solicitar mi primer reporte →
-          </button>
-          <p className="font-mono text-xs text-white/88">Sin costo · sin contratos · 24 h</p>
         </div>
       </div>
     </section>
@@ -576,13 +552,6 @@ function Comparison({ onOpenForm }) {
             </tbody>
           </table>
         </div>
-        <div className="mt-10 pt-8 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <p className="font-mono text-sm text-white/65">¿Convencido? El primer reporte es sin costo.</p>
-          <button onClick={onOpenForm}
-            className="font-mono font-bold text-sm text-black bg-white px-7 py-3.5 hover:bg-white/90 active:scale-95 transition-all tracking-wide w-full sm:w-auto">
-            Solicitar reporte gratis →
-          </button>
-        </div>
       </div>
     </section>
   )
@@ -771,34 +740,6 @@ function FAQ() {
   )
 }
 
-// ── Direct SMB route ──────────────────────────────────────────────────────────
-
-function DirectRoute({ onOpenForm }) {
-  const { ref, vis } = useFadeIn()
-  return (
-    <section className="bg-black border-t border-white/6" ref={ref}>
-      <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-        <div className="border border-white/8 p-8 sm:p-12">
-          <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/65 mb-4">Para tu propio negocio · S/99/reporte</p>
-          <h2 className="font-mono font-bold text-white leading-snug mb-4" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
-            ¿Necesitas <Gr>más clientes</Gr><br className="hidden sm:block" /> para tu negocio?
-          </h2>
-          <p className="font-mono text-base text-white/80 leading-relaxed mb-8 max-w-lg">
-            Sin suscripción. Pides un reporte, recibes 30+ leads calificados en 24 horas. Pagas S/99 solo cuando lo necesitas.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-            <button onClick={onOpenForm}
-              className="font-mono font-bold text-sm text-black bg-white px-7 py-3.5 hover:bg-white/90 active:scale-95 transition-all tracking-wide w-full sm:w-auto">
-              Quiero leads para mi negocio →
-            </button>
-            <p className="font-mono text-xs text-white/88">Primer reporte gratis · sin contrato · 24 h</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
 // ── Footer ────────────────────────────────────────────────────────────────────
 
 function Footer({ onOpenForm }) {
@@ -864,7 +805,6 @@ export default function App() {
       <ReportPreview onOpenForm={() => setFormOpen(true)} />
       <PricingCalculator onOpenForm={() => setFormOpen(true)} />
       <FAQ />
-      <DirectRoute onOpenForm={() => setFormOpen(true)} />
       <Footer onOpenForm={() => setFormOpen(true)} />
       {formOpen && <LeadFormModal onClose={closeForm} />}
     </div>
