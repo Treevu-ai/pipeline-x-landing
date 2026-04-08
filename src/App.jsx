@@ -7,6 +7,16 @@ const TG_BOT = 'https://t.me/Pipeline_X_bot'
 const W   = '#ffffff'           // acento principal (blanco)
 const DIM = 'rgba(255,255,255,0.05)'  // grid sutil
 
+// ── Gradiente SEO — turquesa → azul ──────────────────────────────────────────
+const GRAD_STYLE = {
+  background: 'linear-gradient(90deg, #00d4aa 0%, #4f6ef5 100%)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text',
+}
+// Wrapper para palabras clave SEO
+const Gr = ({ children }) => <span style={GRAD_STYLE}>{children}</span>
+
 const SB_URL = 'https://lyslbbqbjchlqbzvwnyu.supabase.co'
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5c2xiYnFiamNobHFienZ3bnl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1NTM0NzAsImV4cCI6MjA5MDEyOTQ3MH0.ae_4y6YDz23yva9B5uIVxMgQhmWU0tfmcKwgvDEx7z4'
 
@@ -235,23 +245,23 @@ function Hero({ onOpenForm }) {
 
           <h1 className="font-mono font-bold text-white leading-[1.1] mb-5" style={{ fontSize: 'clamp(1.9rem,4.5vw,3.1rem)' }}>
             ¿Cuántos de tus clientes<br />
-            <span className="text-white">necesitan más clientes?</span>
+            necesitan <Gr>más clientes</Gr>?
           </h1>
           <p className="font-mono text-sm text-white/60 leading-relaxed mb-8">
-            <strong className="text-white/90">Pipeline_X</strong> genera reportes de prospectos calificados que tú entregas bajo tu marca. Tu cliente crece. Tú cobras.
+            <strong className="text-white/90">Pipeline_X</strong> genera reportes de <Gr>prospectos calificados</Gr> que tú entregas bajo tu marca. Tu cliente crece. Tú cobras.
           </p>
 
           {/* Bullets */}
           <ul className="space-y-2.5 mb-10">
-            {[
-              'Scraping Google Maps + IA local',
-              'Reporte listo en 24 h, a tu nombre',
-              'S/149/mes · sin contratos · @Pipeline_X_bot',
-            ].map(t => (
-              <li key={t} className="font-mono text-sm text-white/55 flex items-center gap-3">
-                <span className="text-white/30">—</span> {t}
-              </li>
-            ))}
+            <li className="font-mono text-sm text-white/55 flex items-center gap-3">
+              <span className="text-white/30">—</span> Scraping <Gr>Google Maps</Gr> + <Gr>IA local</Gr>
+            </li>
+            <li className="font-mono text-sm text-white/55 flex items-center gap-3">
+              <span className="text-white/30">—</span> Reporte listo en 24 h, a tu nombre
+            </li>
+            <li className="font-mono text-sm text-white/55 flex items-center gap-3">
+              <span className="text-white/30">—</span> S/149/mes · sin contratos · @Pipeline_X_bot
+            </li>
           </ul>
 
           {/* Métricas */}
@@ -359,7 +369,7 @@ function Comparison({ onOpenForm }) {
       <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
         <p className="font-mono text-xs tracking-[0.2em] uppercase text-black/30 mb-3">Comparativa</p>
         <h2 className="font-mono font-bold text-black mb-10" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
-          Por qué Pipeline_X es diferente
+          Por qué <Gr>Pipeline_X</Gr> es diferente
         </h2>
         <p className="font-mono text-xs text-black/30 mb-2 sm:hidden">← desliza para ver más →</p>
         <div className="overflow-x-auto">
@@ -418,7 +428,7 @@ function ReportPreview({ onOpenForm }) {
       <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
         <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/25 mb-3">Ejemplo de reporte</p>
         <h2 className="font-mono font-bold text-white mb-8" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
-          Así se ve el reporte
+          Así se ve el <Gr>reporte de leads</Gr>
         </h2>
         <div className="border overflow-hidden" style={{ borderColor: '#1a1a1a' }}>
           <div className="flex items-center gap-2 px-4 py-2.5 border-b" style={{ borderColor: '#141414', background: '#0d0d0d' }}>
@@ -479,7 +489,7 @@ function PricingCalculator({ onOpenForm }) {
       <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
         <p className="font-mono text-xs tracking-[0.2em] uppercase text-black/30 mb-3">Calculadora</p>
         <h2 className="font-mono font-bold text-black mb-10" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
-          ¿Cuántos clientes activarías?
+          ¿Cuántos clientes activarías con <Gr>S/149/mes</Gr>?
         </h2>
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-14">
           {/* Presets */}
@@ -534,7 +544,7 @@ function DirectRoute({ onOpenForm }) {
         <div className="border border-white/8 p-8 sm:p-12">
           <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/30 mb-4">Para tu propio negocio</p>
           <h2 className="font-mono font-bold text-white leading-snug mb-4" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
-            ¿Eres tú el que quiere<br className="hidden sm:block" /> más clientes?
+            ¿Eres tú el que quiere<br className="hidden sm:block" /> <Gr>más clientes</Gr>?
           </h2>
           <p className="font-mono text-sm text-white/45 leading-relaxed mb-8 max-w-lg">
             Pipeline_X también trabaja directo contigo. Nos dices a qué tipo de empresa le vendes y en qué ciudad, y en 24 horas tienes una lista de prospectos calificados lista para contactar.
