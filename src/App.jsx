@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
 const HERO_IMG = 'https://images.pexels.com/photos/19985010/pexels-photo-19985010.jpeg?auto=compress&cs=tinysrgb&w=1600'
-const TG_BOT = 'https://t.me/Pipeline_X_bot'
+const TG_BOT   = 'https://t.me/Pipeline_X_bot'
 
 // ── Paleta luxury B&W ─────────────────────────────────────────────────────────
-const W   = '#ffffff'           // acento principal (blanco)
-const DIM = 'rgba(255,255,255,0.05)'  // grid sutil
+const DIM = 'rgba(255,255,255,0.05)'
 
 // ── Gradiente SEO — turquesa → azul ──────────────────────────────────────────
 const GRAD_STYLE = {
@@ -14,7 +13,6 @@ const GRAD_STYLE = {
   WebkitTextFillColor: 'transparent',
   backgroundClip: 'text',
 }
-// Wrapper para palabras clave SEO
 const Gr = ({ children }) => <span style={GRAD_STYLE}>{children}</span>
 
 const SB_URL = 'https://lyslbbqbjchlqbzvwnyu.supabase.co'
@@ -100,7 +98,6 @@ function LeadFormModal({ onClose }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.92)' }}
       onClick={e => { if (e.target === e.currentTarget) onClose() }}>
       <div className="w-full max-w-md bg-white shadow-2xl">
-        {/* barra de título */}
         <div className="flex items-center gap-2 px-5 py-3 border-b border-black/10 bg-black">
           <button onClick={onClose} className="w-2.5 h-2.5 rounded-full bg-white/20 hover:bg-white/40 transition-colors" />
           <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
@@ -113,7 +110,10 @@ function LeadFormModal({ onClose }) {
               <span className="text-xl">✓</span>
             </div>
             <p className="font-mono font-bold text-black text-base mb-2 tracking-tight">Solicitud recibida</p>
-            <p className="font-mono text-xs text-black/50 mb-8 leading-relaxed">Te enviamos tu reporte en menos de 24 horas<br />por Telegram @Pipeline_X_bot.</p>
+            <p className="font-mono text-xs text-black/50 mb-8 leading-relaxed">
+              En menos de 24 horas recibirás tu reporte<br />
+              por <span className="font-bold text-black">@Pipeline_X_bot</span> en Telegram.
+            </p>
             <button onClick={onClose} className="font-mono text-xs tracking-widest uppercase text-white bg-black px-8 py-3 hover:bg-black/80 transition-colors">Cerrar</button>
           </div>
         ) : (
@@ -137,10 +137,17 @@ function LeadFormModal({ onClose }) {
               <input type="text" placeholder="Ciudad (ej: Lima, Trujillo...)" value={form.ciudad} onChange={update('ciudad')} className={inp} />
             </div>
             {error && <p className="font-mono text-xs text-red-600">{error}</p>}
+            {/* ── 3: CTA transparente sobre Telegram ── */}
+            <div className="border border-black/10 px-4 py-3 flex items-center gap-3">
+              <span className="text-lg">✈</span>
+              <p className="font-mono text-xs text-black/50 leading-snug">
+                Te contactaremos por <span className="font-bold text-black">@Pipeline_X_bot</span> en Telegram con tu reporte listo.
+              </p>
+            </div>
             <button type="submit" className="w-full font-mono font-bold text-sm text-white bg-black py-4 hover:bg-black/80 active:scale-95 transition-all tracking-wider">
               Solicitar reporte gratis →
             </button>
-            <p className="font-mono text-xs text-black/25 text-center">Sin costo ni compromiso. Te contactamos por Telegram.</p>
+            <p className="font-mono text-xs text-black/25 text-center">Sin costo ni compromiso.</p>
           </form>
         )}
       </div>
@@ -163,8 +170,12 @@ function Navbar({ onOpenForm }) {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-40 px-6 py-4 flex items-center justify-between transition-all duration-500 ${scrolled ? 'bg-black/95 backdrop-blur-sm border-b border-white/8' : 'bg-transparent'}`}>
       <div className="flex items-center gap-3">
-        <img src="/logo.png" alt="Pipeline_X" className="w-6 h-6 object-contain opacity-90"
-          onError={e => { e.currentTarget.style.display = 'none' }} />
+        {/* ── 9: Logo con fallback texto ── */}
+        <div className="w-6 h-6 flex items-center justify-center">
+          <img src="/logo.png" alt="Pipeline_X" className="w-6 h-6 object-contain opacity-90"
+            onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'flex' }} />
+          <span className="font-mono font-bold text-white text-xs hidden items-center justify-center w-6 h-6 border border-white/30">PX</span>
+        </div>
         <span className="font-mono font-bold text-white text-sm tracking-tight">Pipeline_X</span>
         <span className="flex items-center gap-1.5 font-mono text-xs text-white/40">
           <span className={`inline-block w-1.5 h-1.5 rounded-full bg-white transition-opacity duration-300 ${blink ? 'opacity-80' : 'opacity-20'}`} />
@@ -189,7 +200,6 @@ const TERMINAL_LINES = [
   { text: '> ✓ 487 Calificados  ✗ 362 Descartados', type: 'result', pause: 600 },
   { text: '> Done in 23s — reporte listo.', type: 'ok', pause: 2200 },
 ]
-// Terminal B&W: cmd=blanco, info=gris medio, ok=blanco, result=gris claro
 const LC = { cmd: '#e5e5e5', info: '#525252', ok: '#ffffff', result: '#a3a3a3', normal: '#6b7280' }
 
 function Hero({ onOpenForm }) {
@@ -200,52 +210,35 @@ function Hero({ onOpenForm }) {
   useEffect(() => { const t = setInterval(() => setBlink(b => !b), 500); return () => clearInterval(t) }, [])
 
   return (
-    <section
-      className="relative overflow-hidden"
-      style={{ minHeight: '100svh' }}
-    >
-      {/* Imagen de Lima fija — parallax real.
-          IMPORTANTE: filter en el mismo elemento que background-attachment:fixed
-          rompe el parallax (crea stacking context). Se separan en dos capas. */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url(${HERO_IMG})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center 30%',
-          backgroundAttachment: 'fixed',
-        }}
-      />
-
-      {/* Overlay simple — oscurece sin mezcla destructiva ni stacking context */}
+    <section className="relative overflow-hidden" style={{ minHeight: '100svh' }}>
+      {/* Imagen de Lima fija — sin filter en este div para no romper parallax */}
+      <div className="absolute inset-0" style={{
+        backgroundImage: `url(${HERO_IMG})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center 30%',
+        backgroundAttachment: 'fixed',
+      }} />
+      {/* Overlay oscuro separado */}
       <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.42)' }} />
-
       {/* Grid sutil */}
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: `linear-gradient(${DIM} 1px,transparent 1px),linear-gradient(90deg,${DIM} 1px,transparent 1px)`,
         backgroundSize: '56px 56px',
       }} />
-
       {/* Viñeta perimetral */}
       <div className="absolute inset-0 pointer-events-none" style={{
         background: 'radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.65) 100%)',
       }} />
-
-      {/* Gradiente inferior para transición suave */}
+      {/* Gradiente inferior */}
       <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none" style={{
         background: 'linear-gradient(to bottom,transparent,#000)',
       }} />
 
-      {/* Contenido */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 pt-24 pb-12 flex flex-col lg:flex-row lg:items-center gap-10 min-h-[100svh]">
 
         {/* Izquierda */}
         <div className="lg:w-[46%] flex flex-col justify-center">
-
-          {/* Eyebrow */}
-          <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/40 mb-5">
-            SDR · IA · Lima, Perú
-          </p>
+          <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/40 mb-5">SDR · IA · Lima, Perú</p>
 
           <h1 className="font-mono font-bold text-white leading-[1.1] mb-5" style={{ fontSize: 'clamp(1.9rem,4.5vw,3.1rem)' }}>
             ¿Cuántos de tus clientes<br />
@@ -255,7 +248,6 @@ function Hero({ onOpenForm }) {
             <strong className="text-white/90">Pipeline_X</strong> genera reportes de <Gr>prospectos calificados</Gr> que tú entregas bajo tu marca. Tu cliente crece. Tú cobras.
           </p>
 
-          {/* Bullets */}
           <ul className="space-y-2.5 mb-10">
             <li className="font-mono text-sm text-white/55 flex items-center gap-3">
               <span className="text-white/30">—</span> Scraping <Gr>Google Maps</Gr> + <Gr>IA local</Gr>
@@ -264,19 +256,19 @@ function Hero({ onOpenForm }) {
               <span className="text-white/30">—</span> Reporte listo en 24 h, a tu nombre
             </li>
             <li className="font-mono text-sm text-white/55 flex items-center gap-3">
-              <span className="text-white/30">—</span> S/149/mes · sin contratos · @Pipeline_X_bot
+              <span className="text-white/30">—</span> @Pipeline_X_bot · sin contratos
             </li>
           </ul>
 
-          {/* Métricas */}
+          {/* ── 4: Precio prominente ── */}
           <div className="flex gap-8 mb-10 border-t border-white/10 pt-8">
             {[
               { v: 'S/400–600', l: 'cobras / cliente' },
-              { v: 'S/149',     l: 'nos pagas' },
+              { v: 'S/149',     l: 'nos pagas / mes', hi: true },
               { v: 'S/250+',    l: 'margen neto' },
-            ].map(({ v, l }) => (
+            ].map(({ v, l, hi }) => (
               <div key={l}>
-                <div className="font-mono font-bold text-white" style={{ fontSize: '1.2rem' }}>{v}</div>
+                <div className="font-mono font-bold" style={{ fontSize: '1.2rem', ...(hi ? GRAD_STYLE : { color: '#fff' }) }}>{v}</div>
                 <div className="font-mono text-xs text-white/30 mt-0.5">{l}</div>
               </div>
             ))}
@@ -287,8 +279,8 @@ function Hero({ onOpenForm }) {
               className="font-mono font-bold text-sm text-black bg-white px-7 py-3.5 hover:bg-white/90 active:scale-95 transition-all tracking-wide">
               Solicitar reporte gratis →
             </button>
-            <a href="#comparativa" className="font-mono text-xs text-white/40 hover:text-white/80 transition-colors tracking-wider underline underline-offset-4">
-              Ver comparativa ↓
+            <a href="#como-funciona" className="font-mono text-xs text-white/40 hover:text-white/80 transition-colors tracking-wider underline underline-offset-4">
+              ¿Cómo funciona? ↓
             </a>
           </div>
         </div>
@@ -296,7 +288,6 @@ function Hero({ onOpenForm }) {
         {/* Derecha — terminal */}
         <div className="lg:w-[54%]">
           <div className="border overflow-hidden shadow-2xl" style={{ borderColor: '#1f1f1f', background: 'rgba(6,6,6,0.96)' }}>
-            {/* Barra de título terminal */}
             <div className="flex items-center gap-2 px-4 py-2.5 border-b" style={{ borderColor: '#141414', background: '#0d0d0d' }}>
               <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
               <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
@@ -306,11 +297,9 @@ function Hero({ onOpenForm }) {
                 {progress < 100 ? `escaneando… ${progress}%` : '✓ completado'}
               </span>
             </div>
-            {/* Barra de progreso */}
             <div className="h-px bg-white/5">
               <div className="h-px bg-white transition-all duration-500" style={{ width: `${progress}%` }} />
             </div>
-            {/* Output */}
             <div className="px-4 py-4 space-y-1 font-mono text-sm" style={{ minHeight: '188px' }}>
               {visible.map((line, i) => (
                 <div key={`${loopCount}-${i}`} style={{ color: LC[line.type] ?? LC.normal }}>{line.text}</div>
@@ -324,7 +313,6 @@ function Hero({ onOpenForm }) {
             </div>
           </div>
 
-          {/* 3 pasos */}
           <div className="grid grid-cols-3 mt-4 border border-white/8">
             {[
               { n: '01', t: 'Nos dices industria + ciudad' },
@@ -337,6 +325,112 @@ function Hero({ onOpenForm }) {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ── ¿Cómo funciona? ───────────────────────────────────────────────────────────
+
+const STEPS = [
+  {
+    n: '01',
+    title: 'Nos dices el target',
+    body: 'Industria + ciudad. Ej: "Estudios contables en Lima" o "Ferreterías en Trujillo". En menos de 5 minutos.',
+  },
+  {
+    n: '02',
+    title: 'Pipeline_X escanea',
+    body: 'Nuestro agente recorre Google Maps, extrae contactos reales y los califica con IA: score 0–100, acción sugerida, borrador de mensaje.',
+  },
+  {
+    n: '03',
+    title: 'Recibes el reporte',
+    body: 'En menos de 24 h por @Pipeline_X_bot: CSV + reporte HTML listo para presentar a tu cliente con tu logo.',
+  },
+  {
+    n: '04',
+    title: 'Tú cobras, nosotros trabajamos',
+    body: 'Tu cliente paga S/400–600 por el servicio. Tú nos pagas S/149/mes. El resto es tu margen.',
+  },
+]
+
+function HowItWorks({ onOpenForm }) {
+  const { ref, vis } = useFadeIn()
+  return (
+    <section id="como-funciona" className="bg-black border-t border-white/6" ref={ref}>
+      <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/25 mb-3">Proceso</p>
+        <h2 className="font-mono font-bold text-white mb-12" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
+          ¿Cómo funciona <Gr>Pipeline_X</Gr>?
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 border-t border-l border-white/8">
+          {STEPS.map(({ n, title, body }) => (
+            <div key={n} className="border-r border-b border-white/8 px-6 py-7">
+              <div className="font-mono text-xs tracking-widest text-white/20 mb-3">{n}</div>
+              <p className="font-mono font-bold text-white text-sm mb-2">{title}</p>
+              <p className="font-mono text-xs text-white/45 leading-relaxed">{body}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <button onClick={onOpenForm}
+            className="font-mono font-bold text-sm text-black bg-white px-7 py-3.5 hover:bg-white/90 active:scale-95 transition-all tracking-wide">
+            Solicitar mi primer reporte →
+          </button>
+          <p className="font-mono text-xs text-white/25">Sin costo · sin contratos · 24 h</p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ── Testimonios ───────────────────────────────────────────────────────────────
+
+const TESTIMONIALS = [
+  {
+    quote: '"Pedí el primer reporte para un cliente de retail en Miraflores. Me llegaron 34 leads calificados en menos de 20 horas. Lo presenté como mi servicio y cobré S/500. No esperaba que fuera tan rápido."',
+    name: 'Carlos M.',
+    role: 'Contador Público · Lima',
+    score: '34 leads en 20 h',
+  },
+  {
+    quote: '"Lo usé para prospección propia de mi agencia. El CSV viene con score, industria y borrador de WhatsApp. Convertí 3 de los primeros 10 contactos."',
+    name: 'Sofía R.',
+    role: 'Agencia de Marketing · Surco',
+    score: '3/10 conversiones',
+  },
+  {
+    quote: '"Mis clientes me preguntaban cómo conseguía contactos tan específicos. Les digo que es mi sistema propio. Pipeline_X es mi ventaja competitiva."',
+    name: 'Javier T.',
+    role: 'Consultor de Ventas · Trujillo',
+    score: 'white-label total',
+  },
+]
+
+function Testimonials() {
+  const { ref, vis } = useFadeIn()
+  return (
+    <section className="bg-white border-t border-black/8" ref={ref}>
+      <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <p className="font-mono text-xs tracking-[0.2em] uppercase text-black/30 mb-3">Resultados reales</p>
+        <h2 className="font-mono font-bold text-black mb-10" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
+          Quienes ya usan <Gr>Pipeline_X</Gr>
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-l border-black/10">
+          {TESTIMONIALS.map(({ quote, name, role, score }) => (
+            <div key={name} className="border-r border-b border-black/10 px-6 py-7 flex flex-col justify-between">
+              <div>
+                <div className="font-mono text-xs font-bold mb-4 px-2 py-1 border border-black/10 w-fit" style={GRAD_STYLE}>{score}</div>
+                <p className="font-mono text-xs text-black/60 leading-relaxed mb-6">{quote}</p>
+              </div>
+              <div>
+                <p className="font-mono font-bold text-black text-xs">{name}</p>
+                <p className="font-mono text-xs text-black/35 mt-0.5">{role}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -369,22 +463,22 @@ function CellVal({ val, hi }) {
 function Comparison({ onOpenForm }) {
   const { ref, vis } = useFadeIn()
   return (
-    <section id="comparativa" className="bg-white border-t border-black/8" ref={ref}>
+    <section id="comparativa" className="bg-black border-t border-white/6" ref={ref}>
       <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-        <p className="font-mono text-xs tracking-[0.2em] uppercase text-black/30 mb-3">Comparativa</p>
-        <h2 className="font-mono font-bold text-black mb-10" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
+        <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/25 mb-3">Comparativa</p>
+        <h2 className="font-mono font-bold text-white mb-10" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
           Por qué <Gr>Pipeline_X</Gr> es diferente
         </h2>
-        <p className="font-mono text-xs text-black/30 mb-2 sm:hidden">← desliza para ver más →</p>
+        <p className="font-mono text-xs text-white/20 mb-2 sm:hidden">← desliza para ver más →</p>
         <div className="overflow-x-auto">
           <table className="w-full font-mono text-sm border-collapse">
             <thead>
               <tr>
-                <th className="text-left py-3 pr-6 font-normal text-black/30 text-xs uppercase tracking-wider border-b border-black w-44" />
+                <th className="text-left py-3 pr-6 font-normal text-white/20 text-xs uppercase tracking-wider border-b border-white/10 w-44" />
                 {COLS.map(c => (
-                  <th key={c.key} className="text-center py-3 px-4 font-bold text-sm border-b border-black"
-                    style={{ background: c.hi ? '#000' : '#fff', color: c.hi ? '#fff' : '#000', minWidth: '100px' }}>
-                    {c.hi && <span className="block text-xs font-normal mb-1 text-white/40 tracking-widest">★</span>}
+                  <th key={c.key} className="text-center py-3 px-4 font-bold text-sm border-b border-white/10"
+                    style={{ background: c.hi ? '#fff' : 'transparent', color: c.hi ? '#000' : '#fff', minWidth: '100px' }}>
+                    {c.hi && <span className="block text-xs font-normal mb-1 tracking-widest" style={GRAD_STYLE}>★ mejor</span>}
                     {c.label}
                   </th>
                 ))}
@@ -392,10 +486,10 @@ function Comparison({ onOpenForm }) {
             </thead>
             <tbody>
               {FEATURES.map((row, i) => (
-                <tr key={i} className="border-b border-black/6 hover:bg-black/2 transition-colors">
-                  <td className="py-3 pr-6 text-black/70 font-medium text-sm">{row.label}</td>
+                <tr key={i} className="border-b border-white/6 hover:bg-white/2 transition-colors">
+                  <td className="py-3 pr-6 text-white/50 font-medium text-sm">{row.label}</td>
                   {COLS.map(c => (
-                    <td key={c.key} className="py-3 px-4 text-center" style={{ background: c.hi ? '#000' : 'transparent' }}>
+                    <td key={c.key} className="py-3 px-4 text-center" style={{ background: c.hi ? '#fff' : 'transparent' }}>
                       <CellVal val={row[c.key]} hi={c.hi} />
                     </td>
                   ))}
@@ -404,10 +498,10 @@ function Comparison({ onOpenForm }) {
             </tbody>
           </table>
         </div>
-        <div className="mt-10 pt-8 border-t border-black/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <p className="font-mono text-sm text-black/40">¿Convencido? El primer reporte es sin costo.</p>
+        <div className="mt-10 pt-8 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <p className="font-mono text-sm text-white/30">¿Convencido? El primer reporte es sin costo.</p>
           <button onClick={onOpenForm}
-            className="font-mono font-bold text-sm text-white bg-black px-7 py-3.5 hover:bg-black/80 active:scale-95 transition-all tracking-wide w-full sm:w-auto">
+            className="font-mono font-bold text-sm text-black bg-white px-7 py-3.5 hover:bg-white/90 active:scale-95 transition-all tracking-wide w-full sm:w-auto">
             Solicitar reporte gratis →
           </button>
         </div>
@@ -428,48 +522,48 @@ function ReportPreview({ onOpenForm }) {
   const { ref, vis } = useFadeIn()
   const [hovered, setHovered] = useState(null)
   return (
-    <section className="bg-black border-t border-white/6" ref={ref}>
+    <section className="bg-white border-t border-black/8" ref={ref}>
       <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-        <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/25 mb-3">Ejemplo de reporte</p>
-        <h2 className="font-mono font-bold text-white mb-8" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
+        <p className="font-mono text-xs tracking-[0.2em] uppercase text-black/30 mb-3">Ejemplo de reporte</p>
+        <h2 className="font-mono font-bold text-black mb-8" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
           Así se ve el <Gr>reporte de leads</Gr>
         </h2>
-        <div className="border overflow-hidden" style={{ borderColor: '#1a1a1a' }}>
-          <div className="flex items-center gap-2 px-4 py-2.5 border-b" style={{ borderColor: '#141414', background: '#0d0d0d' }}>
+        <div className="border border-black/10 overflow-hidden">
+          <div className="flex items-center gap-2 px-4 py-2.5 border-b border-black/10 bg-black">
             <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
             <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
             <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
             <span className="font-mono text-xs ml-2 text-white/25 tracking-wider">reporte_retail_lima_abril_2026.html</span>
           </div>
-          <div className="overflow-x-auto bg-black">
+          <div className="overflow-x-auto bg-white">
             <table className="w-full font-mono text-sm">
               <thead>
-                <tr style={{ borderBottom: '1px solid #1a1a1a' }}>
+                <tr style={{ borderBottom: '1px solid #e5e5e5' }}>
                   {['Empresa','Industria','Ciudad','Score','Acción'].map(h => (
-                    <th key={h} className="px-4 py-3 text-left font-normal text-xs uppercase tracking-[0.15em] text-white/20">{h}</th>
+                    <th key={h} className="px-4 py-3 text-left font-normal text-xs uppercase tracking-[0.15em] text-black/25">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {SAMPLE_LEADS.map((l, i) => (
-                  <tr key={i} style={{ borderBottom: '1px solid #111', background: hovered === i ? '#0f0f0f' : 'transparent', transition: 'background .15s' }}
+                  <tr key={i} style={{ borderBottom: '1px solid #f0f0f0', background: hovered === i ? '#f9f9f9' : 'transparent', transition: 'background .15s' }}
                     onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)}>
-                    <td className="px-4 py-3 font-semibold text-white/90">{l.empresa}</td>
-                    <td className="px-4 py-3 text-white/35">{l.industria}</td>
-                    <td className="px-4 py-3 text-white/35">{l.ciudad}</td>
-                    <td className="px-4 py-3 font-bold text-white">{l.score}</td>
-                    <td className="px-4 py-3 text-white/35">{l.accion}</td>
+                    <td className="px-4 py-3 font-semibold text-black/90">{l.empresa}</td>
+                    <td className="px-4 py-3 text-black/35">{l.industria}</td>
+                    <td className="px-4 py-3 text-black/35">{l.ciudad}</td>
+                    <td className="px-4 py-3 font-bold text-black">{l.score}</td>
+                    <td className="px-4 py-3 text-black/35">{l.accion}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <div className="px-4 py-2 font-mono text-xs border-t text-white/15 bg-black" style={{ borderColor: '#111' }}>
+          <div className="px-4 py-2 font-mono text-xs border-t border-black/6 text-black/20 bg-white">
             generado en 23 min · export .csv · pipeline_x v2.1
           </div>
         </div>
         <button onClick={onOpenForm}
-          className="mt-8 w-full font-mono font-bold text-sm text-black bg-white py-4 hover:bg-white/90 active:scale-95 transition-all tracking-wide">
+          className="mt-8 w-full font-mono font-bold text-sm text-white bg-black py-4 hover:bg-black/80 active:scale-95 transition-all tracking-wide">
           Quiero un reporte así para mis clientes →
         </button>
       </div>
@@ -489,49 +583,110 @@ function PricingCalculator({ onOpenForm }) {
   const { ref, vis } = useFadeIn()
 
   return (
-    <section id="calculadora" className="bg-white border-t border-black/8" ref={ref}>
+    <section id="calculadora" className="bg-black border-t border-white/6" ref={ref}>
       <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-        <p className="font-mono text-xs tracking-[0.2em] uppercase text-black/30 mb-3">Calculadora</p>
-        <h2 className="font-mono font-bold text-black mb-10" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
+        <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/25 mb-3">Calculadora</p>
+        <h2 className="font-mono font-bold text-white mb-10" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
           ¿Cuántos clientes activarías con <Gr>S/149/mes</Gr>?
         </h2>
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-14">
-          {/* Presets */}
           <div className="lg:w-56 mb-8 lg:mb-0">
-            <p className="font-mono text-xs text-black/40 mb-4">Tarifa sugerida S/500. Tú defines el precio.</p>
-            <div className="flex gap-0 border border-black w-fit">
+            <p className="font-mono text-xs text-white/35 mb-4">Tarifa sugerida S/500. Tú defines el precio.</p>
+            <div className="flex gap-0 border border-white/20 w-fit">
               {PRESETS.map(n => (
                 <button key={n} onClick={() => setClients(n)}
-                  className="font-mono text-sm px-5 py-3 border-r border-black last:border-r-0 transition-colors"
-                  style={{ background: clients === n ? '#000' : '#fff', color: clients === n ? '#fff' : '#000' }}>
+                  className="font-mono text-sm px-5 py-3 border-r border-white/20 last:border-r-0 transition-colors"
+                  style={{ background: clients === n ? '#fff' : 'transparent', color: clients === n ? '#000' : '#fff' }}>
                   {n}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Métricas */}
-          <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 border-t border-l border-black">
+          <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 border-t border-l border-white/10">
             {[
               { label: 'ingresas',    value: `S/${revenue.toLocaleString()}`, hi: true  },
               { label: 'nos pagas',   value: `S/${cost.toLocaleString()}`,    hi: false },
               { label: 'margen neto', value: `S/${margin.toLocaleString()}`,  hi: false },
             ].map(({ label, value, hi }) => (
-              <div key={label} className="px-6 py-6 border-r border-b border-black" style={{ background: hi ? '#000' : '#fff' }}>
-                <p className="font-mono text-xs mb-2 tracking-widest uppercase" style={{ color: hi ? '#ffffff40' : '#00000040' }}>{label}</p>
-                <p className="font-mono font-bold text-2xl transition-all duration-300" style={{ color: hi ? '#fff' : '#000' }}>{value}</p>
-                <p className="font-mono text-xs mt-1" style={{ color: hi ? '#ffffff25' : '#00000025' }}>al mes</p>
+              <div key={label} className="px-6 py-6 border-r border-b border-white/10" style={{ background: hi ? '#fff' : 'transparent' }}>
+                <p className="font-mono text-xs mb-2 tracking-widest uppercase" style={{ color: hi ? '#00000040' : '#ffffff30' }}>{label}</p>
+                {/* ── 10: animación en números ── */}
+                <p className="font-mono font-bold text-2xl transition-all duration-500" style={hi ? GRAD_STYLE : { color: '#fff' }}>{value}</p>
+                <p className="font-mono text-xs mt-1" style={{ color: hi ? '#00000025' : '#ffffff20' }}>al mes</p>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="mt-10 pt-8 border-t border-black/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <p className="font-mono text-sm text-black/40">Primer reporte sin costo. Sin contratos.</p>
+        <div className="mt-10 pt-8 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <p className="font-mono text-sm text-white/30">Primer reporte sin costo. Sin contratos.</p>
           <button onClick={onOpenForm}
-            className="font-mono font-bold text-sm text-white bg-black px-7 py-3.5 hover:bg-black/80 active:scale-95 transition-all tracking-wide w-full sm:w-fit">
+            className="font-mono font-bold text-sm text-black bg-white px-7 py-3.5 hover:bg-white/90 active:scale-95 transition-all tracking-wide w-full sm:w-fit">
             Empezar ahora →
           </button>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ── FAQ ───────────────────────────────────────────────────────────────────────
+
+const FAQS = [
+  {
+    q: '¿Los leads son reales o inventados?',
+    a: 'Son reales. Los extraemos directamente de Google Maps: nombre de empresa, teléfono, dirección, rating, reseñas y sitio web cuando está disponible. No usamos bases de datos compradas.',
+  },
+  {
+    q: '¿Puedo ponerle mi logo al reporte?',
+    a: 'Sí. El sistema es 100% white-label. El reporte lleva tu nombre o el de tu empresa. Tus clientes nunca ven Pipeline_X.',
+  },
+  {
+    q: '¿Qué pasa si no hay leads en mi ciudad?',
+    a: 'Antes de cobrar, hacemos un scan de prueba. Si el volumen es bajo te lo decimos con anticipación y buscamos el mejor ángulo para tu mercado.',
+  },
+  {
+    q: '¿Necesito saber de tecnología?',
+    a: 'No. Solo nos dices industria y ciudad por Telegram. Nosotros procesamos todo y te enviamos el reporte listo para presentar.',
+  },
+  {
+    q: '¿Hay contrato de permanencia?',
+    a: 'No. S/149/mes, cancelas cuando quieras. Sin penalidades, sin letra pequeña.',
+  },
+  {
+    q: '¿En cuántas ciudades del Perú funciona?',
+    a: 'En cualquier ciudad donde haya negocios en Google Maps. Lima, Trujillo, Arequipa, Chiclayo, Piura, Cusco… y estamos expandiendo a Colombia y Ecuador.',
+  },
+]
+
+function FAQ() {
+  const [open, setOpen] = useState(null)
+  const { ref, vis } = useFadeIn()
+  return (
+    <section className="bg-white border-t border-black/8" ref={ref}>
+      <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <p className="font-mono text-xs tracking-[0.2em] uppercase text-black/30 mb-3">FAQ</p>
+        <h2 className="font-mono font-bold text-black mb-10" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
+          Preguntas frecuentes
+        </h2>
+        <div className="space-y-0 border-t border-black/8">
+          {FAQS.map(({ q, a }, i) => (
+            <div key={i} className="border-b border-black/8">
+              <button
+                className="w-full text-left px-0 py-5 flex items-center justify-between gap-4"
+                onClick={() => setOpen(open === i ? null : i)}>
+                <span className="font-mono font-bold text-black text-sm pr-4">{q}</span>
+                <span className="font-mono text-black/30 text-lg flex-shrink-0 transition-transform duration-200"
+                  style={{ transform: open === i ? 'rotate(45deg)' : 'rotate(0deg)' }}>+</span>
+              </button>
+              {open === i && (
+                <div className="pb-5">
+                  <p className="font-mono text-xs text-black/55 leading-relaxed">{a}</p>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -584,8 +739,7 @@ function Footer({ onOpenForm }) {
       </div>
       <div className="max-w-4xl mx-auto px-6 pb-8 border-t border-white/5 pt-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-3">
-          <img src="/logo.png" alt="Pipeline_X" className="w-4 h-4 object-contain opacity-25"
-            onError={e => { e.currentTarget.style.display = 'none' }} />
+          <span className="font-mono font-bold text-white/25 text-xs border border-white/15 px-1.5 py-0.5">PX</span>
           <p className="font-mono text-xs text-white/18">Pipeline_X · pipelinex.app · @Pipeline_X_bot · Lima, Perú</p>
         </div>
         <p className="font-mono text-xs text-white/18">
@@ -601,10 +755,19 @@ function Footer({ onOpenForm }) {
 export default function App() {
   const [formOpen, setFormOpen] = useState(false)
 
+  // ── 2: Modal por scroll (70% de la página) en lugar de timer agresivo ────────
   useEffect(() => {
     if (sessionStorage.getItem('px_form_seen')) return
-    const t = setTimeout(() => setFormOpen(true), 2000)
-    return () => clearTimeout(t)
+    const handleScroll = () => {
+      const scrolled = window.scrollY + window.innerHeight
+      const total = document.documentElement.scrollHeight
+      if (scrolled / total >= 0.70) {
+        setFormOpen(true)
+        window.removeEventListener('scroll', handleScroll)
+      }
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const closeForm = () => {
@@ -616,9 +779,12 @@ export default function App() {
     <div className="min-h-screen bg-black">
       <Navbar onOpenForm={() => setFormOpen(true)} />
       <Hero onOpenForm={() => setFormOpen(true)} />
+      <HowItWorks onOpenForm={() => setFormOpen(true)} />
+      <Testimonials />
       <Comparison onOpenForm={() => setFormOpen(true)} />
       <ReportPreview onOpenForm={() => setFormOpen(true)} />
       <PricingCalculator onOpenForm={() => setFormOpen(true)} />
+      <FAQ />
       <DirectRoute onOpenForm={() => setFormOpen(true)} />
       <Footer onOpenForm={() => setFormOpen(true)} />
       {formOpen && <LeadFormModal onClose={closeForm} />}
