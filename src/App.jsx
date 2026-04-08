@@ -217,9 +217,8 @@ function Hero({ onOpenForm }) {
         }}
       />
 
-      {/* Overlay oscuro desaturado — capa separada para no romper el parallax */}
-      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.58)', mixBlendMode: 'multiply' }} />
-      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.15)', backdropFilter: 'saturate(0.25)' }} />
+      {/* Overlay simple — oscurece sin mezcla destructiva ni stacking context */}
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.42)' }} />
 
       {/* Grid sutil */}
       <div className="absolute inset-0 pointer-events-none" style={{
