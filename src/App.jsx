@@ -378,6 +378,92 @@ function HowItWorks({ onOpenForm }) {
   )
 }
 
+// ── Dos canales ───────────────────────────────────────────────────────────────
+
+const CHANNELS = [
+  {
+    tag:   'Para intermediarios',
+    price: 'S/149',
+    unit:  '/mes',
+    sub:   'Suscripción · reportes ilimitados · white-label',
+    items: [
+      'Tus clientes ven tu marca, no Pipeline_X',
+      'Cobras S/400–600 por cliente',
+      'Margen neto S/250+ por cliente',
+      'Sin límite de reportes al mes',
+      'Acceso completo a @Pipeline_X_bot',
+    ],
+    note:  'Ideal para: contadores, agencias de marketing, consultores de ventas.',
+    cta:   'Quiero revender reportes →',
+    dark:  true,
+  },
+  {
+    tag:   'Para tu propio negocio',
+    price: 'S/99',
+    unit:  '/reporte',
+    sub:   'Sin suscripción · sin compromiso · paga cuando necesites',
+    items: [
+      '30+ leads calificados en 24 horas',
+      'Score 0–100 + acción sugerida por IA',
+      'Borrador de mensaje de WhatsApp incluido',
+      'Export CSV listo para tu CRM',
+      'Si no hay leads suficientes, no cobras',
+    ],
+    note:  'Ideal para: MYPEs que quieren clientes sin contratar un área comercial.',
+    cta:   'Quiero leads para mi negocio →',
+    dark:  false,
+  },
+]
+
+function TwoChannels({ onOpenForm }) {
+  const { ref, vis } = useFadeIn()
+  return (
+    <section className="bg-white border-t border-black/8" ref={ref}>
+      <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <p className="font-mono text-xs tracking-[0.2em] uppercase text-black/55 mb-3">Elige tu camino</p>
+        <h2 className="font-mono font-bold text-black mb-10" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
+          Dos formas de usar <Gr>Pipeline_X</Gr>
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border border-black/12">
+          {CHANNELS.map(({ tag, price, unit, sub, items, note, cta, dark }) => (
+            <div key={tag}
+              className="px-8 py-10 flex flex-col border-b md:border-b-0 md:border-r border-black/12 last:border-0"
+              style={{ background: dark ? '#000' : '#fff' }}>
+              <p className="font-mono text-xs tracking-widest uppercase mb-5"
+                style={{ color: dark ? 'rgba(255,255,255,0.65)' : 'rgba(0,0,0,0.55)' }}>{tag}</p>
+              <div className="mb-2">
+                <span className="font-mono font-bold" style={{ fontSize: 'clamp(2rem,4vw,2.6rem)', color: dark ? '#fff' : '#000' }}>{price}</span>
+                <span className="font-mono text-base ml-1" style={{ color: dark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.50)' }}>{unit}</span>
+              </div>
+              <p className="font-mono text-sm mb-8" style={{ color: dark ? 'rgba(255,255,255,0.65)' : 'rgba(0,0,0,0.60)' }}>{sub}</p>
+              <ul className="space-y-3 mb-6 flex-1">
+                {items.map(item => (
+                  <li key={item} className="font-mono text-sm flex items-start gap-3"
+                    style={{ color: dark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.80)' }}>
+                    <span className="font-bold flex-shrink-0 mt-0.5" style={{ color: dark ? '#fff' : '#000' }}>✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <p className="font-mono text-xs mb-6" style={{ color: dark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.55)' }}>{note}</p>
+              <button onClick={onOpenForm}
+                className="font-mono font-bold text-sm px-7 py-3.5 active:scale-95 transition-all tracking-wide w-full"
+                style={dark
+                  ? { background: '#fff', color: '#000' }
+                  : { background: '#000', color: '#fff' }}>
+                {cta}
+              </button>
+            </div>
+          ))}
+        </div>
+        <p className="font-mono text-xs text-black/55 mt-5 text-center">
+          Primer reporte gratis para ambos canales · sin tarjeta · sin contrato
+        </p>
+      </div>
+    </section>
+  )
+}
+
 // ── Testimonios ───────────────────────────────────────────────────────────────
 
 const TESTIMONIALS = [
@@ -577,9 +663,9 @@ function PricingCalculator({ onOpenForm }) {
   return (
     <section id="calculadora" className="bg-black border-t border-white/6" ref={ref}>
       <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-        <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/88 mb-3">Calculadora</p>
+        <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/88 mb-3">Calculadora — canal intermediario</p>
         <h2 className="font-mono font-bold text-white mb-10" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
-          ¿Cuántos clientes activarías con <Gr>S/149/mes</Gr>?
+          ¿Cuánto ganas revendiendo con <Gr>S/149/mes</Gr>?
         </h2>
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-14">
           <div className="lg:w-56 mb-8 lg:mb-0">
@@ -693,19 +779,19 @@ function DirectRoute({ onOpenForm }) {
     <section className="bg-black border-t border-white/6" ref={ref}>
       <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
         <div className="border border-white/8 p-8 sm:p-12">
-          <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/65 mb-4">Para tu propio negocio</p>
+          <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/65 mb-4">Para tu propio negocio · S/99/reporte</p>
           <h2 className="font-mono font-bold text-white leading-snug mb-4" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
-            ¿Eres tú el que quiere<br className="hidden sm:block" /> <Gr>más clientes</Gr>?
+            ¿Necesitas <Gr>más clientes</Gr><br className="hidden sm:block" /> para tu negocio?
           </h2>
           <p className="font-mono text-base text-white/80 leading-relaxed mb-8 max-w-lg">
-            Pipeline_X también trabaja directo contigo. Nos dices a qué tipo de empresa le vendes y en qué ciudad, y en 24 horas tienes una lista de prospectos calificados lista para contactar.
+            Sin suscripción. Pides un reporte, recibes 30+ leads calificados en 24 horas. Pagas S/99 solo cuando lo necesitas.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
             <button onClick={onOpenForm}
               className="font-mono font-bold text-sm text-black bg-white px-7 py-3.5 hover:bg-white/90 active:scale-95 transition-all tracking-wide w-full sm:w-auto">
-              Quiero prospectos para mi negocio →
+              Quiero leads para mi negocio →
             </button>
-            <p className="font-mono text-xs text-white/88">Sin costo · sin contratos · reporte en 24 h</p>
+            <p className="font-mono text-xs text-white/88">Primer reporte gratis · sin contrato · 24 h</p>
           </div>
         </div>
       </div>
@@ -772,6 +858,7 @@ export default function App() {
       <Navbar onOpenForm={() => setFormOpen(true)} />
       <Hero onOpenForm={() => setFormOpen(true)} />
       <HowItWorks onOpenForm={() => setFormOpen(true)} />
+      <TwoChannels onOpenForm={() => setFormOpen(true)} />
       <Testimonials />
       <Comparison onOpenForm={() => setFormOpen(true)} />
       <ReportPreview onOpenForm={() => setFormOpen(true)} />
