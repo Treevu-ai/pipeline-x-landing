@@ -15,18 +15,10 @@ const GRAD_STYLE = {
 }
 const Gr = ({ children }) => <span style={GRAD_STYLE}>{children}</span>
 
-const SB_URL = 'https://lyslbbqbjchlqbzvwnyu.supabase.co'
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5c2xiYnFiamNobHFienZ3bnl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1NTM0NzAsImV4cCI6MjA5MDEyOTQ3MH0.ae_4y6YDz23yva9B5uIVxMgQhmWU0tfmcKwgvDEx7z4'
-
 async function saveLead(data) {
-  return fetch(`${SB_URL}/rest/v1/pipeline_x_leads`, {
+  return fetch('/api/save-lead', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': SB_KEY,
-      'Authorization': `Bearer ${SB_KEY}`,
-      'Prefer': 'return=minimal',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   })
 }
