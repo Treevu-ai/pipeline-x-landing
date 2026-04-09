@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
 const HERO_IMG = 'https://images.pexels.com/photos/19985010/pexels-photo-19985010.jpeg?auto=compress&cs=tinysrgb&w=1600'
-const TG_BOT   = 'https://t.me/Pipeline_X_bot'
+const TG_BOT   = 'https://t.me/Pipeline_X_bot?start=reporte'
 
 // ── Paleta luxury B&W ─────────────────────────────────────────────────────────
 const DIM = 'rgba(255,255,255,0.05)'
@@ -68,7 +68,7 @@ function useFadeIn(threshold = 0.08) {
 // ── Lead Form Modal ───────────────────────────────────────────────────────────
 
 function LeadFormModal({ onClose }) {
-  const [form, setForm] = useState({ nombre: '', whatsapp: '', tipo: '', ciudad: '' })
+  const [form, setForm] = useState({ nombre: '', whatsapp: '', tipo: '', ciudad: '', target: '' })
   const [sent, setSent] = useState(false)
   const [error, setError] = useState('')
   const update = field => e => setForm(f => ({ ...f, [field]: e.target.value }))
@@ -76,11 +76,17 @@ function LeadFormModal({ onClose }) {
   const handleSubmit = async e => {
     e.preventDefault()
     if (!form.nombre.trim() || !form.whatsapp.trim()) { setError('Nombre y WhatsApp son requeridos.'); return }
+    if (!form.target.trim()) { setError('Dinos qué tipo de empresas quieres prospectar.'); return }
     setError('')
     try {
-      await saveLead({ nombre: form.nombre.trim(), whatsapp: form.whatsapp.trim(), tipo: form.tipo || null, ciudad: form.ciudad.trim() || null })
+      await saveLead({
+        nombre: form.nombre.trim(),
+        whatsapp: form.whatsapp.trim(),
+        tipo: form.tipo || null,
+        ciudad: form.ciudad.trim() || null,
+        target: form.target.trim(),
+      })
     } catch { /* fallback */ }
-    window.open(TG_BOT, '_blank', 'noopener,noreferrer')
     setSent(true)
   }
 
@@ -97,16 +103,42 @@ function LeadFormModal({ onClose }) {
           <span className="font-mono text-xs ml-2 text-white/65 tracking-wider">pipeline_x — solicitar_reporte.sh</span>
         </div>
         {sent ? (
-          <div className="px-8 py-14 text-center">
+          <div className="px-8 py-10 text-center">
             <div className="w-12 h-12 rounded-full border-2 border-black flex items-center justify-center mx-auto mb-5">
               <span className="text-xl">✓</span>
             </div>
-            <p className="font-mono font-bold text-black text-base mb-2 tracking-tight">Solicitud recibida</p>
-            <p className="font-mono text-xs text-black/50 mb-8 leading-relaxed">
-              En menos de 24 horas recibirás tu reporte<br />
-              por <span className="font-bold text-black">@Pipeline_X_bot</span> en Telegram.
+            <p className="font-mono font-bold text-black text-base mb-1 tracking-tight">Solicitud registrada</p>
+            <p className="font-mono text-xs text-black/50 mb-7 leading-relaxed">
+              Procesaremos tu reporte en menos de 24 horas.<br />
+              Recibirás el resultado por <span className="font-bold text-black">@Pipeline_X_bot</span> en Telegram.
             </p>
-            <button onClick={onClose} className="font-mono text-xs tracking-widest uppercase text-white bg-black px-8 py-3 hover:bg-black/80 transition-colors">Cerrar</button>
+            {/* Pasos de activación del bot */}
+            <div className="text-left border border-black/10 divide-y divide-black/8 mb-7">
+              <div className="px-4 py-3 flex items-start gap-3">
+                <span className="font-mono text-xs font-bold text-black/30 mt-0.5 w-4 shrink-0">1</span>
+                <p className="font-mono text-xs text-black/70 leading-snug">
+                  Abre <span className="font-bold text-black">@Pipeline_X_bot</span> en Telegram y presiona <span className="font-bold text-black">START</span>.
+                </p>
+              </div>
+              <div className="px-4 py-3 flex items-start gap-3">
+                <span className="font-mono text-xs font-bold text-black/30 mt-0.5 w-4 shrink-0">2</span>
+                <p className="font-mono text-xs text-black/70 leading-snug">
+                  El bot confirmará que recibió tu solicitud y te avisará cuando el reporte esté listo.
+                </p>
+              </div>
+              <div className="px-4 py-3 flex items-start gap-3">
+                <span className="font-mono text-xs font-bold text-black/30 mt-0.5 w-4 shrink-0">3</span>
+                <div>
+                  <p className="font-mono text-xs text-black/50 mb-1">Tu target registrado:</p>
+                  <p className="font-mono text-xs font-bold text-black">{form.target}</p>
+                </div>
+              </div>
+            </div>
+            <a href={TG_BOT} target="_blank" rel="noopener noreferrer"
+              className="block w-full font-mono font-bold text-sm text-white bg-black py-4 hover:bg-black/80 transition-all tracking-wider text-center mb-3">
+              Abrir @Pipeline_X_bot →
+            </a>
+            <button onClick={onClose} className="font-mono text-xs text-black/40 hover:text-black/70 transition-colors">Cerrar</button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="px-8 py-8 space-y-5">
@@ -117,8 +149,19 @@ function LeadFormModal({ onClose }) {
             <div className="space-y-3">
               <input type="text" placeholder="Nombre completo *" value={form.nombre} onChange={update('nombre')} className={inp} required />
               <input type="tel" placeholder="Teléfono / WhatsApp *" value={form.whatsapp} onChange={update('whatsapp')} className={inp} required />
+              <div>
+                <input
+                  type="text"
+                  placeholder='¿Qué empresas quieres prospectar? * — ej: "Ferreterías en Trujillo"'
+                  value={form.target}
+                  onChange={update('target')}
+                  className={inp}
+                  required
+                />
+                <p className="font-mono text-xs text-black/40 mt-1 px-1">Industria + ciudad. Este es el target de tu reporte.</p>
+              </div>
               <select value={form.tipo} onChange={update('tipo')} className={inp + ' cursor-pointer'}>
-                <option value="">Tipo de empresa</option>
+                <option value="">Tipo de empresa (opcional)</option>
                 <option>Mi propio negocio (MYPE)</option>
                 <option>Estudio Contable</option>
                 <option>Agencia de Marketing</option>
@@ -126,7 +169,7 @@ function LeadFormModal({ onClose }) {
                 <option>Consultoría</option>
                 <option>Otro</option>
               </select>
-              <input type="text" placeholder="Ciudad (ej: Lima, Trujillo...)" value={form.ciudad} onChange={update('ciudad')} className={inp} />
+              <input type="text" placeholder="Tu ciudad (ej: Lima, Trujillo...)" value={form.ciudad} onChange={update('ciudad')} className={inp} />
             </div>
             {error && <p className="font-mono text-xs text-red-600">{error}</p>}
             {/* ── 3: CTA transparente sobre Telegram ── */}
@@ -317,12 +360,12 @@ const STEPS = [
   {
     n: '01',
     title: 'Nos dices el target',
-    body: 'Industria + ciudad. Ej: "Estudios contables en Lima" o "Ferreterías en Trujillo". En menos de 5 minutos.',
+    body: 'Industria + ciudad. Cobertura en las 15 ciudades principales del Perú. Ej: "Estudios contables en Lima" o "Ferreterías en Trujillo". En menos de 5 minutos.',
   },
   {
     n: '02',
-    title: 'Pipeline_X escanea',
-    body: 'Nuestro agente recorre Google Maps, extrae contactos reales y los califica con IA: score 0–100, acción sugerida, borrador de mensaje.',
+    title: 'Pipeline_X escanea y valida',
+    body: 'Nuestro agente recorre Google Maps, extrae contactos reales y cruza datos oficiales de SUNAT (estado fiscal, régimen tributario, CIIU). Solo avanza con empresas activas y con capacidad de pago.',
   },
   {
     n: '03',
@@ -497,6 +540,7 @@ const FEATURES = [
   { label: 'Precio mensual',            px: 'S/149',  kommo: '$200+', hubspot: '$800+', leadsales: '$150+' },
   { label: 'IA local (datos no salen)', px: true,     kommo: false,  hubspot: false,   leadsales: false  },
   { label: 'Scraping Google Maps',       px: true,     kommo: false,  hubspot: false,   leadsales: false  },
+  { label: 'Validación SUNAT incluida',  px: true,     kommo: false,  hubspot: false,   leadsales: false  },
   { label: 'White-label',                px: true,     kommo: false,  hubspot: false,   leadsales: false  },
   { label: 'Para intermediarios',        px: true,     kommo: false,  hubspot: false,   leadsales: false  },
   { label: 'Precios en soles',           px: true,     kommo: false,  hubspot: false,   leadsales: false  },

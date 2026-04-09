@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'NOTION_PIPELINE_TOKEN not configured' })
   }
 
-  const { nombre, whatsapp, tipo, ciudad } = req.body || {}
+  const { nombre, whatsapp, tipo, ciudad, target } = req.body || {}
 
   if (!nombre || !whatsapp) {
     return res.status(400).json({ error: 'nombre y whatsapp son requeridos' })
@@ -36,6 +36,12 @@ export default async function handler(req, res) {
     Estado: {
       select: { name: 'Nuevo' },
     },
+  }
+
+  if (target) {
+    properties['Target'] = {
+      rich_text: [{ type: 'text', text: { content: String(target).slice(0, 200) } }],
+    }
   }
 
   if (tipo) {
