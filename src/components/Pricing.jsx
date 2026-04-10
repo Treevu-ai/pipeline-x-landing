@@ -1,112 +1,275 @@
-const PLANS = [
+import { useState } from 'react'
+
+// ── Configura estos valores antes de publicar ─────────────────────────────────
+const TELEGRAM_BOT  = 'Pipeline_X_bot'
+const WHATSAPP_NUM  = '51902126765'
+const WHATSAPP_TEXT = encodeURIComponent('Hola, quiero hablar sobre el plan Reseller de Pipeline_X')
+// ─────────────────────────────────────────────────────────────────────────────
+
+const TELEGRAM_URL  = `https://t.me/${TELEGRAM_BOT}?start=demo`
+const WHATSAPP_RESELLER = `https://wa.me/${WHATSAPP_NUM}?text=${WHATSAPP_TEXT}`
+
+const PLANS_MONTHLY = [
   {
+    id: 'free',
+    name: 'Free',
+    price: '$0',
+    period: '',
+    desc: 'Prueba sin tarjeta. Ve si Pipeline_X funciona para tu industria.',
+    features: [
+      '10 leads gratis',
+      'Calificación con IA',
+      'Canal email',
+      'Exportar CSV',
+    ],
+    missing: [
+      'Enrichment SUNAT',
+      'Reporte HTML',
+      'Acceso API',
+    ],
+    cta: 'Empezar gratis',
+    ctaHref: TELEGRAM_URL,
+    ctaExternal: true,
+    popular: false,
+    badge: null,
+  },
+  {
+    id: 'solo',
+    name: 'Solo',
+    price: '$19',
+    period: '/mes',
+    desc: 'Para freelancers y fundadores que prospectan por su cuenta.',
+    features: [
+      '30 leads/mes',
+      'Calificación con IA',
+      'Canal email',
+      'Exportar CSV',
+    ],
+    missing: [
+      'Enrichment SUNAT',
+      'Reporte HTML',
+      'Acceso API',
+    ],
+    cta: 'Comenzar',
+    ctaHref: '#demo',
+    ctaExternal: false,
+    popular: false,
+    badge: null,
+  },
+  {
+    id: 'starter',
     name: 'Starter',
     price: '$39',
     period: '/mes',
-    desc: 'Para equipos que están empezando a prospectar.',
+    desc: 'El tier principal. MYPE con equipo pequeño de ventas.',
     features: [
       '200 leads/mes',
       'Calificación con IA',
       'Canal email',
-      'Exportar CSV',
+      'Enrichment SUNAT',
+      'Reporte HTML',
+      'Acceso API',
       'Soporte por email',
     ],
-    cta: 'Solicitar demo',
-    popular: false,
+    missing: [],
+    cta: 'Comenzar',
+    ctaHref: '#demo',
+    ctaExternal: false,
+    popular: true,
+    badge: 'Más popular',
   },
   {
+    id: 'pro',
     name: 'Pro',
-    price: '$89',
+    price: '$79',
     period: '/mes',
     desc: 'Para equipos de ventas activos que necesitan escala.',
     features: [
-      '1,000 leads/mes',
+      '500 leads/mes',
       'Calificación con IA',
       'Email + WhatsApp',
-      'Acceso a API REST',
-      'Enriquecimiento de contactos',
+      'Enrichment SUNAT',
+      'Reporte HTML',
+      'Acceso API REST',
       'Soporte prioritario',
     ],
-    cta: 'Solicitar demo',
-    popular: true,
+    missing: [],
+    cta: 'Comenzar',
+    ctaHref: '#demo',
+    ctaExternal: false,
+    popular: false,
+    badge: null,
   },
   {
-    name: 'Agency',
-    price: '$199',
+    id: 'reseller',
+    name: 'Reseller',
+    price: '$299',
     period: '/mes',
-    desc: 'Para agencias que gestionan múltiples clientes.',
+    desc: 'Para agencias que revenden reportes a sus clientes.',
     features: [
-      'Leads ilimitados',
+      '1.000 leads/mes',
+      'White-label (tu marca)',
       'Multi-cuenta',
       'API sin límites',
-      'Reportes HTML',
+      'Kit de reventa incluido',
       'Onboarding dedicado',
       'SLA garantizado',
     ],
+    missing: [],
     cta: 'Hablar con ventas',
+    ctaHref: WHATSAPP_RESELLER,
+    ctaExternal: true,
     popular: false,
+    badge: 'Para agencias',
   },
 ]
 
+// Precio anual = mensual × 10 (2 meses gratis)
+const PLANS_ANNUAL = PLANS_MONTHLY.map(p => {
+  if (!p.period) return p  // Free no cambia
+  const monthly = parseInt(p.price.replace('$', ''))
+  const annual  = monthly * 10
+  return {
+    ...p,
+    price:  `$${annual}`,
+    period: '/año',
+    saving: `Ahorras $${monthly * 2}/año`,
+  }
+})
+
 export default function Pricing() {
+  const [annual, setAnnual] = useState(false)
+  const plans = annual ? PLANS_ANNUAL : PLANS_MONTHLY
+
   return (
     <section id="precios" className="py-24 border-t border-white/5">
-      <div className="max-w-5xl mx-auto px-6">
-        <div className="text-center mb-16">
+      <div className="max-w-6xl mx-auto px-6">
+
+        {/* Header */}
+        <div className="text-center mb-12">
           <p className="font-mono text-terminal text-sm mb-3">// precios</p>
-          <h2 className="text-4xl font-bold">Precios simples y predecibles</h2>
-          <p className="text-slate-400 mt-4">Un SDR humano en LATAM cuesta $800–1,500/mes. Pipeline_X desde $39.</p>
+          <h2 className="text-4xl font-bold mb-4">Precios simples y predecibles</h2>
+          <p className="text-slate-400">
+            Un SDR junior en LATAM cuesta $700–900/mes y produce ~60 leads.
+            Pipeline_X entrega 200 por $39.
+          </p>
+
+          {/* Toggle mensual / anual */}
+          <div className="inline-flex items-center gap-3 mt-8 p-1 rounded-xl glass">
+            <button
+              onClick={() => setAnnual(false)}
+              className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
+                !annual ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Mensual
+            </button>
+            <button
+              onClick={() => setAnnual(true)}
+              className={`px-5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
+                annual ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Anual
+              <span className="px-1.5 py-0.5 rounded text-xs font-semibold bg-terminal/20 text-terminal">
+                2 meses gratis
+              </span>
+            </button>
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {PLANS.map((plan) => (
+        {/* Grid de planes */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {plans.map((plan) => (
             <div
-              key={plan.name}
-              className={`rounded-2xl p-6 flex flex-col relative ${
+              key={plan.id}
+              className={`rounded-2xl p-5 flex flex-col relative ${
                 plan.popular
                   ? 'bg-gradient-to-b from-purple-900/50 to-purple-950/50 border border-purple-500/50 shadow-lg shadow-purple-900/20'
                   : 'glass'
               }`}
             >
-              {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-purple-500 text-white text-xs font-semibold">
-                  Más popular
+              {/* Badge */}
+              {plan.badge && (
+                <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${
+                  plan.popular ? 'bg-purple-500 text-white' : 'bg-white/10 text-slate-300'
+                }`}>
+                  {plan.badge}
                 </div>
               )}
 
-              <div className="mb-6">
-                <h3 className="font-semibold text-lg mb-1">{plan.name}</h3>
-                <div className="flex items-end gap-1 mb-2">
-                  <span className="text-4xl font-bold">{plan.price}</span>
-                  <span className="text-slate-400 mb-1">{plan.period}</span>
+              {/* Precio */}
+              <div className="mb-5 mt-1">
+                <h3 className="font-semibold text-base mb-1">{plan.name}</h3>
+                <div className="flex items-end gap-1 mb-1.5">
+                  <span className="text-3xl font-bold">{plan.price}</span>
+                  {plan.period && <span className="text-slate-400 mb-0.5 text-sm">{plan.period}</span>}
                 </div>
-                <p className="text-sm text-slate-400">{plan.desc}</p>
+                {plan.saving && (
+                  <p className="text-xs text-terminal font-mono">{plan.saving}</p>
+                )}
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">{plan.desc}</p>
               </div>
 
-              <ul className="space-y-3 flex-1 mb-8">
+              {/* Features incluidas */}
+              <ul className="space-y-2 flex-1 mb-2">
                 {plan.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-slate-300">
-                    <span className="text-terminal">✓</span>
+                  <li key={f} className="flex items-start gap-2 text-xs text-slate-300">
+                    <span className="text-terminal mt-0.5 shrink-0">✓</span>
+                    {f}
+                  </li>
+                ))}
+                {/* Features no incluidas (solo Free y Solo) */}
+                {plan.missing?.map((f) => (
+                  <li key={f} className="flex items-start gap-2 text-xs text-slate-600">
+                    <span className="mt-0.5 shrink-0">✗</span>
                     {f}
                   </li>
                 ))}
               </ul>
 
-              <a
-                href="https://t.me/Pipeline_X_bot"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`w-full py-3 rounded-xl font-semibold text-sm text-center transition-all ${
-                  plan.popular
-                    ? 'bg-purple-500 hover:bg-purple-400 text-white hover:scale-105'
-                    : 'glass hover:border-white/20 text-slate-300 hover:text-white'
-                }`}
-              >
-                {plan.cta}
-              </a>
+              {/* CTA */}
+              <div className="mt-5">
+                {plan.ctaExternal ? (
+                  <a
+                    href={plan.ctaHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-full py-2.5 rounded-xl font-semibold text-xs text-center block transition-all ${
+                      plan.popular
+                        ? 'bg-purple-500 hover:bg-purple-400 text-white hover:scale-105'
+                        : plan.id === 'free'
+                        ? 'bg-terminal/20 hover:bg-terminal/30 text-terminal'
+                        : 'glass hover:border-white/20 text-slate-300 hover:text-white'
+                    }`}
+                  >
+                    {plan.cta}
+                  </a>
+                ) : (
+                  <a
+                    href={plan.ctaHref}
+                    className={`w-full py-2.5 rounded-xl font-semibold text-xs text-center block transition-all ${
+                      plan.popular
+                        ? 'bg-purple-500 hover:bg-purple-400 text-white hover:scale-105'
+                        : 'glass hover:border-white/20 text-slate-300 hover:text-white'
+                    }`}
+                  >
+                    {plan.cta}
+                  </a>
+                )}
+              </div>
             </div>
           ))}
         </div>
+
+        {/* Nota precio fundador */}
+        <div className="mt-8 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs text-slate-400 font-mono">
+            <span className="w-1.5 h-1.5 rounded-full bg-terminal animate-pulse" />
+            Precio fundador $29/mes disponible para los primeros 20 clientes — consulta disponibilidad
+          </div>
+        </div>
+
       </div>
     </section>
   )
