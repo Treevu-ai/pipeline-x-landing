@@ -9,17 +9,21 @@ const WHATSAPP_TEXT = encodeURIComponent('Hola, quiero ver mi demo gratuita de P
 const TELEGRAM_URL  = `https://t.me/${TELEGRAM_BOT}?start=demo`
 const WHATSAPP_URL  = `https://wa.me/${WHATSAPP_NUM}?text=${WHATSAPP_TEXT}`
 
+// Fotos de fondo (licencia libre, sin atribución requerida)
+const IMG_LIMA  = 'https://images.pexels.com/photos/19985010/pexels-photo-19985010.jpeg?auto=compress&cs=tinysrgb&w=1920'
+const IMG_CAFE  = 'https://images.unsplash.com/photo-1453614512568-c4024d13c247?auto=format&fit=crop&w=1920&q=80'
+
 const LINES = [
-  { text: '$ pipeline_x scan --query "Retail Lima" --limit 50', delay: 0,    color: 'text-terminal' },
-  { text: '▶ Conectando a Google Maps...',                       delay: 800,  color: 'text-slate-400' },
-  { text: '▶ 50 empresas encontradas',                           delay: 1600, color: 'text-slate-300' },
-  { text: '▶ Calificando leads con IA...',                       delay: 2400, color: 'text-slate-400' },
-  { text: '  [████████████████████] 100%',                       delay: 3200, color: 'text-terminal' },
-  { text: '▶ ✓ 18 Calificados     score > 70',                   delay: 4000, color: 'text-green-400' },
-  { text: '▶ ◎ 14 En seguimiento  score 40-70',                  delay: 4400, color: 'text-yellow-400' },
-  { text: '▶ ✗ 18 Descartados     score < 40',                   delay: 4800, color: 'text-red-400' },
-  { text: '▶ Generando mensajes personalizados...',              delay: 5400, color: 'text-slate-400' },
-  { text: '▶ Done in 47s — 18 leads listos para contactar ✓',   delay: 6200, color: 'text-terminal' },
+  { text: '$ pipeline_x scan --query "Retail Perú" --limit 50',  delay: 0,    color: 'text-terminal' },
+  { text: '▶ Conectando a Google Maps...',                        delay: 800,  color: 'text-slate-400' },
+  { text: '▶ 50 empresas encontradas',                            delay: 1600, color: 'text-slate-300' },
+  { text: '▶ Calificando leads con IA...',                        delay: 2400, color: 'text-slate-400' },
+  { text: '  [████████████████████] 100%',                        delay: 3200, color: 'text-terminal' },
+  { text: '▶ ✓ 18 Calificados     score > 70',                    delay: 4000, color: 'text-green-400' },
+  { text: '▶ ◎ 14 En seguimiento  score 40-70',                   delay: 4400, color: 'text-yellow-400' },
+  { text: '▶ ✗ 18 Descartados     score < 40',                    delay: 4800, color: 'text-red-400' },
+  { text: '▶ Generando mensajes personalizados...',               delay: 5400, color: 'text-slate-400' },
+  { text: '▶ Done in 47s — 18 leads listos para contactar ✓',    delay: 6200, color: 'text-terminal' },
 ]
 
 export default function Hero() {
@@ -34,41 +38,69 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center pt-14 grid-bg overflow-hidden">
-      {/* Glow orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-700/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-emerald-700/15 rounded-full blur-3xl pointer-events-none" />
+    <section className="relative min-h-screen flex flex-col items-center justify-center pt-14 overflow-hidden">
 
-      <div className="relative max-w-4xl mx-auto px-6 text-center">
+      {/* ── Fondo partido en dos mitades ────────────────────────────────── */}
+      <div className="absolute inset-0 flex pointer-events-none">
+        {/* Mitad izquierda — Lima, Miraflores */}
+        <div
+          className="w-1/2 h-full bg-cover bg-center"
+          style={{ backgroundImage: `url(${IMG_LIMA})` }}
+        />
+        {/* Mitad derecha — Café cálido */}
+        <div
+          className="w-1/2 h-full bg-cover bg-center"
+          style={{ backgroundImage: `url(${IMG_CAFE})` }}
+        />
+      </div>
+
+      {/* Overlay izquierdo — tono azul-noche para la ciudad */}
+      <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-[#0a0a1a]/85 via-[#0d1226]/80 to-[#0d1226]/70 pointer-events-none" />
+
+      {/* Overlay derecho — tono ámbar-cálido para el café */}
+      <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-[#1a0e00]/85 via-[#241200]/80 to-[#1a0800]/70 pointer-events-none" />
+
+      {/* Línea divisoria central */}
+      <div className="absolute inset-y-0 left-1/2 -translate-x-px w-px bg-gradient-to-b from-transparent via-white/25 to-transparent pointer-events-none" />
+
+      {/* Velo oscuro global para legibilidad del texto */}
+      <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+
+      {/* ── Contenido ───────────────────────────────────────────────────── */}
+      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs text-slate-400 mb-8 font-mono">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-xs text-slate-300 mb-8 font-mono">
           <span className="w-1.5 h-1.5 rounded-full bg-terminal animate-pulse" />
           Agente SDR con IA para MIPYME latinoamericana
         </div>
 
-        {/* Headline */}
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight mb-6">
-          Tu equipo de ventas<br />
-          <span className="gradient-text">trabaja mientras duermes</span>
+        {/* Headline — Opción 3 */}
+        <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight mb-6 text-white drop-shadow-lg">
+          Prospecta todo Perú y LATAM<br />
+          <span className="gradient-text">mientras tomas café</span>
         </h1>
 
-        <p className="text-lg text-slate-400 max-w-xl mx-auto mb-4 leading-relaxed">
-          Pipeline_X escanea Google Maps, califica cada lead con IA y redacta mensajes
-          personalizados por industria — en minutos, no días.
+        <p className="text-lg text-slate-300 max-w-2xl mx-auto mb-3 leading-relaxed drop-shadow">
+          Un SDR junior llega a 20 empresas por día. Pipeline_X escanea miles,
+          las filtra con IA y entrega solo los leads que valen tu tiempo.
         </p>
 
-        {/* Social proof micro-copy */}
-        <p className="text-sm text-slate-500 mb-10 font-mono">
-          Sin tarjeta de crédito · 10 leads gratis · Listo en 5 minutos
+        {/* Comparativa de ahorro */}
+        <p className="text-sm text-slate-400 mb-10 font-mono">
+          <span className="text-red-400 line-through mr-2">$1,200/mes en salario</span>
+          <span className="text-terminal font-bold">$39/mes con Pipeline_X</span>
+          <span className="text-slate-500 mx-2">·</span>
+          Sin tarjeta · 10 leads gratis · Listo en 5 min
         </p>
 
-        {/* CTAs principales — chat primero */}
+        {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
           <a
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm transition-all hover:scale-105 glow-border"
+            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm transition-all hover:scale-105 shadow-lg"
             style={{ background: '#25D366', color: '#000' }}
           >
             <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
@@ -81,7 +113,7 @@ export default function Hero() {
             href={TELEGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm transition-all hover:scale-105"
+            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm transition-all hover:scale-105 shadow-lg"
             style={{ background: '#2AABEE', color: '#000' }}
           >
             <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
@@ -91,8 +123,8 @@ export default function Hero() {
           </a>
         </div>
 
-        {/* Enlace secundario hacia el formulario */}
-        <p className="text-xs text-slate-600 mb-12">
+        {/* Enlace secundario */}
+        <p className="text-xs text-slate-500 mb-12">
           ¿Prefieres email?{' '}
           <a href="#demo" className="text-slate-400 hover:text-white underline underline-offset-2 transition-colors">
             Solicitar por formulario
@@ -100,14 +132,14 @@ export default function Hero() {
         </p>
 
         {/* Terminal */}
-        <div className="rounded-2xl overflow-hidden glow-border text-left max-w-2xl mx-auto">
-          <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5" style={{background:'#111118'}}>
+        <div className="rounded-2xl overflow-hidden border border-white/10 text-left max-w-2xl mx-auto shadow-2xl backdrop-blur-sm">
+          <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5" style={{ background: 'rgba(10,10,24,0.85)' }}>
             <span className="w-3 h-3 rounded-full bg-red-500/80" />
             <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
             <span className="w-3 h-3 rounded-full bg-green-500/80" />
             <span className="ml-3 font-mono text-xs text-slate-500">pipeline_x — bash</span>
           </div>
-          <div className="p-5 font-mono text-sm space-y-1.5 min-h-64" style={{background:'#0d0d1a'}}>
+          <div className="p-5 font-mono text-sm space-y-1.5 min-h-64" style={{ background: 'rgba(8,8,20,0.80)' }}>
             {LINES.map((line, i) => (
               <div
                 key={i}
@@ -121,6 +153,7 @@ export default function Hero() {
             )}
           </div>
         </div>
+
       </div>
     </section>
   )
