@@ -294,26 +294,37 @@ function SocialProofStrip() {
 
 // ── Lead Form Modal ───────────────────────────────────────────────────────────
 
+const CANALES = [
+  { id: 'whatsapp', label: 'WhatsApp', placeholder: 'Teléfono / WhatsApp *', type: 'tel',   hint: 'Te escribiremos por WhatsApp con tu reporte.' },
+  { id: 'telegram', label: 'Telegram', placeholder: 'Usuario de Telegram * (ej: @tuusuario)', type: 'text', hint: 'Te enviamos el reporte por @Pipeline_X_bot.' },
+  { id: 'email',    label: 'Email',    placeholder: 'Correo electrónico *',   type: 'email', hint: 'Recibirás el reporte en tu bandeja de entrada.' },
+]
+
 function LeadFormModal({ onClose }) {
-  const [form, setForm] = useState({ nombre: '', whatsapp: '', tipo: '', ciudad: '', target: '' })
+  const [form, setForm] = useState({ nombre: '', contacto: '', canal: 'whatsapp', tipo: '', ciudad: '', target: '' })
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const update = field => e => setForm(f => ({ ...f, [field]: e.target.value }))
+  const setCanal = id => setForm(f => ({ ...f, canal: id, contacto: '' }))
+
+  const canalInfo = CANALES.find(c => c.id === form.canal)
 
   const handleSubmit = async e => {
     e.preventDefault()
-    if (!form.nombre.trim() || !form.whatsapp.trim()) { setError('Nombre y WhatsApp son requeridos.'); return }
-    if (!form.target.trim()) { setError('Dinos qué tipo de empresas quieres prospectar.'); return }
+    if (!form.nombre.trim())   { setError('El nombre es requerido.'); return }
+    if (!form.contacto.trim()) { setError(`El campo ${canalInfo.label} es requerido.`); return }
+    if (!form.target.trim())   { setError('Dinos qué tipo de empresas quieres prospectar.'); return }
     setError('')
     setLoading(true)
     try {
       await saveLead({
-        nombre: form.nombre.trim(),
-        whatsapp: form.whatsapp.trim(),
-        tipo: form.tipo || null,
-        ciudad: form.ciudad.trim() || null,
-        target: form.target.trim(),
+        nombre:   form.nombre.trim(),
+        contacto: form.contacto.trim(),
+        canal:    form.canal,
+        tipo:     form.tipo || null,
+        ciudad:   form.ciudad.trim() || null,
+        target:   form.target.trim(),
       })
       localStorage.setItem('px_reporte_solicitado', '1')
       setSent(true)
@@ -362,18 +373,26 @@ function LeadFormModal({ onClose }) {
             </div>
             <p className="font-mono font-bold text-black text-base mb-1 tracking-tight">Solicitud registrada</p>
             <p className="font-mono text-xs text-black/50 mb-5 leading-relaxed">
-              Tu reporte llegará en menos de 24 h por<br />
-              <span className="font-bold text-black">@Pipeline_X_bot</span> en Telegram.
+              Tu reporte llegará en menos de 24 h.<br />
+              <span className="font-bold text-black">{canalInfo.hint}</span>
             </p>
-            {/* Target badge */}
-            <div className="inline-block border border-black/12 bg-black/3 px-4 py-2 mb-6">
-              <p className="font-mono text-xs text-black/40 mb-0.5">Target registrado</p>
-              <p className="font-mono text-sm font-bold text-black">{form.target}</p>
+            {/* Badges */}
+            <div className="flex flex-col items-center gap-2 mb-6">
+              <div className="inline-block border border-black/12 bg-black/3 px-4 py-2 w-full text-left">
+                <p className="font-mono text-xs text-black/40 mb-0.5">Target registrado</p>
+                <p className="font-mono text-sm font-bold text-black">{form.target}</p>
+              </div>
+              <div className="inline-block border border-black/12 bg-black/3 px-4 py-2 w-full text-left">
+                <p className="font-mono text-xs text-black/40 mb-0.5">Canal elegido</p>
+                <p className="font-mono text-sm font-bold text-black">{canalInfo.label} · {form.contacto}</p>
+              </div>
             </div>
-            <a href={TG_BOT} target="_blank" rel="noopener noreferrer"
-              className="block w-full font-mono font-bold text-sm text-white bg-black py-4 hover:bg-black/80 active:scale-95 transition-all tracking-wider text-center">
-              Abrir @Pipeline_X_bot →
-            </a>
+            {form.canal === 'telegram' && (
+              <a href={TG_BOT} target="_blank" rel="noopener noreferrer"
+                className="block w-full font-mono font-bold text-sm text-white bg-black py-4 hover:bg-black/80 active:scale-95 transition-all tracking-wider text-center">
+                Abrir @Pipeline_X_bot →
+              </a>
+            )}
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="px-8 py-8 space-y-5">
@@ -383,7 +402,32 @@ function LeadFormModal({ onClose }) {
             </div>
             <div className="space-y-3">
               <input type="text" placeholder="Nombre completo *" value={form.nombre} onChange={update('nombre')} className={inp} required />
-              <input type="tel" placeholder="Teléfono / WhatsApp *" value={form.whatsapp} onChange={update('whatsapp')} className={inp} required />
+              {/* ── Selector de canal ── */}
+              <div>
+                <p className="font-mono text-xs text-black/50 mb-2 px-0.5">¿Cómo quieres recibir tu reporte? *</p>
+                <div className="flex gap-2">
+                  {CANALES.map(c => (
+                    <button key={c.id} type="button" onClick={() => setCanal(c.id)}
+                      className={`flex-1 font-mono text-xs py-2.5 border transition-colors ${
+                        form.canal === c.id
+                          ? 'bg-black text-white border-black'
+                          : 'bg-white text-black/60 border-black/20 hover:border-black/50'
+                      }`}>
+                      {c.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {/* ── Campo de contacto dinámico ── */}
+              <input
+                key={form.canal}
+                type={canalInfo.type}
+                placeholder={canalInfo.placeholder}
+                value={form.contacto}
+                onChange={update('contacto')}
+                className={inp}
+                required
+              />
               <div>
                 <input
                   type="text"
@@ -407,12 +451,8 @@ function LeadFormModal({ onClose }) {
               <input type="text" placeholder="Tu ciudad (ej: Lima, Trujillo...)" value={form.ciudad} onChange={update('ciudad')} className={inp} />
             </div>
             {error && <p className="font-mono text-xs text-red-600">{error}</p>}
-            {/* ── 3: CTA transparente sobre Telegram ── */}
             <div className="border border-black/10 px-4 py-3 flex items-center gap-3">
-              <span className="text-lg">✈</span>
-              <p className="font-mono text-xs text-black/50 leading-snug">
-                Te contactaremos por <span className="font-bold text-black">@Pipeline_X_bot</span> en Telegram con tu reporte listo.
-              </p>
+              <p className="font-mono text-xs text-black/50 leading-snug">{canalInfo.hint}</p>
             </div>
             <button type="submit" disabled={loading}
               className="w-full font-mono font-bold text-sm text-white bg-black py-4 hover:bg-black/80 active:scale-95 transition-all tracking-wider disabled:opacity-50 disabled:cursor-not-allowed">

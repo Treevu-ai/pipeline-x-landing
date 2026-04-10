@@ -10,16 +10,17 @@
 
 const DB_ID = 'c8e55705-b3ab-4e79-a977-cd4f7c64dd51'
 
-async function notifyTelegram(nombre, whatsapp, tipo, ciudad, target) {
+async function notifyTelegram(nombre, contacto, canal, tipo, ciudad, target) {
   const botToken = process.env.TELEGRAM_BOT_TOKEN
   const chatId   = process.env.TELEGRAM_ADMIN_CHAT_ID
   if (!botToken || !chatId) return
 
+  const canalIcon = { whatsapp: '📱', telegram: '✈️', email: '✉️' }[canal] || '📲'
   const lines = [
     '🔔 *Nuevo lead en PipelineX*',
     '',
     `👤 *Nombre:* ${nombre}`,
-    `📱 *WhatsApp:* ${whatsapp}`,
+    `${canalIcon} *${canal.charAt(0).toUpperCase() + canal.slice(1)}:* ${contacto}`,
   ]
   if (tipo)   lines.push(`🏢 *Tipo:* ${tipo}`)
   if (ciudad) lines.push(`📍 *Ciudad:* ${ciudad}`)
@@ -47,10 +48,10 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'NOTION_PIPELINE_TOKEN not configured' })
   }
 
-  const { nombre, whatsapp, tipo, ciudad, target } = req.body || {}
+  const { nombre, contacto, canal, tipo, ciudad, target } = req.body || {}
 
-  if (!nombre || !whatsapp) {
-    return res.status(400).json({ error: 'nombre y whatsapp son requeridos' })
+  if (!nombre || !contacto || !canal) {
+    return res.status(400).json({ error: 'nombre, contacto y canal son requeridos' })
   }
 
   // Construir propiedades para Notion
@@ -58,12 +59,20 @@ export default async function handler(req, res) {
     Nombre: {
       title: [{ type: 'text', text: { content: String(nombre).slice(0, 100) } }],
     },
-    WhatsApp: {
-      phone_number: String(whatsapp).slice(0, 50),
-    },
     Estado: {
       select: { name: 'Nuevo' },
     },
+    Canal: {
+      select: { name: String(canal).slice(0, 50) },
+    },
+    Contacto: {
+      rich_text: [{ type: 'text', text: { content: String(contacto).slice(0, 100) } }],
+    },
+  }
+
+  // Mantener campo WhatsApp para compatibilidad si el canal es whatsapp
+  if (canal === 'whatsapp') {
+    properties['WhatsApp'] = { phone_number: String(contacto).slice(0, 50) }
   }
 
   if (target) {
@@ -102,7 +111,7 @@ export default async function handler(req, res) {
       return res.status(502).json({ error: 'Notion save failed', detail: err.message })
     }
 
-    await notifyTelegram(nombre, whatsapp, tipo, ciudad, target)
+    await notifyTelegram(nombre, contacto, canal, tipo, ciudad, target)
 
     return res.status(200).json({ ok: true })
   } catch (err) {
