@@ -3,10 +3,38 @@
  * El token nunca se expone al browser.
  *
  * Variables de entorno requeridas en Vercel:
- *   NOTION_TOKEN  — token de la integración de Notion
+ *   NOTION_PIPELINE_TOKEN  — token de la integración de Notion
+ *   TELEGRAM_BOT_TOKEN     — token del bot (@BotFather)
+ *   TELEGRAM_ADMIN_CHAT_ID — chat_id del admin (obtener con /start en @userinfobot)
  */
 
 const DB_ID = 'c8e55705-b3ab-4e79-a977-cd4f7c64dd51'
+
+async function notifyTelegram(nombre, whatsapp, tipo, ciudad, target) {
+  const botToken = process.env.TELEGRAM_BOT_TOKEN
+  const chatId   = process.env.TELEGRAM_ADMIN_CHAT_ID
+  if (!botToken || !chatId) return
+
+  const lines = [
+    '🔔 *Nuevo lead en PipelineX*',
+    '',
+    `👤 *Nombre:* ${nombre}`,
+    `📱 *WhatsApp:* ${whatsapp}`,
+  ]
+  if (tipo)   lines.push(`🏢 *Tipo:* ${tipo}`)
+  if (ciudad) lines.push(`📍 *Ciudad:* ${ciudad}`)
+  if (target) lines.push(`🎯 *Target:* ${target}`)
+
+  await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: lines.join('\n'),
+      parse_mode: 'Markdown',
+    }),
+  }).catch(err => console.error('Telegram notify error:', err))
+}
 
 export default async function handler(req, res) {
   // Solo POST
@@ -73,6 +101,8 @@ export default async function handler(req, res) {
       console.error('Notion error:', err)
       return res.status(502).json({ error: 'Notion save failed', detail: err.message })
     }
+
+    await notifyTelegram(nombre, whatsapp, tipo, ciudad, target)
 
     return res.status(200).json({ ok: true })
   } catch (err) {
