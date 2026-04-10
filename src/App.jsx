@@ -568,8 +568,8 @@ function Hero({ onOpenForm }) {
           <div className="flex gap-8 mb-10 border-t border-white/10 pt-8">
             {[
               { v: 'S/400–600', l: 'cobras / reporte' },
-              { v: 'desde $47', l: 'pagas / mes (Starter)', hi: true },
-              { v: '$197 USD',  l: 'plan Agency (reventa)' },
+              { v: 'desde $39', l: 'pagas / mes (Starter)', hi: true },
+              { v: '$299 USD',  l: 'plan Reseller (reventa)' },
             ].map(({ v, l, hi }) => (
               <div key={l}>
                 <div className="font-mono font-bold" style={{ fontSize: '1.15rem', ...(hi ? GRAD_STYLE : { color: '#fff' }) }}>{v}</div>
@@ -788,7 +788,7 @@ const CHANNELS = [
       { text: 'Soporte por email',                            ok: true  },
       { text: 'White-label',                                  ok: false },
     ],
-    note:  'Un SDR junior en Perú cuesta S/2,500/mes. Esto es S/146.',
+    note:  'El trabajo de un vendedor dedicado a prospección, por el precio de una suscripción.',
     cta:   'Elegir Starter →',
     dark:  true,
     hi:    true,
@@ -865,7 +865,7 @@ function TwoChannels({ onOpenForm }) {
           Tres planes claros, <Gr>sin complicaciones</Gr>
         </h2>
         <p className="font-mono text-sm text-black/55 mb-8 max-w-xl">
-          Lo que en el mercado global cuesta 500–5,000 USD/mes, aquí empieza en menos de 50 USD — adaptado a MIPYME en Perú y LATAM.
+          La prospección que antes tomaba días — o requería contratar a alguien — ahora toma minutos.
         </p>
 
         {/* Toggle mensual / anual */}
@@ -1076,7 +1076,7 @@ function Testimonials() {
 // ── Comparative ───────────────────────────────────────────────────────────────
 
 const FEATURES = [
-  { label: 'Precio mensual',            px: 'desde $47', kommo: '$200+', hubspot: '$800+', leadsales: '$150+' },
+  { label: 'Precio mensual',            px: 'desde $39', kommo: '$200+', hubspot: '$800+', leadsales: '$150+' },
   { label: 'IA local (datos no salen)', px: true,     kommo: false,  hubspot: false,   leadsales: false  },
   { label: 'Scraping Google Maps',       px: true,     kommo: false,  hubspot: false,   leadsales: false  },
   { label: 'Validación SUNAT incluida',  px: true,     kommo: false,  hubspot: false,   leadsales: false  },
@@ -1107,7 +1107,7 @@ function Comparison({ onOpenForm }) {
           Por qué <Gr>Pipeline_X</Gr> es diferente
         </h2>
         <p className="font-mono text-sm text-white/60 mb-10 max-w-xl leading-relaxed">
-          Un SDR humano en LATAM cuesta 1,400–2,400 USD/mes. Apollo, Outreach, Salesloft, Reply.io empiezan en 49–180 USD por usuario/mes y escalan rápido con límites de créditos. Pipeline_X entrega resultado real desde menos de 50 USD/mes — sin stack, sin SDR, sin sorpresas.
+          Contratar a alguien para prospectar cuesta miles al mes. Las herramientas globales escalan rápido con créditos y límites. Pipeline_X entrega resultado real desde $39/mes — sin stack, sin personal, sin sorpresas.
         </p>
         <p className="font-mono text-xs text-white/50 mb-2 sm:hidden">← desliza para ver más →</p>
         <div className="overflow-x-auto">
@@ -1337,7 +1337,7 @@ const FAQS = [
   },
   {
     q: '¿En qué moneda facturan?',
-    a: 'El Plan Starter Perú se factura en soles (S/175/mes). Los planes Regional LATAM ($57/mes) y Agency ($197/mes) se facturan en USD — ideal para agencias y empresas que operan en varios países.',
+    a: 'El plan Starter se factura en USD ($39/mes) o en soles al tipo de cambio vigente. El plan Reseller ($299/mes) se factura en USD — ideal para agencias y empresas que operan en varios países.',
   },
   {
     q: '¿Qué pasa si necesito más reportes en un mes?',
