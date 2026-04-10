@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
 const HERO_IMG = 'https://images.pexels.com/photos/19985010/pexels-photo-19985010.jpeg?auto=compress&cs=tinysrgb&w=1600'
-const TG_BOT   = 'https://t.me/Pipeline_X_bot?start=reporte'
+const TG_BOT   = 'https://t.me/Pipeline_X_bot?start=demo'
+const WA_BOT   = 'https://wa.me/51902126765?text=' + encodeURIComponent('Hola, quiero ver mi demo gratuita de Pipeline_X')
 
 // ── Paleta luxury B&W ─────────────────────────────────────────────────────────
 const DIM = 'rgba(255,255,255,0.05)'
@@ -12,8 +13,28 @@ const GRAD_STYLE = {
   WebkitBackgroundClip: 'text',
   WebkitTextFillColor: 'transparent',
   backgroundClip: 'text',
+  filter: 'drop-shadow(0 0 12px rgba(0,212,170,0.55))',
 }
 const Gr = ({ children }) => <span style={GRAD_STYLE}>{children}</span>
+
+const CHIPS = [
+  { icon: '🇵🇪', label: 'Hecho para Perú' },
+  { icon: '🏛️', label: 'SUNAT validado' },
+  { icon: '🤖', label: 'Optimizado con IA local' },
+  { icon: '🏷️', label: 'White-label' },
+]
+
+const MOCK_LEADS = [
+  { empresa: 'Ferrería El Maestro SAC',  sector: 'Ferretería',   ciudad: 'Trujillo', prioridad: 'Alta',  cap_pago: 'Alta',   accion: 'Llamar hoy',  mensaje: 'Hay más de 80 constructoras activas en Trujillo que aún no conocen su ferretería — y conseguirlas hoy depende de quién llame primero. Le preparamos un listado calificado con contacto directo y mensaje listo para enviar. ¿Le parece si lo revisamos esta semana?' },
+  { empresa: 'Contadores & Asoc. SRL',   sector: 'Contabilidad', ciudad: 'Lima',     prioridad: 'Alta',  cap_pago: 'Media',  accion: 'Enviar email', mensaje: 'La mayoría de estudios contables en Lima siguen dependiendo de referidos para crecer — un canal que se agota. Identificamos MYPE activas en su zona que necesitan outsourcing contable, con RUC verificado y mensaje personalizado listo para enviar. ¿Agendamos 20 minutos esta semana?' },
+  { empresa: 'Transportes Norte SAC',    sector: 'Logística',    ciudad: 'Piura',    prioridad: 'Alta',  cap_pago: 'Alta',   accion: 'Llamar hoy',  mensaje: 'Conseguir carga constante sin depender de contactos o intermediarios sigue siendo el cuello de botella en logística. Generamos un reporte con empresas en Piura que demandan servicio de transporte — calificadas por volumen y sector, con contacto directo. ¿Lo coordinamos?' },
+  { empresa: 'Inmobiliaria Costa SAC',   sector: 'Inmobiliaria', ciudad: 'Lima',     prioridad: 'Alta',  cap_pago: 'Alta',   accion: 'Propuesta',   mensaje: 'Detectamos empresas en expansión en Lima buscando locales comerciales este trimestre — antes de que su competencia las contacte. Le entregamos 40 prospectos calificados con razón social, contacto y mensaje personalizado en menos de 24 h. ¿Le enviamos una muestra?' },
+  { empresa: 'Clínica San Marcos SRL',   sector: 'Salud',        ciudad: 'Chiclayo', prioridad: 'Media', cap_pago: 'Alta',   accion: 'Seguimiento', mensaje: null },
+  { empresa: 'Moda Perú Import EIRL',    sector: 'Retail',       ciudad: 'Arequipa', prioridad: 'Media', cap_pago: 'Media',  accion: 'Contactar',   mensaje: null },
+  { empresa: 'Agro Export Andes SAC',    sector: 'Agroindustria',ciudad: 'Cusco',    prioridad: 'Alta',  cap_pago: 'Alta',   accion: 'Llamar hoy',  mensaje: 'Llegar a compradores mayoristas en Lima sin pasar por brokers sigue siendo el reto principal para agroexportadores en Cusco. Identificamos 35 distribuidoras calificadas para su categoría de producto, con contacto verificado y mensaje listo. ¿Cuándo podemos coordinar?' },
+  { empresa: 'Tech Solutions EIRL',      sector: 'Tecnología',   ciudad: 'Lima',     prioridad: 'Baja',  cap_pago: 'Básica', accion: 'Descartar',   mensaje: null },
+]
+const TARGET_SCORES = [91, 84, 88, 82, 65, 72, 80, 45]
 
 async function saveLead(data) {
   return fetch('/api/save-lead', {
@@ -65,6 +86,210 @@ function useFadeIn(threshold = 0.08) {
   return { ref, vis }
 }
 
+// ── Lead Mockup (hero right column) ──────────────────────────────────────────
+
+const PRIORIDAD_CFG = {
+  Alta:  { color: '#00d4aa', bg: 'rgba(0,212,170,0.08)',  border: 'rgba(0,212,170,0.25)'  },
+  Media: { color: '#7b8ffa', bg: 'rgba(123,143,250,0.08)', border: 'rgba(123,143,250,0.25)' },
+  Baja:  { color: 'rgba(255,255,255,0.28)', bg: 'rgba(255,255,255,0.03)', border: 'rgba(255,255,255,0.10)' },
+}
+const CAP_CFG = {
+  Alta:   { color: '#c084fc', border: 'rgba(192,132,252,0.30)' },
+  Media:  { color: '#7b8ffa', border: 'rgba(123,143,250,0.30)' },
+  Básica: { color: '#e5c97a', border: 'rgba(229,201,122,0.30)' },
+}
+
+function Badge({ label, color, bg, border }) {
+  return (
+    <span className="font-mono" style={{
+      fontSize: '0.58rem', color, background: bg,
+      border: `1px solid ${border}`, padding: '1px 5px', borderRadius: '2px',
+      whiteSpace: 'nowrap',
+    }}>{label}</span>
+  )
+}
+
+function LeadMockup() {
+  const [phase, setPhase]     = useState(0)
+  const [scores, setScores]   = useState(MOCK_LEADS.map(() => 0))
+  const [expanded, setExpanded] = useState(null)
+  const [loopKey, setLoopKey] = useState(0)
+
+  // Reveal rows one by one
+  useEffect(() => {
+    if (phase >= MOCK_LEADS.length) return
+    const t = setTimeout(() => setPhase(p => p + 1), 420)
+    return () => clearTimeout(t)
+  }, [phase, loopKey])
+
+  // Count up score for each newly revealed row
+  useEffect(() => {
+    if (phase === 0 || phase > MOCK_LEADS.length) return
+    const idx = phase - 1
+    const target = TARGET_SCORES[idx]
+    let current = 0
+    const step = Math.ceil(target / 18)
+    const iv = setInterval(() => {
+      current = Math.min(current + step, target)
+      setScores(s => { const ns = [...s]; ns[idx] = current; return ns })
+      if (current >= target) clearInterval(iv)
+    }, 42)
+    return () => clearInterval(iv)
+  }, [phase])
+
+  // Auto-expand first Alta row when all done; reset loop
+  useEffect(() => {
+    if (phase < MOCK_LEADS.length) return
+    const firstAlta = MOCK_LEADS.findIndex(l => l.mensaje)
+    setExpanded(firstAlta)
+    const t = setTimeout(() => {
+      setPhase(0); setScores(MOCK_LEADS.map(() => 0))
+      setExpanded(null); setLoopKey(k => k + 1)
+    }, 4200)
+    return () => clearTimeout(t)
+  }, [phase])
+
+  const scoreColor = s => s >= 80 ? '#00d4aa' : s >= 60 ? '#7b8ffa' : 'rgba(255,255,255,0.35)'
+  const altaCount  = MOCK_LEADS.filter(l => l.prioridad === 'Alta').length
+
+  return (
+    <div className="overflow-hidden shadow-2xl" style={{ border: '1px solid #1a1a1a', background: 'rgba(5,5,5,0.97)', borderRadius: '2px' }}>
+
+      {/* Header bar */}
+      <div className="flex items-center gap-2 px-4 py-2.5 border-b" style={{ borderColor: '#111', background: '#080808' }}>
+        <span className="w-2.5 h-2.5 rounded-full bg-white/12" />
+        <span className="w-2.5 h-2.5 rounded-full bg-white/8" />
+        <span className="w-2.5 h-2.5 rounded-full bg-white/8" />
+        <span className="font-mono text-xs ml-2 text-white/50 tracking-wider">
+          reporte_calificado.csv — {phase}/{MOCK_LEADS.length} procesados
+        </span>
+        <span className="ml-auto flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#00d4aa', boxShadow: '0 0 6px #00d4aa' }} />
+          <span className="font-mono text-xs text-white/40">live</span>
+        </span>
+      </div>
+
+      {/* Column headers */}
+      <div className="px-3 py-2 border-b" style={{
+        borderColor: '#0f0f0f',
+        display: 'grid', gridTemplateColumns: '1fr 36px 52px 52px 62px',
+        gap: '0 6px',
+      }}>
+        {['Empresa', 'Score', 'Prioridad', 'Cap. Pago', 'Acción'].map(h => (
+          <span key={h} className="font-mono text-white/22 uppercase tracking-wider" style={{ fontSize: '0.58rem' }}>{h}</span>
+        ))}
+      </div>
+
+      {/* Rows */}
+      <div>
+        {MOCK_LEADS.map((lead, i) => {
+          const vis      = i < phase
+          const score    = scores[i]
+          const sColor   = scoreColor(score)
+          const pCfg     = PRIORIDAD_CFG[lead.prioridad]
+          const cCfg     = CAP_CFG[lead.cap_pago]
+          const isOpen   = expanded === i && lead.mensaje
+          return (
+            <div key={`${loopKey}-${i}`} style={{
+              borderBottom: i < MOCK_LEADS.length - 1 ? '1px solid #0c0c0c' : 'none',
+              opacity: vis ? 1 : 0,
+              transform: vis ? 'translateY(0)' : 'translateY(6px)',
+              transition: 'opacity 0.32s ease, transform 0.32s ease',
+            }}>
+              {/* Main row */}
+              <div style={{
+                display: 'grid', gridTemplateColumns: '1fr 36px 52px 52px 62px',
+                gap: '0 6px', alignItems: 'center', padding: '6px 12px',
+                cursor: lead.mensaje ? 'pointer' : 'default',
+                background: isOpen ? 'rgba(0,212,170,0.03)' : 'transparent',
+              }} onClick={() => lead.mensaje && setExpanded(isOpen ? null : i)}>
+
+                {/* Empresa */}
+                <div>
+                  <div className="font-mono font-semibold leading-tight truncate" style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.68rem' }}>{lead.empresa}</div>
+                  <div className="font-mono mt-0.5 truncate" style={{ color: 'rgba(255,255,255,0.22)', fontSize: '0.6rem' }}>{lead.sector} · {lead.ciudad}</div>
+                </div>
+
+                {/* Score */}
+                <div className="flex flex-col items-center gap-0.5">
+                  <span className="font-mono font-bold" style={{ color: sColor, fontSize: '0.72rem', lineHeight: 1 }}>{score || '—'}</span>
+                  <div style={{ width: '28px', height: '2px', background: 'rgba(255,255,255,0.07)', borderRadius: '1px', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${score}%`, background: sColor, transition: 'width 0.08s' }} />
+                  </div>
+                </div>
+
+                {/* Prioridad */}
+                <div>{vis && <Badge label={lead.prioridad} color={pCfg.color} bg={pCfg.bg} border={pCfg.border} />}</div>
+
+                {/* Cap. Pago */}
+                <div>{vis && <Badge label={lead.cap_pago} color={cCfg.color} bg="transparent" border={cCfg.border} />}</div>
+
+                {/* Acción */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  {vis && score > 0 && (
+                    <span className="font-mono" style={{ fontSize: '0.58rem', color: sColor, border: `1px solid ${sColor}35`, background: `${sColor}0a`, padding: '1px 4px', borderRadius: '2px', whiteSpace: 'nowrap' }}>
+                      {lead.accion}
+                    </span>
+                  )}
+                  {lead.mensaje && vis && (
+                    <span style={{ color: 'rgba(255,255,255,0.20)', fontSize: '0.6rem' }}>{isOpen ? '▲' : '▼'}</span>
+                  )}
+                </div>
+              </div>
+
+              {/* Mensaje expandido */}
+              {isOpen && (
+                <div className="px-3 pb-3" style={{ borderTop: '1px solid #0f0f0f' }}>
+                  <div className="font-mono mt-2 px-3 py-2" style={{
+                    fontSize: '0.62rem', color: 'rgba(255,255,255,0.55)',
+                    background: 'rgba(0,212,170,0.05)', borderLeft: '2px solid #00d4aa40',
+                    lineHeight: 1.6,
+                  }}>
+                    <span style={{ color: '#00d4aa88', display: 'block', marginBottom: '2px', fontSize: '0.58rem' }}>✉ mensaje generado</span>
+                    {lead.mensaje}
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Footer */}
+      <div className="px-4 py-2 font-mono text-xs border-t flex items-center justify-between" style={{ borderColor: '#0e0e0e', color: 'rgba(255,255,255,0.18)' }}>
+        {phase >= MOCK_LEADS.length
+          ? <span style={{ color: '#00d4aa99' }}>✓ {altaCount} Alta prioridad · {MOCK_LEADS.length} leads · 23 min</span>
+          : <span>calificando con IA + SUNAT…</span>
+        }
+        <span style={{ color: 'rgba(255,255,255,0.10)' }}>export .csv</span>
+      </div>
+    </div>
+  )
+}
+
+// ── Social Proof Strip ────────────────────────────────────────────────────────
+
+function SocialProofStrip() {
+  const items = [
+    '🏗️ Construcción', '⚖️ Estudios Legales', '🔧 Ferretería', '📊 Contabilidad',
+    '🏥 Clínicas', '🚚 Logística', '🏨 Hoteles & Turismo', '📱 Tecnología',
+    '│ Lima', '│ Trujillo', '│ Arequipa', '│ Chiclayo', '│ Piura', '│ Cusco', '│ Ica', '│ Tacna',
+  ]
+  const doubled = [...items, ...items]
+  return (
+    <div className="overflow-hidden border-y border-white/6" style={{ background: 'rgba(0,0,0,0.92)', padding: '10px 0' }}>
+      <style>{`@keyframes px-scroll { from { transform: translateX(0) } to { transform: translateX(-50%) } }`}</style>
+      <div style={{ display: 'flex', width: 'max-content', animation: 'px-scroll 30s linear infinite' }}>
+        {doubled.map((item, i) => (
+          <span key={i} className="font-mono text-xs whitespace-nowrap" style={{ color: 'rgba(255,255,255,0.32)', padding: '0 24px', letterSpacing: '0.05em' }}>
+            {item}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // ── Lead Form Modal ───────────────────────────────────────────────────────────
 
 function LeadFormModal({ onClose }) {
@@ -87,6 +312,7 @@ function LeadFormModal({ onClose }) {
         target: form.target.trim(),
       })
     } catch { /* fallback */ }
+    localStorage.setItem('px_reporte_solicitado', '1')
     setSent(true)
   }
 
@@ -95,50 +321,52 @@ function LeadFormModal({ onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.92)' }}
       onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-      <div className="w-full max-w-md bg-white shadow-2xl">
-        <div className="flex items-center gap-2 px-5 py-3 border-b border-black/10 bg-black">
-          <button onClick={onClose} className="w-2.5 h-2.5 rounded-full bg-white/20 hover:bg-white/40 transition-colors" />
-          <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
-          <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
-          <span className="font-mono text-xs ml-2 text-white/65 tracking-wider">pipeline_x — solicitar_reporte.sh</span>
+      <div className="relative w-full max-w-md bg-white shadow-2xl">
+
+        {/* ── X cerrar — siempre visible ── */}
+        <button onClick={onClose} aria-label="Cerrar"
+          className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center text-black/40 hover:text-black hover:bg-black/6 rounded transition-colors">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
+          </svg>
+        </button>
+
+        <div className="flex items-center justify-between px-5 py-3 border-b border-black/10 bg-black pr-4">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
+            <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
+            <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
+            <span className="font-mono text-xs ml-2 text-white/65 tracking-wider">pipeline_x — solicitar_reporte.sh</span>
+          </div>
+          <button onClick={onClose} aria-label="Cerrar"
+            className="w-7 h-7 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 rounded transition-colors">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/>
+            </svg>
+          </button>
         </div>
+
         {sent ? (
-          <div className="px-8 py-10 text-center">
-            <div className="w-12 h-12 rounded-full border-2 border-black flex items-center justify-center mx-auto mb-5">
-              <span className="text-xl">✓</span>
+          <div className="px-6 sm:px-8 py-8 text-center">
+            <div className="w-11 h-11 rounded-full border-2 border-black flex items-center justify-center mx-auto mb-4">
+              <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="black" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="1 7 6 12 17 1"/>
+              </svg>
             </div>
             <p className="font-mono font-bold text-black text-base mb-1 tracking-tight">Solicitud registrada</p>
-            <p className="font-mono text-xs text-black/50 mb-7 leading-relaxed">
-              Procesaremos tu reporte en menos de 24 horas.<br />
-              Recibirás el resultado por <span className="font-bold text-black">@Pipeline_X_bot</span> en Telegram.
+            <p className="font-mono text-xs text-black/50 mb-5 leading-relaxed">
+              Tu reporte llegará en menos de 24 h por<br />
+              <span className="font-bold text-black">@Pipeline_X_bot</span> en Telegram.
             </p>
-            {/* Pasos de activación del bot */}
-            <div className="text-left border border-black/10 divide-y divide-black/8 mb-7">
-              <div className="px-4 py-3 flex items-start gap-3">
-                <span className="font-mono text-xs font-bold text-black/30 mt-0.5 w-4 shrink-0">1</span>
-                <p className="font-mono text-xs text-black/70 leading-snug">
-                  Abre <span className="font-bold text-black">@Pipeline_X_bot</span> en Telegram y presiona <span className="font-bold text-black">START</span>.
-                </p>
-              </div>
-              <div className="px-4 py-3 flex items-start gap-3">
-                <span className="font-mono text-xs font-bold text-black/30 mt-0.5 w-4 shrink-0">2</span>
-                <p className="font-mono text-xs text-black/70 leading-snug">
-                  El bot confirmará que recibió tu solicitud y te avisará cuando el reporte esté listo.
-                </p>
-              </div>
-              <div className="px-4 py-3 flex items-start gap-3">
-                <span className="font-mono text-xs font-bold text-black/30 mt-0.5 w-4 shrink-0">3</span>
-                <div>
-                  <p className="font-mono text-xs text-black/50 mb-1">Tu target registrado:</p>
-                  <p className="font-mono text-xs font-bold text-black">{form.target}</p>
-                </div>
-              </div>
+            {/* Target badge */}
+            <div className="inline-block border border-black/12 bg-black/3 px-4 py-2 mb-6">
+              <p className="font-mono text-xs text-black/40 mb-0.5">Target registrado</p>
+              <p className="font-mono text-sm font-bold text-black">{form.target}</p>
             </div>
             <a href={TG_BOT} target="_blank" rel="noopener noreferrer"
-              className="block w-full font-mono font-bold text-sm text-white bg-black py-4 hover:bg-black/80 transition-all tracking-wider text-center mb-3">
+              className="block w-full font-mono font-bold text-sm text-white bg-black py-4 hover:bg-black/80 active:scale-95 transition-all tracking-wider text-center">
               Abrir @Pipeline_X_bot →
             </a>
-            <button onClick={onClose} className="font-mono text-xs text-black/40 hover:text-black/70 transition-colors">Cerrar</button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="px-8 py-8 space-y-5">
@@ -228,21 +456,50 @@ function Navbar({ onOpenForm }) {
 // ── Hero ──────────────────────────────────────────────────────────────────────
 
 const TERMINAL_LINES = [
-  { text: '$ pipeline_x scan --target "estudios contables Lima"', type: 'cmd',  pause: 450 },
-  { text: '> Conectando a Google Maps...', type: 'info', pause: 300 },
-  { text: '> 1,240 registros encontrados.', type: 'ok',  pause: 300 },
-  { text: '> Calificando con IA local... [████████] 100%', type: 'ok', pause: 350 },
-  { text: '> ✓ 487 Calificados  ✗ 362 Descartados', type: 'result', pause: 600 },
-  { text: '> Done in 23s — reporte listo.', type: 'ok', pause: 2200 },
+  // ── Scan 1 ────────────────────────────────────────────────────────────────
+  { text: '$ pipeline_x scan --target "contables Lima"',           type: 'cmd',    pause: 360 },
+  { text: '> Conectando a Google Maps API...',                     type: 'info',   pause: 190 },
+  { text: '> [████████████] 1,240 registros encontrados',          type: 'ok',     pause: 200 },
+  { text: '> Extrayendo: nombre, teléfono, dirección, rating',     type: 'info',   pause: 190 },
+  { text: '> Cruzando con SUNAT — RUC, régimen, CIIU...',         type: 'info',   pause: 210 },
+  { text: '> Aplicando score IA (0–100)...',                       type: 'info',   pause: 190 },
+  { text: '> ✓ 487 calificados   ✗ 362 descartados',              type: 'result', pause: 260 },
+  { text: '> Done in 23s — reporte listo.',                        type: 'ok',     pause: 200 },
+  { text: '',                                                        type: 'normal', pause: 55  },
+  // ── Scan 2 ────────────────────────────────────────────────────────────────
+  { text: '$ pipeline_x scan --target "ferreterías Trujillo"',     type: 'cmd',    pause: 360 },
+  { text: '> Conectando a Google Maps API...',                     type: 'info',   pause: 190 },
+  { text: '> [████████████] 843 registros encontrados',            type: 'ok',     pause: 200 },
+  { text: '> Extrayendo: nombre, teléfono, dirección, rating',     type: 'info',   pause: 190 },
+  { text: '> Cruzando con SUNAT — RUC, régimen, CIIU...',         type: 'info',   pause: 210 },
+  { text: '> Aplicando score IA (0–100)...',                       type: 'info',   pause: 190 },
+  { text: '> ✓ 312 calificados   ✗ 198 descartados',              type: 'result', pause: 260 },
+  { text: '> Done in 19s — reporte listo.',                        type: 'ok',     pause: 200 },
+  { text: '',                                                        type: 'normal', pause: 55  },
+  // ── Scan 3 ────────────────────────────────────────────────────────────────
+  { text: '$ pipeline_x scan --target "clínicas Arequipa"',        type: 'cmd',    pause: 360 },
+  { text: '> Conectando a Google Maps API...',                     type: 'info',   pause: 190 },
+  { text: '> [████████████] 621 registros encontrados',            type: 'ok',     pause: 200 },
+  { text: '> Extrayendo: nombre, teléfono, dirección, rating',     type: 'info',   pause: 190 },
+  { text: '> Cruzando con SUNAT — RUC, régimen, CIIU...',         type: 'info',   pause: 210 },
+  { text: '> Aplicando score IA (0–100)...',                       type: 'info',   pause: 190 },
+  { text: '> ✓ 248 calificados   ✗ 143 descartados',              type: 'result', pause: 260 },
+  { text: '> Done in 17s — reporte listo.',                        type: 'ok',     pause: 2200 },
 ]
 const LC = { cmd: '#e5e5e5', info: '#a0a0a0', ok: '#ffffff', result: '#cccccc', normal: '#b0b0b0' }
 
 function Hero({ onOpenForm }) {
-  const { visible, current, currentType, loopCount } = useLoopingTerminal(TERMINAL_LINES, 18)
-  const [blink, setBlink] = useState(true)
-  const progress = Math.round((visible.length / TERMINAL_LINES.length) * 100)
+  const { visible, current, currentType, loopCount } = useLoopingTerminal(TERMINAL_LINES, 15)
+  const [blink, setBlink]   = useState(true)
+  const [yaEnvio, setYaEnvio] = useState(() => !!localStorage.getItem('px_reporte_solicitado'))
+  const termRef = useRef(null)
 
   useEffect(() => { const t = setInterval(() => setBlink(b => !b), 500); return () => clearInterval(t) }, [])
+
+  // Auto-scroll terminal al fondo cuando llegan nuevas líneas
+  useEffect(() => {
+    if (termRef.current) termRef.current.scrollTop = termRef.current.scrollHeight
+  }, [visible, current])
 
   return (
     <section className="relative overflow-hidden" style={{ minHeight: '100svh' }}>
@@ -254,7 +511,7 @@ function Hero({ onOpenForm }) {
         backgroundAttachment: 'fixed',
       }} />
       {/* Overlay oscuro separado */}
-      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.42)' }} />
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.58)' }} />
       {/* Grid sutil */}
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: `linear-gradient(${DIM} 1px,transparent 1px),linear-gradient(90deg,${DIM} 1px,transparent 1px)`,
@@ -269,85 +526,130 @@ function Hero({ onOpenForm }) {
         background: 'linear-gradient(to bottom,transparent,#000)',
       }} />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6 pt-24 pb-12 flex flex-col lg:flex-row lg:items-center gap-10 min-h-[100svh]">
+      <div className="relative z-10 max-w-5xl mx-auto px-6 pt-24 pb-12 flex flex-col lg:flex-row lg:items-stretch gap-10 min-h-[100svh]">
 
         {/* Izquierda */}
         <div className="lg:w-[46%] flex flex-col justify-center">
           <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/75 mb-5">SDR · IA · Lima, Perú</p>
 
           <h1 className="font-mono font-bold text-white leading-[1.1] mb-5" style={{ fontSize: 'clamp(1.9rem,4.5vw,3.1rem)' }}>
-            ¿Cuántos de tus clientes<br />
-            necesitan <Gr>más clientes</Gr>?
+            Tus clientes necesitan más clientes.<br />
+            <Gr>Tú se los consigues</Gr> — sin contratar un SDR.
           </h1>
-          <p className="font-mono text-base text-white/88 leading-relaxed mb-8">
-            <strong className="text-white/90">Pipeline_X</strong> genera reportes de <Gr>prospectos calificados</Gr> que tú entregas bajo tu marca. Tu cliente crece. Tú cobras.
+          <p className="font-mono text-base text-white leading-relaxed mb-8"
+             style={{textShadow: '0 1px 12px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,0.8)'}}>
+            Pipeline_X escanea Google Maps, valida con SUNAT y entrega un reporte de prospectos calificados en menos de 24 horas. Listo para presentar con tu marca.
           </p>
 
-          <ul className="space-y-2.5 mb-10">
+          <ul className="space-y-2.5 mb-7">
             <li className="font-mono text-base text-white/85 flex items-center gap-3">
-              <span className="text-white/65">—</span> Scraping <Gr>Google Maps</Gr> + <Gr>IA local</Gr>
+              <span className="text-white/65">—</span> Sin herramientas que aprender ni equipo que contratar
             </li>
             <li className="font-mono text-base text-white/85 flex items-center gap-3">
-              <span className="text-white/65">—</span> Reporte listo en 24 h, a tu nombre
+              <span className="text-white/65">—</span> Optimizado para Perú: <Gr>Google Maps local + SUNAT</Gr> + 15 ciudades
             </li>
             <li className="font-mono text-base text-white/85 flex items-center gap-3">
-              <span className="text-white/65">—</span> @Pipeline_X_bot · sin contratos
+              <span className="text-white/65">—</span> White-label: tu cliente ve tu logo, no el nuestro
             </li>
           </ul>
 
-          {/* ── 4: Precio prominente ── */}
+          {/* Chips de confianza */}
+          <div className="flex flex-wrap gap-2 mb-8">
+            {CHIPS.map(({ icon, label }) => (
+              <span key={label} className="inline-flex items-center gap-1.5 font-mono text-xs text-white/60 border border-white/12 px-3 py-1.5"
+                style={{ background: 'rgba(255,255,255,0.03)' }}>
+                <span>{icon}</span>
+                <span>{label}</span>
+              </span>
+            ))}
+          </div>
+
+          {/* ── Precio con economics de Agency ── */}
           <div className="flex gap-8 mb-10 border-t border-white/10 pt-8">
             {[
-              { v: 'S/400–600', l: 'cobras / cliente' },
-              { v: 'S/149',     l: 'nos pagas / mes', hi: true },
-              { v: 'S/250+',    l: 'margen neto' },
+              { v: 'S/400–600', l: 'cobras / reporte' },
+              { v: 'desde $47', l: 'pagas / mes (Starter)', hi: true },
+              { v: '$197 USD',  l: 'plan Agency (reventa)' },
             ].map(({ v, l, hi }) => (
               <div key={l}>
-                <div className="font-mono font-bold" style={{ fontSize: '1.2rem', ...(hi ? GRAD_STYLE : { color: '#fff' }) }}>{v}</div>
-                <div className="font-mono text-xs text-white/65 mt-0.5">{l}</div>
+                <div className="font-mono font-bold" style={{ fontSize: '1.15rem', ...(hi ? GRAD_STYLE : { color: '#fff' }) }}>{v}</div>
+                <div className="font-mono text-xs text-white/55 mt-0.5">{l}</div>
               </div>
             ))}
           </div>
 
-          <div className="flex items-center gap-5 flex-wrap">
-            <button onClick={onOpenForm}
-              className="font-mono font-bold text-sm text-black bg-white px-7 py-3.5 hover:bg-white/90 active:scale-95 transition-all tracking-wide">
-              Solicitar reporte gratis →
-            </button>
-            <a href="#como-funciona" className="font-mono text-xs text-white/75 hover:text-white/80 transition-colors tracking-wider underline underline-offset-4">
-              ¿Cómo funciona? ↓
-            </a>
+          {/* Badge + CTA inteligente */}
+          <div className="flex flex-col gap-3">
+            {!yaEnvio ? (
+              <>
+                <div className="flex items-center gap-2 w-fit">
+                  <span className="font-mono text-xs font-bold tracking-widest uppercase px-3 py-1"
+                    style={{ color: '#00d4aa', border: '1px solid #00d4aa50', background: '#00d4aa0d' }}>
+                    ★ PRIMER REPORTE 100% GRATUITO
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <a href={WA_BOT} target="_blank" rel="noopener noreferrer"
+                    className="font-mono font-bold text-sm text-black px-7 py-3.5 active:scale-95 transition-all tracking-wide flex items-center gap-2"
+                    style={{ background: '#25D366' }}>
+                    <svg viewBox="0 0 24 24" style={{ width: 16, height: 16, fill: '#000', flexShrink: 0 }} aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                    Demo en WhatsApp
+                  </a>
+                  <a href={TG_BOT} target="_blank" rel="noopener noreferrer"
+                    className="font-mono font-bold text-sm text-black px-7 py-3.5 active:scale-95 transition-all tracking-wide flex items-center gap-2"
+                    style={{ background: '#2AABEE' }}>
+                    <svg viewBox="0 0 24 24" style={{ width: 16, height: 16, fill: '#000', flexShrink: 0 }} aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    Demo en Telegram
+                  </a>
+                  <button onClick={onOpenForm}
+                    className="font-mono text-xs text-white/50 hover:text-white/80 transition-colors tracking-wider underline underline-offset-4">
+                    o solicitar por email
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center gap-2 w-fit">
+                  <span className="font-mono text-xs font-bold tracking-widest uppercase px-3 py-1"
+                    style={{ color: '#00d4aa', border: '1px solid #00d4aa50', background: '#00d4aa0d' }}>
+                    ✓ Reporte solicitado — en camino
+                  </span>
+                </div>
+                <div className="flex items-center gap-5 flex-wrap">
+                  <a href={TG_BOT} target="_blank" rel="noopener noreferrer"
+                    className="font-mono font-bold text-sm text-black bg-white px-7 py-3.5 hover:bg-white/90 active:scale-95 transition-all tracking-wide">
+                    Abrir @Pipeline_X_bot →
+                  </a>
+                  <a href="#como-funciona" className="font-mono text-xs text-white/65 hover:text-white/80 transition-colors tracking-wider underline underline-offset-4">
+                    Ver planes ↓
+                  </a>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
-        {/* Derecha — terminal */}
-        <div className="lg:w-[54%]">
-          <div className="border overflow-hidden shadow-2xl" style={{ borderColor: '#1f1f1f', background: 'rgba(6,6,6,0.96)' }}>
-            <div className="flex items-center gap-2 px-4 py-2.5 border-b" style={{ borderColor: '#141414', background: '#0d0d0d' }}>
-              <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
-              <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
-              <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
-              <span className="font-mono text-xs ml-2 text-white/88 tracking-wider">pipeline_x — bash — 80×24</span>
-              <span className="ml-auto font-mono text-xs text-white/50">
-                {progress < 100 ? `escaneando… ${progress}%` : '✓ completado'}
-              </span>
-            </div>
-            <div className="h-px bg-white/5">
-              <div className="h-px bg-white transition-all duration-500" style={{ width: `${progress}%` }} />
-            </div>
-            <div className="px-4 py-4 space-y-1 font-mono text-sm" style={{ minHeight: '188px' }}>
+        {/* Derecha — lead mockup + terminal (rellena altura completa) */}
+        <div className="lg:w-[54%] flex flex-col gap-3 lg:pt-0 pt-4">
+          <LeadMockup />
+          {/* terminal — flex-1, auto-scroll al fondo */}
+          <div ref={termRef} className="flex-1 border px-4 py-3 overflow-y-auto"
+            style={{ borderColor: '#141414', background: 'rgba(6,6,6,0.92)', minHeight: '120px', maxHeight: '340px' }}>
+            <div className="font-mono text-xs space-y-0.5">
               {visible.map((line, i) => (
-                <div key={`${loopCount}-${i}`} style={{ color: LC[line.type] ?? LC.normal }}>{line.text}</div>
+                <div key={`${loopCount}-${i}`}
+                  style={{ color: LC[line.type] ?? LC.normal, opacity: line.text === '' ? 0 : 0.78, lineHeight: '1.5' }}>
+                  {line.text || '\u00A0'}
+                </div>
               ))}
               {current !== null && (
-                <div style={{ color: LC[currentType] ?? LC.normal }}>
+                <div style={{ color: LC[currentType] ?? LC.normal, opacity: 0.78, lineHeight: '1.5' }}>
                   {current}
-                  <span className={`inline-block w-2 h-[1.1em] ml-px align-middle bg-white transition-opacity duration-100 ${blink ? 'opacity-80' : 'opacity-0'}`} />
+                  <span className={`inline-block w-1.5 h-[1em] ml-px align-middle bg-white/60 transition-opacity duration-100 ${blink ? 'opacity-60' : 'opacity-0'}`} />
                 </div>
               )}
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -359,17 +661,49 @@ function Hero({ onOpenForm }) {
 const STEPS = [
   {
     n: '01',
-    title: 'Nos dices el target',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="14" cy="14" r="10"/>
+        <circle cx="14" cy="14" r="5.5"/>
+        <circle cx="14" cy="14" r="1.5" fill="currentColor" stroke="none"/>
+        <line x1="14" y1="2" x2="14" y2="5"/>
+        <line x1="14" y1="23" x2="14" y2="26"/>
+        <line x1="2" y1="14" x2="5" y2="14"/>
+        <line x1="23" y1="14" x2="26" y2="14"/>
+      </svg>
+    ),
+    title: 'Apunta al target',
     body: 'Industria + ciudad. Cobertura en las 15 ciudades principales del Perú. Ej: "Estudios contables en Lima" o "Ferreterías en Trujillo". En menos de 5 minutos.',
   },
   {
     n: '02',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="6" width="22" height="16" rx="2"/>
+        <line x1="3" y1="14" x2="25" y2="14" strokeWidth="2.5" strokeDasharray="2.5 2"/>
+        <line x1="9" y1="3" x2="9" y2="7"/>
+        <line x1="14" y1="3" x2="14" y2="7"/>
+        <line x1="19" y1="3" x2="19" y2="7"/>
+        <line x1="9" y1="21" x2="9" y2="25"/>
+        <line x1="14" y1="21" x2="14" y2="25"/>
+        <line x1="19" y1="21" x2="19" y2="25"/>
+      </svg>
+    ),
     title: 'Pipeline_X escanea y valida',
-    body: 'Nuestro agente recorre Google Maps, extrae contactos reales y cruza datos oficiales de SUNAT (estado fiscal, régimen tributario, CIIU). Solo avanza con empresas activas y con capacidad de pago.',
+    body: 'Nuestro agente recorre Google Maps, extrae contactos reales y cruza datos oficiales de SUNAT (estado fiscal, régimen tributario, CIIU). Solo avanza con empresas activas y con alto potencial comercial.',
   },
   {
     n: '03',
-    title: 'Recibes el reporte',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 3h10l6 6v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+        <polyline points="16 3 16 9 22 9"/>
+        <line x1="9" y1="14" x2="19" y2="14"/>
+        <line x1="9" y1="18" x2="15" y2="18"/>
+        <polyline points="9 10 11 10"/>
+      </svg>
+    ),
+    title: 'Recibe tu reporte',
     body: 'En menos de 24 h por @Pipeline_X_bot: CSV + HTML listo para presentar con tu logo. Tú lo entregas, tú cobras.',
   },
 ]
@@ -378,19 +712,53 @@ function HowItWorks({ onOpenForm }) {
   const { ref, vis } = useFadeIn()
   return (
     <section id="como-funciona" className="bg-black border-t border-white/6" ref={ref}>
-      <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-        <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/88 mb-3">Proceso</p>
-        <h2 className="font-mono font-bold text-white mb-12" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
+      <div className={`max-w-5xl mx-auto px-6 py-20 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/75 mb-3">Proceso</p>
+        <h2 className="font-mono font-bold text-white mb-14" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
           ¿Cómo funciona <Gr>Pipeline_X</Gr>?
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 border-t border-l border-white/8">
-          {STEPS.map(({ n, title, body }) => (
-            <div key={n} className="border-r border-b border-white/8 px-6 py-7">
-              <div className="font-mono text-xs tracking-widest text-white/50 mb-3">{n}</div>
-              <p className="font-mono font-bold text-white text-sm mb-2">{title}</p>
-              <p className="font-mono text-sm text-white/80 leading-relaxed">{body}</p>
+
+        {/* Grid 3 columnas — mobile stack, desktop fila */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-white/8">
+          {STEPS.map(({ n, icon, title, body }, i) => (
+            <div key={n}
+              className={`relative px-8 py-10 flex flex-col gap-5
+                ${i < STEPS.length - 1 ? 'border-b md:border-b-0 md:border-r border-white/8' : ''}`}>
+
+              {/* Número grande de fondo */}
+              <span className="absolute top-6 right-6 font-mono font-bold select-none pointer-events-none"
+                style={{ fontSize: '4.5rem', lineHeight: 1, color: 'rgba(255,255,255,0.04)' }}>
+                {n}
+              </span>
+
+              {/* Icono + número */}
+              <div className="flex items-center gap-3">
+                <span className="text-white/50">{icon}</span>
+                <span className="font-mono text-xs tracking-[0.25em] text-white/30">{n}</span>
+              </div>
+
+              {/* Título grande */}
+              <h3 className="font-mono font-bold text-white leading-tight"
+                style={{ fontSize: 'clamp(1.15rem,2vw,1.5rem)' }}>
+                {title}
+              </h3>
+
+              {/* Separador */}
+              <div className="w-8 h-px" style={{ background: 'linear-gradient(90deg,#00d4aa,#4f6ef5)' }} />
+
+              {/* Detalle */}
+              <p className="font-mono text-sm text-white/70 leading-relaxed">{body}</p>
             </div>
           ))}
+        </div>
+
+        {/* CTA al final de la sección */}
+        <div className="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-8 border-t border-white/6">
+          <p className="font-mono text-sm text-white/55">Primer reporte gratis. Sin contratos. Sin tarjeta.</p>
+          <button onClick={onOpenForm}
+            className="font-mono font-bold text-sm text-black bg-white px-7 py-3.5 hover:bg-white/90 active:scale-95 transition-all tracking-wide w-full sm:w-fit whitespace-nowrap">
+            Solicitar reporte gratis →
+          </button>
         </div>
       </div>
     </section>
@@ -401,83 +769,254 @@ function HowItWorks({ onOpenForm }) {
 
 const CHANNELS = [
   {
-    tag:   'Para intermediarios',
-    price: 'S/149',
-    unit:  '/mes',
-    sub:   'Suscripción · reportes ilimitados · white-label',
+    tag:         'Starter',
+    badge:       'Más popular',
+    badgeStyle:  { background: '#00d4aa', color: '#000' },
+    monthly:     '$39',
+    annual:      '$32',
+    unit:        '/mes USD',
+    solesMonthly: '≈ S/146',
+    solesAnnual:  '≈ S/120',
+    annualSave:  'Ahorras 2 meses ($390/año)',
+    sub:         '200 leads/mes · todo incluido · sin sorpresas',
     items: [
-      'Tus clientes ven tu marca, no Pipeline_X',
-      'Cobras S/400–600 por cliente',
-      'Margen neto S/250+ por cliente',
-      'Sin límite de reportes al mes',
-      'Acceso completo a @Pipeline_X_bot',
+      { text: '200 leads calificados por mes',                ok: true  },
+      { text: 'Score 0–100 + acción sugerida por IA',         ok: true  },
+      { text: 'Enrichment SUNAT (capacidad de pago)',         ok: true  },
+      { text: 'Reporte HTML + Export CSV',                    ok: true  },
+      { text: 'Acceso API REST',                              ok: true  },
+      { text: 'Soporte por email',                            ok: true  },
+      { text: 'White-label',                                  ok: false },
     ],
-    note:  'Ideal para: contadores, agencias de marketing, consultores de ventas.',
-    cta:   'Quiero revender reportes →',
+    note:  'Un SDR junior en Perú cuesta S/2,500/mes. Esto es S/146.',
+    cta:   'Elegir Starter →',
     dark:  true,
+    hi:    true,
   },
   {
-    tag:   'Para tu propio negocio',
-    price: 'S/99',
-    unit:  '/reporte',
-    sub:   'Sin suscripción · sin compromiso · paga cuando necesites',
+    tag:         'Pro',
+    badge:       null,
+    badgeStyle:  {},
+    monthly:     '$79',
+    annual:      '$66',
+    unit:        '/mes USD',
+    solesMonthly: '≈ S/295',
+    solesAnnual:  '≈ S/247',
+    annualSave:  'Ahorras 2 meses ($790/año)',
+    sub:         '500 leads/mes · equipos de ventas activos',
     items: [
-      '30+ leads calificados en 24 horas',
-      'Score 0–100 + acción sugerida por IA',
-      'Borrador de mensaje de WhatsApp incluido',
-      'Export CSV listo para tu CRM',
-      'Si no hay leads suficientes, no cobras',
+      { text: '500 leads calificados por mes',                ok: true  },
+      { text: 'Score 0–100 + acción sugerida por IA',         ok: true  },
+      { text: 'Enrichment SUNAT + contactos web',             ok: true  },
+      { text: 'Reporte HTML + Export CSV',                    ok: true  },
+      { text: 'API REST + webhooks',                          ok: true  },
+      { text: 'Soporte prioritario en español',               ok: true  },
+      { text: 'White-label',                                  ok: false },
     ],
-    note:  'Ideal para: MYPEs que quieren clientes sin contratar un área comercial.',
-    cta:   'Quiero leads para mi negocio →',
+    note:  'Con 2 clientes nuevos al mes ya se paga solo.',
+    cta:   'Elegir Pro →',
     dark:  false,
+    hi:    false,
   },
+  {
+    tag:         'Reseller',
+    badge:       'White-label',
+    badgeStyle:  { background: '#4f6ef5', color: '#fff' },
+    monthly:     '$299',
+    annual:      '$249',
+    unit:        '/mes USD',
+    solesMonthly: '≈ S/1,118',
+    solesAnnual:  '≈ S/931',
+    annualSave:  'Ahorras ~$600/año',
+    sub:         'Tu marca · multi-cuenta · kit de reventa incluido',
+    items: [
+      { text: '1,000 leads/mes',                              ok: true  },
+      { text: 'White-label completo (tu logo, tu nombre)',    ok: true  },
+      { text: 'Multi-cuenta para tus clientes',               ok: true  },
+      { text: 'Kit de reventa: PDF, emails, pricing guide',   ok: true  },
+      { text: 'API sin límites + onboarding dedicado',        ok: true  },
+      { text: 'Con 2 clientes a S/600 ya cubres el costo',    ok: true  },
+      { text: 'SLA garantizado',                              ok: true  },
+    ],
+    note:  'Ideal para agencias, consultoras y equipos de ventas B2B.',
+    cta:   'Hablar con ventas →',
+    dark:  false,
+    hi:    false,
+  },
+]
+
+const COMMON_INCLUDES = [
+  'Prospectos con datos enriquecidos (teléfono, insights de empresa)',
+  'Agente IA con seguimiento básico automático',
+  'Reportes en PDF profesionales listos para entregar',
+  'Actualizaciones continuas de IA sin costo adicional',
+  'Garantía: si en el 1er mes no ves valor, te devolvemos el dinero',
 ]
 
 function TwoChannels({ onOpenForm }) {
   const { ref, vis } = useFadeIn()
+  const [annual, setAnnual] = useState(false)
+
   return (
     <section className="bg-white border-t border-black/8" ref={ref}>
-      <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-        <p className="font-mono text-xs tracking-[0.2em] uppercase text-black/55 mb-3">Elige tu camino</p>
-        <h2 className="font-mono font-bold text-black mb-10" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
-          Dos formas de usar <Gr>Pipeline_X</Gr>
+      <div className={`max-w-5xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <p className="font-mono text-xs tracking-[0.2em] uppercase text-black/55 mb-3">Planes</p>
+        <h2 className="font-mono font-bold text-black mb-3" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
+          Tres planes claros, <Gr>sin complicaciones</Gr>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border border-black/12">
-          {CHANNELS.map(({ tag, price, unit, sub, items, note, cta, dark }) => (
-            <div key={tag}
-              className="px-8 py-10 flex flex-col border-b md:border-b-0 md:border-r border-black/12 last:border-0"
-              style={{ background: dark ? '#000' : '#fff' }}>
-              <p className="font-mono text-xs tracking-widest uppercase mb-5"
-                style={{ color: dark ? 'rgba(255,255,255,0.65)' : 'rgba(0,0,0,0.55)' }}>{tag}</p>
-              <div className="mb-2">
-                <span className="font-mono font-bold" style={{ fontSize: 'clamp(2rem,4vw,2.6rem)', color: dark ? '#fff' : '#000' }}>{price}</span>
-                <span className="font-mono text-base ml-1" style={{ color: dark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.50)' }}>{unit}</span>
-              </div>
-              <p className="font-mono text-sm mb-8" style={{ color: dark ? 'rgba(255,255,255,0.65)' : 'rgba(0,0,0,0.60)' }}>{sub}</p>
-              <ul className="space-y-3 mb-6 flex-1">
-                {items.map(item => (
-                  <li key={item} className="font-mono text-sm flex items-start gap-3"
-                    style={{ color: dark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.80)' }}>
-                    <span className="font-bold flex-shrink-0 mt-0.5" style={{ color: dark ? '#fff' : '#000' }}>✓</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <p className="font-mono text-xs mb-6" style={{ color: dark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.55)' }}>{note}</p>
-              <button onClick={onOpenForm}
-                className="font-mono font-bold text-sm px-7 py-3.5 active:scale-95 transition-all tracking-wide w-full"
-                style={dark
-                  ? { background: '#fff', color: '#000' }
-                  : { background: '#000', color: '#fff' }}>
-                {cta}
-              </button>
-            </div>
-          ))}
-        </div>
-        <p className="font-mono text-xs text-black/55 mt-5 text-center">
-          Primer reporte gratis para ambos canales · sin tarjeta · sin contrato
+        <p className="font-mono text-sm text-black/55 mb-8 max-w-xl">
+          Lo que en el mercado global cuesta 500–5,000 USD/mes, aquí empieza en menos de 50 USD — adaptado a MIPYME en Perú y LATAM.
         </p>
+
+        {/* Toggle mensual / anual */}
+        <div className="flex items-center gap-4 mb-10">
+          <span className="font-mono text-xs text-black/50">Mensual</span>
+          <button
+            onClick={() => setAnnual(a => !a)}
+            className="relative w-12 h-6 rounded-full transition-colors duration-300 flex-shrink-0"
+            style={{ background: annual ? '#000' : '#d4d4d4' }}>
+            <span className="absolute top-1 w-4 h-4 rounded-full bg-white transition-all duration-300 shadow-sm"
+              style={{ left: annual ? '28px' : '4px' }} />
+          </button>
+          <span className="font-mono text-xs" style={{ color: annual ? '#000' : 'rgba(0,0,0,0.45)' }}>
+            Anual <span className="font-bold" style={{ color: '#00d4aa' }}>— ahorra hasta 17%</span>
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-black/12">
+          {CHANNELS.map(({ tag, badge, badgeStyle, monthly, annual: annualPrice, unit, annualSave, solesMonthly, solesAnnual, sub, items, note, cta, dark, hi }, idx) => {
+            const displayPrice = annual ? annualPrice : monthly
+            const solesNote    = annual ? solesAnnual : solesMonthly
+            return (
+              <div key={tag}
+                className={`px-7 py-9 flex flex-col relative
+                  ${idx < CHANNELS.length - 1 ? 'border-b md:border-b-0 md:border-r border-black/12' : ''}`}
+                style={{ background: dark ? '#000' : '#fff' }}>
+
+                {/* Badge */}
+                {badge && (
+                  <span className="absolute top-0 right-6 -translate-y-1/2 font-mono text-xs font-bold px-3 py-1"
+                    style={badgeStyle}>
+                    {badge}
+                  </span>
+                )}
+
+                <p className="font-mono text-xs tracking-widest uppercase mb-4"
+                  style={{ color: dark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.45)' }}>{tag}</p>
+
+                <div className="mb-1">
+                  <span className="font-mono font-bold transition-all duration-300"
+                    style={{ fontSize: 'clamp(1.8rem,3.5vw,2.4rem)', color: dark ? '#fff' : '#000' }}>
+                    {displayPrice}
+                  </span>
+                  <span className="font-mono text-sm ml-1" style={{ color: dark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.40)' }}>{unit}</span>
+                  {solesNote && (
+                    <span className="font-mono ml-2" style={{ fontSize: '0.72rem', color: dark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.32)' }}>
+                      ({solesNote})
+                    </span>
+                  )}
+                </div>
+
+                {annual && (
+                  <p className="font-mono text-xs mb-1" style={{ color: '#00d4aa' }}>{annualSave}</p>
+                )}
+
+                <p className="font-mono text-xs mb-7 mt-1" style={{ color: dark ? 'rgba(255,255,255,0.50)' : 'rgba(0,0,0,0.45)' }}>{sub}</p>
+
+                <ul className="space-y-2 mb-5 flex-1">
+                  {items.map(({ text, ok }) => (
+                    <li key={text} className="font-mono text-xs flex items-start gap-2.5"
+                      style={{ color: ok
+                        ? (dark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.80)')
+                        : (dark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.22)') }}>
+                      <span className="font-bold flex-shrink-0 mt-0.5" style={{ color: ok
+                        ? (dark ? '#00d4aa' : '#000')
+                        : (dark ? 'rgba(255,255,255,0.20)' : 'rgba(0,0,0,0.18)') }}>
+                        {ok ? '✓' : '✗'}
+                      </span>
+                      {text}
+                    </li>
+                  ))}
+                </ul>
+
+                <p className="font-mono text-xs mb-6 italic" style={{ color: dark ? 'rgba(255,255,255,0.38)' : 'rgba(0,0,0,0.38)' }}>{note}</p>
+
+                <button onClick={onOpenForm}
+                  className="font-mono font-bold text-xs px-6 py-3.5 active:scale-95 transition-all tracking-wider w-full"
+                  style={dark
+                    ? { background: '#fff', color: '#000' }
+                    : { background: '#000', color: '#fff' }}>
+                  {cta}
+                </button>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Incluido en todos los planes */}
+        <div className="mt-8 border border-black/8 px-7 py-6">
+          <p className="font-mono text-xs font-bold text-black/55 uppercase tracking-wider mb-4">Todos los planes incluyen</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            {COMMON_INCLUDES.map(item => (
+              <div key={item} className="font-mono text-xs text-black/70 flex items-start gap-2">
+                <span className="text-black font-bold flex-shrink-0">✓</span>
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <p className="font-mono text-xs text-black/40 mt-4 text-center">
+          Primer reporte gratis en todos los planes · sin tarjeta · sin contrato · cancela cuando quieras
+        </p>
+      </div>
+    </section>
+  )
+}
+
+// ── Packs adicionales ─────────────────────────────────────────────────────────
+
+function AddonPacks({ onOpenForm }) {
+  const { ref, vis } = useFadeIn()
+  return (
+    <section className="bg-black border-t border-white/6" ref={ref}>
+      <div className={`max-w-5xl mx-auto px-6 py-14 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+          <div className="lg:max-w-xl">
+            <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/50 mb-3">Packs adicionales</p>
+            <h3 className="font-mono font-bold text-white mb-3" style={{ fontSize: 'clamp(1.2rem,2.5vw,1.7rem)' }}>
+              ¿Necesitas más reportes este mes?
+            </h3>
+            <p className="font-mono text-sm text-white/60 mb-5 leading-relaxed">
+              Compra reportes extra sin cambiar de plan. Activación inmediata, se suman a tu cuota del mes. Ideal para campañas puntuales.
+            </p>
+            <p className="font-mono text-xs text-white/40">
+              Sin modelos de créditos confusos. Sin sorpresas. Pagas solo por lo que realmente necesitas.
+            </p>
+          </div>
+
+          <div className="border border-white/10 px-8 py-7 flex flex-col items-start gap-4 lg:min-w-[280px]">
+            <div>
+              <p className="font-mono text-xs tracking-widest uppercase text-white/40 mb-1">Pack extra</p>
+              <div className="flex items-baseline gap-2">
+                <span className="font-mono font-bold text-white" style={{ fontSize: '2rem' }}>$39</span>
+                <span className="font-mono text-sm text-white/40">USD</span>
+              </div>
+              <p className="font-mono text-xs text-white/50 mt-1">≈ S/145 · 3 reportes adicionales</p>
+            </div>
+            <ul className="space-y-1.5 w-full">
+              {['Activación inmediata', 'Se suman al límite de tu plan', 'Sin cambiar de plan ni papeleo'].map(t => (
+                <li key={t} className="font-mono text-xs text-white/65 flex items-center gap-2">
+                  <span className="text-white/40">—</span>{t}
+                </li>
+              ))}
+            </ul>
+            <button onClick={onOpenForm}
+              className="font-mono font-bold text-xs text-black bg-white px-5 py-3 w-full active:scale-95 transition-all tracking-wider">
+              Solicitar pack extra →
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   )
@@ -537,13 +1076,13 @@ function Testimonials() {
 // ── Comparative ───────────────────────────────────────────────────────────────
 
 const FEATURES = [
-  { label: 'Precio mensual',            px: 'S/149',  kommo: '$200+', hubspot: '$800+', leadsales: '$150+' },
+  { label: 'Precio mensual',            px: 'desde $47', kommo: '$200+', hubspot: '$800+', leadsales: '$150+' },
   { label: 'IA local (datos no salen)', px: true,     kommo: false,  hubspot: false,   leadsales: false  },
   { label: 'Scraping Google Maps',       px: true,     kommo: false,  hubspot: false,   leadsales: false  },
   { label: 'Validación SUNAT incluida',  px: true,     kommo: false,  hubspot: false,   leadsales: false  },
   { label: 'White-label',                px: true,     kommo: false,  hubspot: false,   leadsales: false  },
   { label: 'Para intermediarios',        px: true,     kommo: false,  hubspot: false,   leadsales: false  },
-  { label: 'Precios en soles',           px: true,     kommo: false,  hubspot: false,   leadsales: false  },
+  { label: 'Sin cobro por usuario/asiento', px: true,   kommo: false,  hubspot: false,   leadsales: false  },
 ]
 const COLS = [
   { key: 'px',        label: 'Pipeline_X', hi: true  },
@@ -564,9 +1103,12 @@ function Comparison({ onOpenForm }) {
     <section id="comparativa" className="bg-black border-t border-white/6" ref={ref}>
       <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
         <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/88 mb-3">Comparativa</p>
-        <h2 className="font-mono font-bold text-white mb-10" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
+        <h2 className="font-mono font-bold text-white mb-4" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
           Por qué <Gr>Pipeline_X</Gr> es diferente
         </h2>
+        <p className="font-mono text-sm text-white/60 mb-10 max-w-xl leading-relaxed">
+          Un SDR humano en LATAM cuesta 1,400–2,400 USD/mes. Apollo, Outreach, Salesloft, Reply.io empiezan en 49–180 USD por usuario/mes y escalan rápido con límites de créditos. Pipeline_X entrega resultado real desde menos de 50 USD/mes — sin stack, sin SDR, sin sorpresas.
+        </p>
         <p className="font-mono text-xs text-white/50 mb-2 sm:hidden">← desliza para ver más →</p>
         <div className="overflow-x-auto">
           <table className="w-full font-mono text-sm border-collapse">
@@ -664,25 +1206,67 @@ function ReportPreview({ onOpenForm }) {
 
 // ── Pricing calculator ────────────────────────────────────────────────────────
 
+const CALC_PLANS = {
+  starter: {
+    label:      'Starter $39',
+    cost:       146,          // $39 USD × 3.74 ≈ S/146
+    costStr:    '$39 USD',
+    costNote:   '≈ S/146 / mes (fijo)',
+    currency:   'S/',
+    heading:    '$39/mes',
+  },
+  reseller: {
+    label:      'Reseller $299',
+    cost:       1118,         // $299 USD × 3.74 ≈ S/1,118
+    costStr:    '$299 USD',
+    costNote:   '≈ S/1,118 / mes (fijo)',
+    currency:   'S/',
+    heading:    '$299/mes',
+  },
+}
+
 function PricingCalculator({ onOpenForm }) {
-  const PRESETS = [3, 5, 10, 20]
+  const PRESETS  = [3, 5, 10, 20]
   const [clients, setClients] = useState(10)
-  const RATE = 500, COST = 149
-  const revenue = clients * RATE
-  const cost    = clients * COST
-  const margin  = revenue - cost
+  const [planKey, setPlanKey] = useState('reseller')  // default: Reseller (canal de reventa)
   const { ref, vis } = useFadeIn()
+
+  const plan     = CALC_PLANS[planKey]
+  const RATE     = 500                                // tarifa sugerida por cliente (soles)
+  const revenue  = clients * RATE
+  const cost     = plan.cost
+  const margin   = revenue - cost
+  const breakEven = Math.ceil(cost / RATE)
 
   return (
     <section id="calculadora" className="bg-black border-t border-white/6" ref={ref}>
       <div className={`max-w-4xl mx-auto px-6 py-16 transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-        <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/88 mb-3">Calculadora — canal intermediario</p>
-        <h2 className="font-mono font-bold text-white mb-10" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
-          ¿Cuánto ganas revendiendo con <Gr>S/149/mes</Gr>?
+        <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/55 mb-3">Calculadora de rentabilidad</p>
+        <h2 className="font-mono font-bold text-white mb-6" style={{ fontSize: 'clamp(1.4rem,3vw,2rem)' }}>
+          ¿Cuánto ganas revendiendo con <Gr>{plan.heading}</Gr>?
         </h2>
-        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-14">
-          <div className="lg:w-56 mb-8 lg:mb-0">
-            <p className="font-mono text-xs text-white/70 mb-4">Tarifa sugerida S/500. Tú defines el precio.</p>
+
+        {/* Toggle de plan */}
+        <div className="flex gap-0 border border-white/15 w-fit mb-10">
+          {Object.entries(CALC_PLANS).map(([key, p]) => (
+            <button key={key} onClick={() => setPlanKey(key)}
+              className="font-mono text-xs px-5 py-2.5 border-r border-white/15 last:border-r-0 transition-colors tracking-wider"
+              style={{ background: planKey === key ? '#fff' : 'transparent', color: planKey === key ? '#000' : 'rgba(255,255,255,0.55)' }}>
+              {p.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-12">
+
+          {/* Control de clientes */}
+          <div className="lg:w-60 mb-8 lg:mb-0 space-y-4">
+            <div>
+              <p className="font-mono text-xs text-white/45 uppercase tracking-wider mb-1">Clientes al mes</p>
+              <p className="font-mono text-xs text-white/60 leading-relaxed">
+                Tarifa sugerida <strong className="text-white">S/500/cliente</strong>. Tú defines el precio.
+              </p>
+            </div>
             <div className="flex gap-0 border border-white/20 w-fit">
               {PRESETS.map(n => (
                 <button key={n} onClick={() => setClients(n)}
@@ -692,26 +1276,44 @@ function PricingCalculator({ onOpenForm }) {
                 </button>
               ))}
             </div>
+
+            {/* Break-even */}
+            <div className="border border-white/8 px-4 py-3">
+              <p className="font-mono text-xs text-white/40 uppercase tracking-wider mb-1">Punto de equilibrio</p>
+              <p className="font-mono text-sm font-bold text-white">
+                {breakEven} {breakEven === 1 ? 'cliente' : 'clientes'}
+              </p>
+              <p className="font-mono text-xs text-white/40 mt-0.5 leading-snug">
+                Desde el cliente {breakEven + 1}, todo es ganancia.
+              </p>
+            </div>
+
+            {/* Costo del plan */}
+            <div className="border border-white/8 px-4 py-3">
+              <p className="font-mono text-xs text-white/40 uppercase tracking-wider mb-1">Costo del plan</p>
+              <p className="font-mono text-sm font-bold" style={GRAD_STYLE}>{plan.costStr}</p>
+              <p className="font-mono text-xs text-white/40 mt-0.5">{plan.costNote}</p>
+            </div>
           </div>
 
+          {/* Resultados */}
           <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 border-t border-l border-white/10">
             {[
-              { label: 'ingresas',    value: `S/${revenue.toLocaleString()}`, hi: true  },
-              { label: 'nos pagas',   value: `S/${cost.toLocaleString()}`,    hi: false },
-              { label: 'margen neto', value: `S/${margin.toLocaleString()}`,  hi: false },
-            ].map(({ label, value, hi }) => (
+              { label: 'ingresas',     value: `S/${revenue.toLocaleString()}`,  sub: `${clients} clientes × S/500`,  hi: true  },
+              { label: 'nos pagas',    value: plan.costStr,                      sub: plan.costNote,                  hi: false },
+              { label: 'margen neto',  value: `S/${margin.toLocaleString()}`,   sub: `≈ S/${Math.round(margin/clients).toLocaleString()}/cliente`, hi: false },
+            ].map(({ label, value, sub, hi }) => (
               <div key={label} className="px-6 py-6 border-r border-b border-white/10" style={{ background: hi ? '#fff' : 'transparent' }}>
-                <p className="font-mono text-xs mb-2 tracking-widest uppercase" style={{ color: hi ? '#00000080' : '#ffffff80' }}>{label}</p>
-                {/* ── 10: animación en números ── */}
-                <p className="font-mono font-bold text-2xl transition-all duration-500" style={hi ? GRAD_STYLE : { color: '#fff' }}>{value}</p>
-                <p className="font-mono text-xs mt-1" style={{ color: hi ? '#00000070' : '#ffffff70' }}>al mes</p>
+                <p className="font-mono text-xs mb-2 tracking-widest uppercase" style={{ color: hi ? '#00000070' : '#ffffff55' }}>{label}</p>
+                <p className="font-mono font-bold text-2xl transition-all duration-300" style={hi ? GRAD_STYLE : { color: '#fff' }}>{value}</p>
+                <p className="font-mono text-xs mt-1.5" style={{ color: hi ? '#00000055' : '#ffffff40' }}>{sub}</p>
               </div>
             ))}
           </div>
         </div>
 
         <div className="mt-10 pt-8 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <p className="font-mono text-sm text-white/65">Primer reporte sin costo. Sin contratos.</p>
+          <p className="font-mono text-sm text-white/55">Primer reporte sin costo · sin contratos · cancela cuando quieras.</p>
           <button onClick={onOpenForm}
             className="font-mono font-bold text-sm text-black bg-white px-7 py-3.5 hover:bg-white/90 active:scale-95 transition-all tracking-wide w-full sm:w-fit">
             Empezar ahora →
@@ -726,28 +1328,36 @@ function PricingCalculator({ onOpenForm }) {
 
 const FAQS = [
   {
+    q: '¿Puedo probar antes de comprometerme?',
+    a: 'Sí. El primer reporte es 100% gratuito — sin tarjeta, sin contrato. Llenas el formulario, nos dices el target (industria + ciudad) y recibes el reporte en menos de 24 h por @Pipeline_X_bot en Telegram.',
+  },
+  {
     q: '¿Los leads son reales o inventados?',
-    a: 'Son reales. Los extraemos directamente de Google Maps: nombre de empresa, teléfono, dirección, rating, reseñas y sitio web cuando está disponible. No usamos bases de datos compradas.',
+    a: 'Son reales. Los extraemos de Google Maps (nombre, teléfono, dirección, rating) y los cruzamos con SUNAT (RUC, régimen tributario, CIIU, estado activo). No usamos bases de datos compradas ni datos inventados.',
+  },
+  {
+    q: '¿En qué moneda facturan?',
+    a: 'El Plan Starter Perú se factura en soles (S/175/mes). Los planes Regional LATAM ($57/mes) y Agency ($197/mes) se facturan en USD — ideal para agencias y empresas que operan en varios países.',
+  },
+  {
+    q: '¿Qué pasa si necesito más reportes en un mes?',
+    a: 'Puedes comprar packs adicionales de 3 reportes por $39 USD, sin cambiar de plan. Activación inmediata, se suman a tu cuota del mes. O puedes subir de plan en cualquier momento sin penalidad.',
   },
   {
     q: '¿Puedo ponerle mi logo al reporte?',
-    a: 'Sí. El sistema es 100% white-label. El reporte lleva tu nombre o el de tu empresa. Tus clientes nunca ven Pipeline_X.',
-  },
-  {
-    q: '¿Qué pasa si no hay leads en mi ciudad?',
-    a: 'Antes de cobrar, hacemos un scan de prueba. Si el volumen es bajo te lo decimos con anticipación y buscamos el mejor ángulo para tu mercado.',
+    a: 'Sí. El sistema es 100% white-label en el Plan Agency. El reporte lleva tu nombre, tu logo y tu marca. Tus clientes nunca ven Pipeline_X.',
   },
   {
     q: '¿Necesito saber de tecnología?',
-    a: 'No. Solo nos dices industria y ciudad por Telegram. Nosotros procesamos todo y te enviamos el reporte listo para presentar.',
+    a: 'No. Solo nos dices industria y ciudad por Telegram. Nosotros escaneamos, validamos y te enviamos el CSV + reporte HTML listo para presentar. Cero stack técnico de tu parte.',
   },
   {
     q: '¿Hay contrato de permanencia?',
-    a: 'No. S/149/mes, cancelas cuando quieras. Sin penalidades, sin letra pequeña.',
+    a: 'No. Cancelas cuando quieras, sin penalidades ni letra pequeña. Si pagas anual y cancelas antes, te devolvemos la parte proporcional no usada.',
   },
   {
-    q: '¿En cuántas ciudades del Perú funciona?',
-    a: 'En cualquier ciudad donde haya negocios en Google Maps. Lima, Trujillo, Arequipa, Chiclayo, Piura, Cusco… y estamos expandiendo a Colombia y Ecuador.',
+    q: '¿En cuántas ciudades funciona?',
+    a: 'Cubrimos las 15 ciudades principales del Perú: Lima, Trujillo, Arequipa, Chiclayo, Piura, Cusco, Ica, Tacna, Huancayo, Pucallpa y más. Para el Plan Regional LATAM, también operamos en otras ciudades de Latinoamérica.',
   },
 ]
 
@@ -818,9 +1428,9 @@ function Footer({ onOpenForm }) {
 export default function App() {
   const [formOpen, setFormOpen] = useState(false)
 
-  // ── 2: Modal por scroll (70% de la página) en lugar de timer agresivo ────────
+  // ── 2: Modal por scroll (70%) — no mostrar si ya envió o ya vio el modal ─────
   useEffect(() => {
-    if (sessionStorage.getItem('px_form_seen')) return
+    if (sessionStorage.getItem('px_form_seen') || localStorage.getItem('px_reporte_solicitado')) return
     const handleScroll = () => {
       const scrolled = window.scrollY + window.innerHeight
       const total = document.documentElement.scrollHeight
@@ -842,8 +1452,10 @@ export default function App() {
     <div className="min-h-screen bg-black">
       <Navbar onOpenForm={() => setFormOpen(true)} />
       <Hero onOpenForm={() => setFormOpen(true)} />
+      <SocialProofStrip />
       <HowItWorks onOpenForm={() => setFormOpen(true)} />
       <TwoChannels onOpenForm={() => setFormOpen(true)} />
+      <AddonPacks onOpenForm={() => setFormOpen(true)} />
       <Testimonials />
       <Comparison onOpenForm={() => setFormOpen(true)} />
       <ReportPreview onOpenForm={() => setFormOpen(true)} />
