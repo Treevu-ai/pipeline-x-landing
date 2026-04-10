@@ -778,9 +778,9 @@ const CHANNELS = [
     solesMonthly: '≈ S/146',
     solesAnnual:  '≈ S/120',
     annualSave:  'Ahorras 2 meses ($390/año)',
-    sub:         '200 leads/mes · todo incluido · sin sorpresas',
+    sub:         '15 búsquedas/mes · ~150 leads · todo incluido',
     items: [
-      { text: '200 leads calificados por mes',                ok: true  },
+      { text: '15 búsquedas/mes (~10 leads calificados c/u)', ok: true  },
       { text: 'Score 0–100 + acción sugerida por IA',         ok: true  },
       { text: 'Enrichment SUNAT (capacidad de pago)',         ok: true  },
       { text: 'Reporte HTML + Export CSV',                    ok: true  },
@@ -803,9 +803,9 @@ const CHANNELS = [
     solesMonthly: '≈ S/295',
     solesAnnual:  '≈ S/247',
     annualSave:  'Ahorras 2 meses ($790/año)',
-    sub:         '500 leads/mes · equipos de ventas activos',
+    sub:         '40 búsquedas/mes · ~400 leads · equipos activos',
     items: [
-      { text: '500 leads calificados por mes',                ok: true  },
+      { text: '40 búsquedas/mes (~10 leads calificados c/u)', ok: true  },
       { text: 'Score 0–100 + acción sugerida por IA',         ok: true  },
       { text: 'Enrichment SUNAT + contactos web',             ok: true  },
       { text: 'Reporte HTML + Export CSV',                    ok: true  },
@@ -830,7 +830,7 @@ const CHANNELS = [
     annualSave:  'Ahorras ~$600/año',
     sub:         'Tu marca · multi-cuenta · kit de reventa incluido',
     items: [
-      { text: '1,000 leads/mes',                              ok: true  },
+      { text: 'Búsquedas ilimitadas (~10 leads c/u)',           ok: true  },
       { text: 'White-label completo (tu logo, tu nombre)',    ok: true  },
       { text: 'Multi-cuenta para tus clientes',               ok: true  },
       { text: 'Kit de reventa: PDF, emails, pricing guide',   ok: true  },
