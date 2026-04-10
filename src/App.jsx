@@ -1436,9 +1436,6 @@ function Footer({ onOpenForm }) {
           <span className="font-mono font-bold text-white/88 text-xs border border-white/15 px-1.5 py-0.5">PX</span>
           <p className="font-mono text-xs text-white/50">Pipeline_X · pipelinex.app · @Pipeline_X_bot · Lima, Perú</p>
         </div>
-        <p className="font-mono text-xs text-white/50">
-          Ricardo Cuba · <span className="text-white/65">Founder &amp; CEO</span>
-        </p>
       </div>
     </footer>
   )
