@@ -38,11 +38,12 @@ const MOCK_LEADS = [
 const TARGET_SCORES = [91, 84, 88, 82, 65, 72, 80, 45]
 
 async function saveLead(data) {
-  return fetch('/api/save-lead', {
+  const res = await fetch('/api/save-lead', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   })
+  if (!res.ok) throw new Error(`save-lead ${res.status}`)
 }
 
 // ── Hooks ─────────────────────────────────────────────────────────────────────
@@ -296,6 +297,7 @@ function SocialProofStrip() {
 function LeadFormModal({ onClose }) {
   const [form, setForm] = useState({ nombre: '', whatsapp: '', tipo: '', ciudad: '', target: '' })
   const [sent, setSent] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const update = field => e => setForm(f => ({ ...f, [field]: e.target.value }))
 
@@ -304,6 +306,7 @@ function LeadFormModal({ onClose }) {
     if (!form.nombre.trim() || !form.whatsapp.trim()) { setError('Nombre y WhatsApp son requeridos.'); return }
     if (!form.target.trim()) { setError('Dinos qué tipo de empresas quieres prospectar.'); return }
     setError('')
+    setLoading(true)
     try {
       await saveLead({
         nombre: form.nombre.trim(),
@@ -312,9 +315,13 @@ function LeadFormModal({ onClose }) {
         ciudad: form.ciudad.trim() || null,
         target: form.target.trim(),
       })
-    } catch { /* fallback */ }
-    localStorage.setItem('px_reporte_solicitado', '1')
-    setSent(true)
+      localStorage.setItem('px_reporte_solicitado', '1')
+      setSent(true)
+    } catch {
+      setError('Hubo un problema al enviar. Inténtalo de nuevo.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const inp = 'w-full font-mono text-sm text-black bg-white border border-black/20 px-4 py-3 outline-none focus:border-black placeholder-black/55 transition-colors'
@@ -407,8 +414,9 @@ function LeadFormModal({ onClose }) {
                 Te contactaremos por <span className="font-bold text-black">@Pipeline_X_bot</span> en Telegram con tu reporte listo.
               </p>
             </div>
-            <button type="submit" className="w-full font-mono font-bold text-sm text-white bg-black py-4 hover:bg-black/80 active:scale-95 transition-all tracking-wider">
-              Solicitar reporte gratis →
+            <button type="submit" disabled={loading}
+              className="w-full font-mono font-bold text-sm text-white bg-black py-4 hover:bg-black/80 active:scale-95 transition-all tracking-wider disabled:opacity-50 disabled:cursor-not-allowed">
+              {loading ? 'Enviando…' : 'Solicitar reporte gratis →'}
             </button>
             <p className="font-mono text-xs text-black/50 text-center">Sin costo ni compromiso.</p>
           </form>
