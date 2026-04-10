@@ -317,7 +317,7 @@ function LeadFormModal({ onClose }) {
     setSent(true)
   }
 
-  const inp = 'w-full font-mono text-sm text-black bg-white border border-black/20 px-4 py-3 outline-none focus:border-black placeholder-black/30 transition-colors'
+  const inp = 'w-full font-mono text-sm text-black bg-white border border-black/20 px-4 py-3 outline-none focus:border-black placeholder-black/55 transition-colors'
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col sm:items-center sm:justify-center sm:p-4" style={{ background: 'rgba(0,0,0,0.92)' }}>
