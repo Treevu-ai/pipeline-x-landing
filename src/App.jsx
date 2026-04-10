@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-const HERO_IMG = 'https://images.pexels.com/photos/19985010/pexels-photo-19985010.jpeg?auto=compress&cs=tinysrgb&w=1600'
+const HERO_IMG  = 'https://images.pexels.com/photos/19985010/pexels-photo-19985010.jpeg?auto=compress&cs=tinysrgb&w=1600'
+const HERO_CAFE = 'https://images.unsplash.com/photo-1453614512568-c4024d13c247?auto=format&fit=crop&w=1600&q=80'
 const TG_BOT   = 'https://t.me/Pipeline_X_bot?start=demo'
 const WA_BOT   = 'https://wa.me/51902126765?text=' + encodeURIComponent('Hola, quiero ver mi demo gratuita de Pipeline_X')
 
@@ -319,19 +320,15 @@ function LeadFormModal({ onClose }) {
   const inp = 'w-full font-mono text-sm text-black bg-white border border-black/20 px-4 py-3 outline-none focus:border-black placeholder-black/30 transition-colors'
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.92)' }}
-      onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-      <div className="relative w-full max-w-md bg-white shadow-2xl">
+    <div className="fixed inset-0 z-50 flex flex-col sm:items-center sm:justify-center sm:p-4" style={{ background: 'rgba(0,0,0,0.92)' }}>
 
-        {/* ── X cerrar — siempre visible ── */}
-        <button onClick={onClose} aria-label="Cerrar"
-          className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center text-black/40 hover:text-black hover:bg-black/6 rounded transition-colors">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
-          </svg>
-        </button>
+      {/* Zona superior tap-to-close (solo mobile) */}
+      <div className="flex-1 sm:hidden" onClick={onClose} />
 
-        <div className="flex items-center justify-between px-5 py-3 border-b border-black/10 bg-black pr-4">
+      <div className="w-full sm:max-w-md bg-white shadow-2xl flex flex-col max-h-[88svh] sm:max-h-[90svh] rounded-t-2xl sm:rounded-none">
+
+        {/* ── Header fijo — siempre visible ── */}
+        <div className="flex-shrink-0 flex items-center justify-between px-5 py-4 bg-black rounded-t-2xl sm:rounded-none">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
             <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
@@ -339,12 +336,15 @@ function LeadFormModal({ onClose }) {
             <span className="font-mono text-xs ml-2 text-white/65 tracking-wider">pipeline_x — solicitar_reporte.sh</span>
           </div>
           <button onClick={onClose} aria-label="Cerrar"
-            className="w-7 h-7 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 rounded transition-colors">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/>
+            className="w-10 h-10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+              <line x1="2" y1="2" x2="14" y2="14"/><line x1="14" y1="2" x2="2" y2="14"/>
             </svg>
           </button>
         </div>
+
+        {/* ── Cuerpo scrollable (min-h-0 necesario para que flex-1 haga scroll) ── */}
+        <div className="overflow-y-auto overscroll-contain flex-1 min-h-0">
 
         {sent ? (
           <div className="px-6 sm:px-8 py-8 text-center">
@@ -413,6 +413,8 @@ function LeadFormModal({ onClose }) {
             <p className="font-mono text-xs text-black/50 text-center">Sin costo ni compromiso.</p>
           </form>
         )}
+
+        </div>{/* fin cuerpo scrollable */}
       </div>
     </div>
   )
@@ -503,15 +505,35 @@ function Hero({ onOpenForm }) {
 
   return (
     <section className="relative overflow-hidden" style={{ minHeight: '100svh' }}>
-      {/* Imagen de Lima fija — sin filter en este div para no romper parallax */}
-      <div className="absolute inset-0" style={{
+      {/* ── Fondo dividido en dos mitades ─────────────────────────────────── */}
+      {/* Mitad izquierda — Lima, Miraflores (Pexels, libre) */}
+      <div className="absolute inset-y-0 left-0 w-1/2" style={{
         backgroundImage: `url(${HERO_IMG})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center 30%',
         backgroundAttachment: 'fixed',
       }} />
-      {/* Overlay oscuro separado */}
-      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.58)' }} />
+      {/* Mitad derecha — Cafetería cálida Edison bulbs (Unsplash, libre) */}
+      <div className="absolute inset-y-0 right-0 w-1/2" style={{
+        backgroundImage: `url(${HERO_CAFE})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center center',
+        backgroundAttachment: 'fixed',
+      }} />
+      {/* Overlay izquierdo — tono azul-noche para la ciudad */}
+      <div className="absolute inset-y-0 left-0 w-1/2" style={{
+        background: 'linear-gradient(to right, rgba(0,0,0,0.72) 0%, rgba(8,12,28,0.60) 100%)',
+      }} />
+      {/* Overlay derecho — tono ámbar-oscuro para el café */}
+      <div className="absolute inset-y-0 right-0 w-1/2" style={{
+        background: 'linear-gradient(to left, rgba(0,0,0,0.72) 0%, rgba(28,14,0,0.58) 100%)',
+      }} />
+      {/* Velo global para unificar lectura del texto */}
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.25)' }} />
+      {/* Línea divisoria central */}
+      <div className="absolute inset-y-0 left-1/2 -translate-x-px w-px pointer-events-none" style={{
+        background: 'linear-gradient(to bottom, transparent 5%, rgba(255,255,255,0.18) 40%, rgba(255,255,255,0.18) 60%, transparent 95%)',
+      }} />
       {/* Grid sutil */}
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: `linear-gradient(${DIM} 1px,transparent 1px),linear-gradient(90deg,${DIM} 1px,transparent 1px)`,
@@ -526,19 +548,19 @@ function Hero({ onOpenForm }) {
         background: 'linear-gradient(to bottom,transparent,#000)',
       }} />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6 pt-24 pb-12 flex flex-col lg:flex-row lg:items-stretch gap-10 min-h-[100svh]">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-14 xl:px-20 pt-24 pb-12 flex flex-col lg:flex-row lg:items-stretch gap-10 min-h-[100svh]">
 
         {/* Izquierda */}
         <div className="lg:w-[46%] flex flex-col justify-center">
-          <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/75 mb-5">SDR · IA · Lima, Perú</p>
+          <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/75 mb-5">Contadores · Consultoras · Agencias · Resellers</p>
 
           <h1 className="font-mono font-bold text-white leading-[1.1] mb-5" style={{ fontSize: 'clamp(1.9rem,4.5vw,3.1rem)' }}>
-            Tus clientes necesitan más clientes.<br />
-            <Gr>Tú se los consigues</Gr> — sin contratar un SDR.
+            Tus clientes ya te preguntan cómo conseguir más clientes.<br />
+            <Gr>Cada vez que dices "eso no es lo mío", alguien más lo cobra.</Gr>
           </h1>
           <p className="font-mono text-base text-white leading-relaxed mb-8"
              style={{textShadow: '0 1px 12px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,0.8)'}}>
-            Pipeline_X escanea Google Maps, valida con SUNAT y entrega un reporte de prospectos calificados en menos de 24 horas. Listo para presentar con tu marca.
+            Pipeline_X genera el reporte de prospectos en 24 h. Tú lo entregas con tu nombre y defines el precio. Primer reporte completamente gratis.
           </p>
 
           <ul className="space-y-2.5 mb-7">
@@ -546,10 +568,10 @@ function Hero({ onOpenForm }) {
               <span className="text-white/65">—</span> Sin herramientas que aprender ni equipo que contratar
             </li>
             <li className="font-mono text-base text-white/85 flex items-center gap-3">
-              <span className="text-white/65">—</span> Optimizado para Perú: <Gr>Google Maps local + SUNAT</Gr> + 15 ciudades
+              <span className="text-white/65">—</span> Google Maps local + SUNAT — <Gr>validado para Perú, 15 ciudades</Gr>
             </li>
             <li className="font-mono text-base text-white/85 flex items-center gap-3">
-              <span className="text-white/65">—</span> White-label: tu cliente ve tu logo, no el nuestro
+              <span className="text-white/65">—</span> White-label: tu cliente recibe el reporte con tu marca, no la nuestra
             </li>
           </ul>
 
@@ -568,8 +590,8 @@ function Hero({ onOpenForm }) {
           <div className="flex gap-8 mb-10 border-t border-white/10 pt-8">
             {[
               { v: 'S/400–600', l: 'cobras / reporte' },
-              { v: 'desde $39', l: 'pagas / mes (Starter)', hi: true },
-              { v: '$299 USD',  l: 'plan Reseller (reventa)' },
+              { v: 'desde S/149', l: 'pagas / mes (Starter)', hi: true },
+              { v: 'S/1,099',  l: 'plan Reseller (reventa)' },
             ].map(({ v, l, hi }) => (
               <div key={l}>
                 <div className="font-mono font-bold" style={{ fontSize: '1.15rem', ...(hi ? GRAD_STYLE : { color: '#fff' }) }}>{v}</div>
@@ -772,12 +794,12 @@ const CHANNELS = [
     tag:         'Starter',
     badge:       'Más popular',
     badgeStyle:  { background: '#00d4aa', color: '#000' },
-    monthly:     '$39',
-    annual:      '$32',
-    unit:        '/mes USD',
-    solesMonthly: '≈ S/146',
-    solesAnnual:  '≈ S/120',
-    annualSave:  'Ahorras 2 meses ($390/año)',
+    monthly:     'S/149',
+    annual:      'S/119',
+    unit:        '/mes',
+    solesMonthly: '($39 USD)',
+    solesAnnual:  '($29 USD)',
+    annualSave:  'Ahorras S/360/año (~2 meses gratis)',
     sub:         '15 búsquedas/mes · ~150 leads · todo incluido',
     items: [
       { text: '15 búsquedas/mes (~10 leads calificados c/u)', ok: true  },
@@ -797,12 +819,12 @@ const CHANNELS = [
     tag:         'Pro',
     badge:       null,
     badgeStyle:  {},
-    monthly:     '$79',
-    annual:      '$66',
-    unit:        '/mes USD',
-    solesMonthly: '≈ S/295',
-    solesAnnual:  '≈ S/247',
-    annualSave:  'Ahorras 2 meses ($790/año)',
+    monthly:     'S/299',
+    annual:      'S/249',
+    unit:        '/mes',
+    solesMonthly: '($79 USD)',
+    solesAnnual:  '($59 USD)',
+    annualSave:  'Ahorras S/600/año (~2 meses gratis)',
     sub:         '40 búsquedas/mes · ~400 leads · equipos activos',
     items: [
       { text: '40 búsquedas/mes (~10 leads calificados c/u)', ok: true  },
@@ -822,12 +844,12 @@ const CHANNELS = [
     tag:         'Reseller',
     badge:       'White-label',
     badgeStyle:  { background: '#4f6ef5', color: '#fff' },
-    monthly:     '$299',
-    annual:      '$249',
-    unit:        '/mes USD',
-    solesMonthly: '≈ S/1,118',
-    solesAnnual:  '≈ S/931',
-    annualSave:  'Ahorras ~$600/año',
+    monthly:     'S/1,099',
+    annual:      'S/919',
+    unit:        '/mes',
+    solesMonthly: '($299 USD)',
+    solesAnnual:  '($249 USD)',
+    annualSave:  'Ahorras ~S/2,160/año',
     sub:         'Tu marca · multi-cuenta · kit de reventa incluido',
     items: [
       { text: 'Búsquedas ilimitadas (~10 leads c/u)',           ok: true  },
@@ -999,10 +1021,9 @@ function AddonPacks({ onOpenForm }) {
             <div>
               <p className="font-mono text-xs tracking-widest uppercase text-white/40 mb-1">Pack extra</p>
               <div className="flex items-baseline gap-2">
-                <span className="font-mono font-bold text-white" style={{ fontSize: '2rem' }}>$39</span>
-                <span className="font-mono text-sm text-white/40">USD</span>
+                <span className="font-mono font-bold text-white" style={{ fontSize: '2rem' }}>S/149</span>
               </div>
-              <p className="font-mono text-xs text-white/50 mt-1">≈ S/145 · 3 reportes adicionales</p>
+              <p className="font-mono text-xs text-white/50 mt-1">($39 USD) · 3 reportes adicionales</p>
             </div>
             <ul className="space-y-1.5 w-full">
               {['Activación inmediata', 'Se suman al límite de tu plan', 'Sin cambiar de plan ni papeleo'].map(t => (
@@ -1076,7 +1097,7 @@ function Testimonials() {
 // ── Comparative ───────────────────────────────────────────────────────────────
 
 const FEATURES = [
-  { label: 'Precio mensual',            px: 'desde $39', kommo: '$200+', hubspot: '$800+', leadsales: '$150+' },
+  { label: 'Precio mensual',            px: 'desde S/149', kommo: '$200+', hubspot: '$800+', leadsales: '$150+' },
   { label: 'IA local (datos no salen)', px: true,     kommo: false,  hubspot: false,   leadsales: false  },
   { label: 'Scraping Google Maps',       px: true,     kommo: false,  hubspot: false,   leadsales: false  },
   { label: 'Validación SUNAT incluida',  px: true,     kommo: false,  hubspot: false,   leadsales: false  },
@@ -1107,7 +1128,7 @@ function Comparison({ onOpenForm }) {
           Por qué <Gr>Pipeline_X</Gr> es diferente
         </h2>
         <p className="font-mono text-sm text-white/60 mb-10 max-w-xl leading-relaxed">
-          Contratar a alguien para prospectar cuesta miles al mes. Las herramientas globales escalan rápido con créditos y límites. Pipeline_X entrega resultado real desde $39/mes — sin stack, sin personal, sin sorpresas.
+          Contratar a alguien para prospectar cuesta miles al mes. Las herramientas globales escalan rápido con créditos y límites. Pipeline_X entrega resultado real desde S/149/mes — sin stack, sin personal, sin sorpresas.
         </p>
         <p className="font-mono text-xs text-white/50 mb-2 sm:hidden">← desliza para ver más →</p>
         <div className="overflow-x-auto">
@@ -1208,20 +1229,20 @@ function ReportPreview({ onOpenForm }) {
 
 const CALC_PLANS = {
   starter: {
-    label:      'Starter $39',
-    cost:       146,          // $39 USD × 3.74 ≈ S/146
-    costStr:    '$39 USD',
-    costNote:   '≈ S/146 / mes (fijo)',
+    label:      'Starter S/149',
+    cost:       149,
+    costStr:    'S/149/mes',
+    costNote:   '($39 USD)',
     currency:   'S/',
-    heading:    '$39/mes',
+    heading:    'S/149/mes',
   },
   reseller: {
-    label:      'Reseller $299',
-    cost:       1118,         // $299 USD × 3.74 ≈ S/1,118
-    costStr:    '$299 USD',
-    costNote:   '≈ S/1,118 / mes (fijo)',
+    label:      'Reseller S/1,099',
+    cost:       1099,
+    costStr:    'S/1,099/mes',
+    costNote:   '($299 USD)',
     currency:   'S/',
-    heading:    '$299/mes',
+    heading:    'S/1,099/mes',
   },
 }
 
@@ -1337,15 +1358,15 @@ const FAQS = [
   },
   {
     q: '¿En qué moneda facturan?',
-    a: 'El plan Starter se factura en USD ($39/mes) o en soles al tipo de cambio vigente. El plan Reseller ($299/mes) se factura en USD — ideal para agencias y empresas que operan en varios países.',
+    a: 'Todos los planes tienen precio en soles. Starter: S/149/mes. Pro: S/299/mes. Reseller: S/1,099/mes. También aceptamos pago en USD ($39 / $79 / $299) al tipo de cambio vigente.',
   },
   {
     q: '¿Qué pasa si necesito más reportes en un mes?',
-    a: 'Puedes comprar packs adicionales de 3 reportes por $39 USD, sin cambiar de plan. Activación inmediata, se suman a tu cuota del mes. O puedes subir de plan en cualquier momento sin penalidad.',
+    a: 'Puedes comprar packs adicionales de 3 reportes por S/149, sin cambiar de plan. Activación inmediata, se suman a tu cuota del mes. O puedes subir de plan en cualquier momento sin penalidad.',
   },
   {
     q: '¿Puedo ponerle mi logo al reporte?',
-    a: 'Sí. El sistema es 100% white-label en el Plan Agency. El reporte lleva tu nombre, tu logo y tu marca. Tus clientes nunca ven Pipeline_X.',
+    a: 'Sí. El sistema es 100% white-label en el Plan Reseller. El reporte lleva tu nombre, tu logo y tu marca. Tus clientes nunca ven Pipeline_X.',
   },
   {
     q: '¿Necesito saber de tecnología?',
@@ -1357,7 +1378,7 @@ const FAQS = [
   },
   {
     q: '¿En cuántas ciudades funciona?',
-    a: 'Cubrimos las 15 ciudades principales del Perú: Lima, Trujillo, Arequipa, Chiclayo, Piura, Cusco, Ica, Tacna, Huancayo, Pucallpa y más. Para el Plan Regional LATAM, también operamos en otras ciudades de Latinoamérica.',
+    a: 'Cubrimos las 15 ciudades principales del Perú: Lima, Trujillo, Arequipa, Chiclayo, Piura, Cusco, Ica, Tacna, Huancayo, Pucallpa y más. El Plan Reseller también permite prospección en otras ciudades de Latinoamérica bajo pedido.',
   },
 ]
 

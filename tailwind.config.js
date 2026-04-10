@@ -1,6 +1,14 @@
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+const _dir = dirname(fileURLToPath(import.meta.url)).replace(/\\/g, '/')
+
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,jsx}'],
+  content: [
+    `${_dir}/index.html`,
+    `${_dir}/src/**/*.js`,
+    `${_dir}/src/**/*.jsx`,
+  ],
   theme: {
     extend: {
       colors: {
