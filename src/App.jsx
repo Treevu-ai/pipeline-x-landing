@@ -839,6 +839,31 @@ function HowItWorks({ onOpenForm }) {
 
 const CHANNELS = [
   {
+    tag:         'Básico',
+    badge:       null,
+    badgeStyle:  {},
+    monthly:     'S/59',
+    annual:      'S/49',
+    unit:        '/mes',
+    solesMonthly: '',
+    solesAnnual:  '',
+    annualSave:  'Ahorras S/120/año',
+    sub:         '10 búsquedas/mes · 20 leads · sin contrato',
+    items: [
+      { text: '10 búsquedas/mes · 20 leads por búsqueda',     ok: true  },
+      { text: 'Score 0–100 + acción sugerida por IA',          ok: true  },
+      { text: 'Entrega por WhatsApp',                          ok: true  },
+      { text: 'PDF con mensajes listos',                       ok: true  },
+      { text: 'Enrichment SUNAT',                              ok: false },
+      { text: 'Acceso API REST',                               ok: false },
+      { text: 'White-label',                                   ok: false },
+    ],
+    note:  'Para freelancers y vendedores independientes.',
+    cta:   'Elegir Básico →',
+    dark:  false,
+    hi:    false,
+  },
+  {
     tag:         'Starter',
     badge:       'Más popular',
     badgeStyle:  { background: '#00d4aa', color: '#000' },
@@ -848,9 +873,9 @@ const CHANNELS = [
     solesMonthly: '($39 USD)',
     solesAnnual:  '($29 USD)',
     annualSave:  'Ahorras S/360/año (~2 meses gratis)',
-    sub:         '15 búsquedas/mes · ~150 leads · todo incluido',
+    sub:         'Reportes ilimitados · 30 leads · todo incluido',
     items: [
-      { text: '15 búsquedas/mes (~10 leads calificados c/u)', ok: true  },
+      { text: 'Ilimitado · 30 leads calificados por búsqueda', ok: true  },
       { text: 'Score 0–100 + acción sugerida por IA',         ok: true  },
       { text: 'Enrichment SUNAT (capacidad de pago)',         ok: true  },
       { text: 'Reporte HTML + Export CSV',                    ok: true  },
@@ -873,9 +898,9 @@ const CHANNELS = [
     solesMonthly: '($79 USD)',
     solesAnnual:  '($59 USD)',
     annualSave:  'Ahorras S/600/año (~2 meses gratis)',
-    sub:         '40 búsquedas/mes · ~400 leads · equipos activos',
+    sub:         'Reportes ilimitados · 50 leads · equipos activos',
     items: [
-      { text: '40 búsquedas/mes (~10 leads calificados c/u)', ok: true  },
+      { text: 'Ilimitado · 50 leads calificados por búsqueda', ok: true  },
       { text: 'Score 0–100 + acción sugerida por IA',         ok: true  },
       { text: 'Enrichment SUNAT + contactos web',             ok: true  },
       { text: 'Reporte HTML + Export CSV',                    ok: true  },
@@ -1276,6 +1301,14 @@ function ReportPreview({ onOpenForm }) {
 // ── Pricing calculator ────────────────────────────────────────────────────────
 
 const CALC_PLANS = {
+  basico: {
+    label:      'Básico S/59',
+    cost:       59,
+    costStr:    'S/59/mes',
+    costNote:   '',
+    currency:   'S/',
+    heading:    'S/59/mes',
+  },
   starter: {
     label:      'Starter S/149',
     cost:       149,
@@ -1398,7 +1431,7 @@ function PricingCalculator({ onOpenForm }) {
 const FAQS = [
   {
     q: '¿Puedo probar antes de comprometerme?',
-    a: 'Sí. El primer reporte es 100% gratuito — sin tarjeta, sin contrato. Llenas el formulario, nos dices el target (industria + ciudad) y recibes el reporte en menos de 24 h por @Pipeline_X_bot en Telegram.',
+    a: 'Sí. El primer reporte es 100% gratuito — sin tarjeta, sin contrato. Escríbenos por WhatsApp o Telegram (@Pipeline_X_bot), dinos industria + ciudad y recibes el PDF en ~2 minutos.',
   },
   {
     q: '¿Los leads son reales o inventados?',
@@ -1410,7 +1443,7 @@ const FAQS = [
   },
   {
     q: '¿Qué pasa si necesito más reportes en un mes?',
-    a: 'Puedes comprar packs adicionales de 3 reportes por S/149, sin cambiar de plan. Activación inmediata, se suman a tu cuota del mes. O puedes subir de plan en cualquier momento sin penalidad.',
+    a: 'Puedes subir de plan en cualquier momento sin penalidad ni contrato. Si eres nuevo, activa el trial gratis de 3 días con acceso completo — sin tarjeta.',
   },
   {
     q: '¿Puedo ponerle mi logo al reporte?',
@@ -1418,7 +1451,7 @@ const FAQS = [
   },
   {
     q: '¿Necesito saber de tecnología?',
-    a: 'No. Solo nos dices industria y ciudad por Telegram. Nosotros escaneamos, validamos y te enviamos el CSV + reporte HTML listo para presentar. Cero stack técnico de tu parte.',
+    a: 'No. Solo escríbenos por WhatsApp o Telegram con industria + ciudad. El reporte llega en ~2 minutos directo a tu chat. Cero stack técnico.',
   },
   {
     q: '¿Hay contrato de permanencia?',
