@@ -14,16 +14,16 @@ const IMG_LIMA  = 'https://images.pexels.com/photos/19985010/pexels-photo-199850
 const IMG_CAFE  = 'https://images.unsplash.com/photo-1453614512568-c4024d13c247?auto=format&fit=crop&w=1920&q=80'
 
 const LINES = [
-  { text: '$ pipeline_x scan --query "Retail Perú" --limit 50',  delay: 0,    color: 'text-terminal' },
+  { text: 'Buscando: "Ferreterías en Los Olivos, Lima"',          delay: 0,    color: 'text-terminal' },
   { text: '▶ Conectando a Google Maps...',                        delay: 800,  color: 'text-slate-400' },
-  { text: '▶ 50 empresas encontradas',                            delay: 1600, color: 'text-slate-300' },
-  { text: '▶ Calificando leads con IA...',                        delay: 2400, color: 'text-slate-400' },
+  { text: '▶ 48 negocios encontrados',                            delay: 1600, color: 'text-slate-300' },
+  { text: '▶ Calificando con IA...',                              delay: 2400, color: 'text-slate-400' },
   { text: '  [████████████████████] 100%',                        delay: 3200, color: 'text-terminal' },
-  { text: '▶ ✓ 18 Calificados     score > 70',                    delay: 4000, color: 'text-green-400' },
-  { text: '▶ ◎ 14 En seguimiento  score 40-70',                   delay: 4400, color: 'text-yellow-400' },
-  { text: '▶ ✗ 18 Descartados     score < 40',                    delay: 4800, color: 'text-red-400' },
+  { text: '▶ ✓ 17 Calificados     score > 70',                    delay: 4000, color: 'text-green-400' },
+  { text: '▶ ◎ 12 En seguimiento  score 40-70',                   delay: 4400, color: 'text-yellow-400' },
+  { text: '▶ ✗ 19 Descartados     score < 40',                    delay: 4800, color: 'text-red-400' },
   { text: '▶ Generando mensajes personalizados...',               delay: 5400, color: 'text-slate-400' },
-  { text: '▶ Done in 47s — 18 leads listos para contactar ✓',    delay: 6200, color: 'text-terminal' },
+  { text: '▶ PDF listo — enviando a tu WhatsApp ✓',               delay: 6200, color: 'text-terminal' },
 ]
 
 export default function Hero() {
@@ -72,24 +72,25 @@ export default function Hero() {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-xs text-slate-300 mb-8 font-mono">
           <span className="w-1.5 h-1.5 rounded-full bg-terminal animate-pulse" />
-          Agente SDR con IA para MIPYME latinoamericana
+          Para dueños y gerentes de pequeños negocios en Perú
         </div>
 
-        {/* Headline — Opción 3 */}
+        {/* Headline */}
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight mb-6 text-white drop-shadow-lg">
-          Prospecta todo Perú y LATAM<br />
-          <span className="gradient-text">mientras tomas café</span>
+          ¿Buscas más clientes pero<br />
+          <span className="gradient-text">no tienes equipo de ventas?</span>
         </h1>
 
         <p className="text-lg text-slate-300 max-w-2xl mx-auto mb-3 leading-relaxed drop-shadow">
-          Un SDR junior llega a 20 empresas por día. Pipeline_X escanea miles,
-          las filtra con IA y entrega solo los leads que valen tu tiempo.
+          Dinos a quién buscas y en qué ciudad. En minutos recibes
+          directo en tu WhatsApp una lista de prospectos calificados —
+          con teléfono, score y mensaje listo para enviar.
         </p>
 
         {/* Comparativa de ahorro */}
         <p className="text-sm text-slate-400 mb-10 font-mono">
-          <span className="text-red-400 line-through mr-2">$1,200/mes en salario</span>
-          <span className="text-terminal font-bold">$39/mes con Pipeline_X</span>
+          <span className="text-red-400 line-through mr-2">S/1,200/mes en un vendedor</span>
+          <span className="text-terminal font-bold">S/149/mes con Pipeline_X</span>
           <span className="text-slate-500 mx-2">·</span>
           Sin tarjeta · 10 leads gratis · Listo en 5 min
         </p>

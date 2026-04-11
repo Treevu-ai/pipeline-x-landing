@@ -13,18 +13,18 @@ const PLANS_MONTHLY = [
   {
     id: 'free',
     name: 'Free',
-    price: '$0',
+    price: 'S/0',
     period: '',
     desc: 'Prueba sin tarjeta. Ve si Pipeline_X funciona para tu industria.',
     features: [
       '10 leads gratis',
       'Calificación con IA',
-      'Canal email',
-      'Exportar CSV',
+      'Entrega por WhatsApp',
+      'Exportar PDF',
     ],
     missing: [
-      'Enrichment SUNAT',
-      'Reporte HTML',
+      'Validación SUNAT',
+      'Reportes ilimitados',
       'Acceso API',
     ],
     cta: 'Empezar gratis',
@@ -34,42 +34,19 @@ const PLANS_MONTHLY = [
     badge: null,
   },
   {
-    id: 'solo',
-    name: 'Solo',
-    price: '$19',
-    period: '/mes',
-    desc: 'Para freelancers y fundadores que prospectan por su cuenta.',
-    features: [
-      '30 leads/mes',
-      'Calificación con IA',
-      'Canal email',
-      'Exportar CSV',
-    ],
-    missing: [
-      'Enrichment SUNAT',
-      'Reporte HTML',
-      'Acceso API',
-    ],
-    cta: 'Comenzar',
-    ctaHref: '#demo',
-    ctaExternal: false,
-    popular: false,
-    badge: null,
-  },
-  {
     id: 'starter',
     name: 'Starter',
-    price: '$39',
+    price: 'S/149',
     period: '/mes',
-    desc: 'El tier principal. MYPE con equipo pequeño de ventas.',
+    desc: 'Para dueños de negocio que necesitan clientes nuevos cada mes.',
     features: [
-      '200 leads/mes',
+      'Reportes ilimitados',
+      'Hasta 15 leads por reporte',
       'Calificación con IA',
-      'Canal email',
-      'Enrichment SUNAT',
-      'Reporte HTML',
-      'Acceso API',
-      'Soporte por email',
+      'Entrega por WhatsApp',
+      'Validación SUNAT',
+      'PDF con mensajes listos',
+      'Soporte por WhatsApp',
     ],
     missing: [],
     cta: 'Comenzar',
@@ -81,15 +58,15 @@ const PLANS_MONTHLY = [
   {
     id: 'pro',
     name: 'Pro',
-    price: '$79',
+    price: 'S/299',
     period: '/mes',
-    desc: 'Para equipos de ventas activos que necesitan escala.',
+    desc: 'Mayor volumen y acceso a la API para automatizar tu prospección.',
     features: [
-      '500 leads/mes',
+      'Reportes ilimitados',
+      'Hasta 50 leads por reporte',
       'Calificación con IA',
-      'Email + WhatsApp',
-      'Enrichment SUNAT',
-      'Reporte HTML',
+      'WhatsApp + Telegram',
+      'Validación SUNAT',
       'Acceso API REST',
       'Soporte prioritario',
     ],
@@ -103,11 +80,11 @@ const PLANS_MONTHLY = [
   {
     id: 'reseller',
     name: 'Reseller',
-    price: '$299',
+    price: 'S/1,099',
     period: '/mes',
-    desc: 'Para agencias que revenden reportes a sus clientes.',
+    desc: 'Para consultoras y agencias que entregan reportes con su propia marca.',
     features: [
-      '1.000 leads/mes',
+      'Volumen ilimitado',
       'White-label (tu marca)',
       'Multi-cuenta',
       'API sin límites',
@@ -127,13 +104,13 @@ const PLANS_MONTHLY = [
 // Precio anual = mensual × 10 (2 meses gratis)
 const PLANS_ANNUAL = PLANS_MONTHLY.map(p => {
   if (!p.period) return p  // Free no cambia
-  const monthly = parseInt(p.price.replace('$', ''))
+  const monthly = parseInt(p.price.replace('S/', '').replace(',', ''))
   const annual  = monthly * 10
   return {
     ...p,
-    price:  `$${annual}`,
+    price:  `S/${annual.toLocaleString('es-PE')}`,
     period: '/año',
-    saving: `Ahorras $${monthly * 2}/año`,
+    saving: `Ahorras S/${(monthly * 2).toLocaleString('es-PE')}/año`,
   }
 })
 
@@ -150,8 +127,8 @@ export default function Pricing() {
           <p className="font-mono text-terminal text-sm mb-3">// precios</p>
           <h2 className="text-4xl font-bold mb-4">Precios simples y predecibles</h2>
           <p className="text-slate-400">
-            Un SDR junior en LATAM cuesta $700–900/mes y produce ~60 leads.
-            Pipeline_X entrega 200 por $39.
+            Un vendedor part-time cuesta S/800–1,200/mes.
+            Pipeline_X hace ese trabajo por S/149.
           </p>
 
           {/* Toggle mensual / anual */}
@@ -179,7 +156,7 @@ export default function Pricing() {
         </div>
 
         {/* Grid de planes */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {plans.map((plan) => (
             <div
               key={plan.id}
@@ -266,7 +243,21 @@ export default function Pricing() {
         <div className="mt-8 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs text-slate-400 font-mono">
             <span className="w-1.5 h-1.5 rounded-full bg-terminal animate-pulse" />
-            Precio fundador $29/mes disponible para los primeros 20 clientes — consulta disponibilidad
+            Precio fundador S/119/mes disponible para los primeros 20 clientes — consulta disponibilidad
+          </div>
+        </div>
+
+        {/* Garantía */}
+        <div className="mt-10 text-center">
+          <div className="inline-block px-8 py-6 rounded-2xl glass border border-white/10 max-w-lg mx-auto">
+            <p className="font-mono text-terminal text-xs mb-3">// garantía de resultado</p>
+            <p className="text-white font-semibold text-base mb-2">
+              Si tu primer reporte no tiene 5 leads con score ≥ 60,
+              te generamos otro gratis.
+            </p>
+            <p className="text-slate-500 text-xs leading-relaxed">
+              Sin contratos · Sin permanencia · Cancela cuando quieras
+            </p>
           </div>
         </div>
 
