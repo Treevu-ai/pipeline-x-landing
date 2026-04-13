@@ -385,7 +385,6 @@
 
       <!-- Visual: teléfono + tarjeta flotante -->
       <div class="hero-visual">
-        <div class="phone-glow"></div>
         <div class="phone-wrap">
           <div class="phone">
             <div class="phone-notch"></div>
@@ -694,7 +693,7 @@
     <div class="wrap">
     <div class="cta-box">
       <div class="hero-badge" style="margin-bottom:28px"><span></span> 3 días gratis — Sin tarjeta</div>
-      <h2>Empieza ahora por <span class="gradient-text">WhatsApp</span></h2>
+      <h2>Empieza ahora por <span class="accent">WhatsApp</span></h2>
       <p>Escribe "hola" al bot y recibe tu primer reporte en pocos minutos. Sin registro, sin apps.</p>
       <a href="https://wa.me/51902126765?text=Hola,%20quiero%20mi%20primer%20listado%20de%20empresas%20gratis" class="btn-primary" target="_blank" style="display:inline-flex;align-items:center;gap:10px;">
         📱 Abrir WhatsApp
@@ -712,18 +711,16 @@
     <a href="#faq">FAQ</a>
     <a href="mailto:hola@pipelinex.app">Contacto</a>
   </div>
-  <p>© 2025 Pipeline_X — Para MYPE en Perú</p>
+  <p>© 2026 Pipeline_X — Para MYPE en Perú</p>
 </footer>
 
 <script>
-  // API Configuration
+  const WA_URL = 'https://wa.me/51902126765?text=Hola,%20quiero%20mi%20primer%20listado%20de%20empresas%20gratis';
   const API_BASE = 'https://agentepyme-api-production.up.railway.app';
-  
+
   // Referral code handling
   const urlParams = new URLSearchParams(window.location.search);
   const referralCode = urlParams.get('ref');
-  
-  // Show referral banner if code present
   if (referralCode) {
     fetch(`${API_BASE}/auth/referral/${referralCode}`)
       .then(r => r.json())
@@ -731,14 +728,14 @@
         if (data.code) {
           const banner = document.createElement('div');
           banner.className = 'referral-banner';
-          banner.innerHTML = `🎉 ¡Te invitó un amigo! Usa el código <strong>${data.code}</strong> para obtener beneficios extra.`;
+          banner.innerHTML = `🎉 ¡Te invitó un amigo! Código <strong>${data.code}</strong> — beneficios extra al activar.`;
           document.body.prepend(banner);
-          document.body.style.paddingTop = '44px';
+          document.body.style.paddingTop = '40px';
         }
       })
       .catch(() => {});
   }
-  
+
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(q => {
     q.addEventListener('click', () => {
@@ -748,42 +745,32 @@
       if (!isOpen) item.classList.add('open');
     });
   });
-  
-  // Smooth scroll
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', (e) => {
-      e.preventDefault();
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-  
-  // Count-up animation
-  const countUp = (el, target) => {
+
+  // Count-up animation — preserva el <span class="metric-unit"> dentro de .metric-num
+  const countUp = (numEl) => {
+    const unitEl = numEl.querySelector('.metric-unit');
+    const rawText = numEl.childNodes[0] ? numEl.childNodes[0].textContent.trim() : '';
+    const target = parseInt(rawText);
+    if (isNaN(target)) return;
     let start = 0;
     const step = target / 60;
     const timer = setInterval(() => {
       start += step;
-      if (start >= target) { el.textContent = target; clearInterval(timer); return; }
-      el.textContent = Math.floor(start);
+      const val = start >= target ? target : Math.floor(start);
+      numEl.childNodes[0].textContent = val + ' ';
+      if (start >= target) clearInterval(timer);
     }, 16);
   };
-  
+
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        e.target.querySelectorAll('.metric-num').forEach(el => {
-          const text = el.textContent;
-          const num = parseInt(text);
-          if (!isNaN(num)) countUp(el, num);
-        });
+        e.target.querySelectorAll('.metric-num').forEach(countUp);
         observer.unobserve(e.target);
       }
     });
   }, { threshold: 0.3 });
-  
+
   const metricsSection = document.querySelector('.metrics-grid');
   if (metricsSection) observer.observe(metricsSection);
 </script>
