@@ -29,19 +29,181 @@
   .nav-cta { background: linear-gradient(135deg, #6366f1, #a855f7); color: white; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 600; transition: opacity .2s; }
   .nav-cta:hover { opacity: .85; }
   
-  /* HERO */
-  #hero { padding: 160px 0 96px; text-align: center; position: relative; }
-  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(99,102,241,.12); border: 1px solid rgba(99,102,241,.3); color: #a5b4fc; padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; margin-bottom: 32px; }
+  /* HERO v2 */
+  #hero {
+    padding: 120px 0 80px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0d0d2b 0%, #0f0a2e 40%, #1a0a2e 70%, #0a0a0f 100%);
+  }
+  /* blobs de fondo */
+  #hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse, rgba(99,102,241,.25) 0%, transparent 65%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  #hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(ellipse, rgba(168,85,247,.18) 0%, transparent 65%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-text { text-align: left; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(99,102,241,.12); border: 1px solid rgba(99,102,241,.3); color: #a5b4fc; padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; margin-bottom: 28px; }
   .hero-badge span { width: 6px; height: 6px; background: #a855f7; border-radius: 50%; animation: pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
-  #hero h1 { font-size: clamp(36px, 6vw, 68px); margin-bottom: 24px; max-width: 900px; margin-left: auto; margin-right: auto; }
-  #hero p { font-size: clamp(16px, 2vw, 20px); color: #94a3b8; max-width: 640px; margin: 0 auto 48px; }
-  .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-  .btn-primary { background: linear-gradient(135deg, #6366f1, #a855f7); color: white; padding: 16px 36px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; transition: transform .2s, box-shadow .2s; box-shadow: 0 0 40px rgba(99,102,241,.4); display: inline-flex; align-items: center; gap: 8px; }
+  #hero h1 { font-size: clamp(32px, 4vw, 56px); margin-bottom: 20px; line-height: 1.15; }
+  .hero-sub { font-size: 17px; color: #94a3b8; margin-bottom: 28px; line-height: 1.7; }
+  .hero-bullets { list-style: none; margin-bottom: 36px; display: flex; flex-direction: column; gap: 10px; }
+  .hero-bullets li { font-size: 15px; color: #94a3b8; display: flex; align-items: center; gap: 10px; }
+  .hero-bullets li::before { content: '✓'; color: #22c55e; font-weight: 700; flex-shrink: 0; }
+  .hero-cta-group { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+  .hero-microcopy { font-size: 12px; color: #475569; }
+  .btn-primary { background: linear-gradient(135deg, #6366f1, #a855f7); color: white; padding: 16px 32px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; transition: transform .2s, box-shadow .2s; box-shadow: 0 0 40px rgba(99,102,241,.4); display: inline-flex; align-items: center; gap: 8px; }
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(99,102,241,.6); }
   .btn-secondary { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); color: #e2e8f0; padding: 16px 36px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 16px; transition: background .2s; }
   .btn-secondary:hover { background: rgba(255,255,255,.09); }
-  .hero-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-60%); width: 800px; height: 500px; background: radial-gradient(ellipse, rgba(99,102,241,.15) 0%, transparent 70%); pointer-events: none; z-index: -1; }
+
+  /* Phone mockup */
+  .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+  .phone-wrap { position: relative; z-index: 2; }
+  .phone {
+    width: 260px;
+    background: #111827;
+    border-radius: 40px;
+    border: 2px solid rgba(255,255,255,.12);
+    box-shadow: 0 32px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.05);
+    overflow: hidden;
+    position: relative;
+  }
+  .phone-notch {
+    width: 80px; height: 22px;
+    background: #111827;
+    border-radius: 0 0 16px 16px;
+    margin: 0 auto;
+    position: relative; z-index: 2;
+    border: 2px solid rgba(255,255,255,.1);
+    border-top: none;
+  }
+  .phone-status {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 4px 16px 0;
+    font-size: 10px; color: #94a3b8; font-weight: 600;
+  }
+  .wa-header {
+    background: #1f2937;
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .wa-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800; color: white; flex-shrink: 0;
+  }
+  .wa-name { font-size: 13px; font-weight: 700; color: #f1f5f9; }
+  .wa-online { font-size: 10px; color: #22c55e; }
+  .wa-body {
+    background: #0b1014;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' fill='none'/%3E%3C/svg%3E");
+    padding: 12px 10px;
+    min-height: 320px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .wa-msg {
+    background: #1f2937;
+    border-radius: 12px 12px 12px 2px;
+    padding: 9px 12px;
+    max-width: 85%;
+    align-self: flex-start;
+  }
+  .wa-msg p { font-size: 12px; color: #e2e8f0; line-height: 1.5; margin: 0; }
+  .wa-msg .wa-time { font-size: 9px; color: #64748b; text-align: right; margin-top: 4px; }
+  .wa-pdf {
+    background: #1f2937;
+    border-radius: 12px 12px 12px 2px;
+    padding: 10px 12px;
+    max-width: 90%;
+    align-self: flex-start;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .wa-pdf-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(239,68,68,.15); border: 1px solid rgba(239,68,68,.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .wa-pdf-name { font-size: 11px; color: #f1f5f9; font-weight: 600; }
+  .wa-pdf-size { font-size: 10px; color: #64748b; }
+  .wa-user-msg {
+    background: #1a3a2a;
+    border: 1px solid rgba(34,197,94,.15);
+    border-radius: 12px 12px 2px 12px;
+    padding: 9px 12px;
+    max-width: 80%;
+    align-self: flex-end;
+  }
+  .wa-user-msg p { font-size: 12px; color: #e2e8f0; margin: 0; }
+  .wa-user-msg .wa-time { font-size: 9px; color: #64748b; text-align: right; margin-top: 4px; }
+
+  /* Floating card */
+  .float-card {
+    position: absolute;
+    bottom: -20px; right: -60px;
+    width: 220px;
+    background: rgba(15,18,30,.95);
+    border: 1px solid rgba(99,102,241,.3);
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 16px 48px rgba(0,0,0,.5);
+    z-index: 3;
+    backdrop-filter: blur(12px);
+  }
+  .float-card-title { font-size: 10px; color: #6366f1; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
+  .float-table { width: 100%; border-collapse: collapse; }
+  .float-table th { font-size: 9px; color: #475569; font-weight: 600; text-align: left; padding: 3px 4px; border-bottom: 1px solid rgba(255,255,255,.06); }
+  .float-table td { font-size: 10px; color: #94a3b8; padding: 4px 4px; border-bottom: 1px solid rgba(255,255,255,.04); }
+  .score-pill { display: inline-block; background: rgba(34,197,94,.15); color: #22c55e; border-radius: 4px; padding: 1px 5px; font-size: 9px; font-weight: 700; }
+
+  /* blob glow behind phone */
+  .phone-glow {
+    position: absolute;
+    width: 340px; height: 340px;
+    background: radial-gradient(ellipse, rgba(99,102,241,.2) 0%, transparent 65%);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+
+  @media (max-width: 860px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+    .hero-text { text-align: center; }
+    .hero-bullets li { justify-content: center; }
+    .hero-cta-group { align-items: center; }
+    .hero-visual { margin-top: 0; }
+    .float-card { right: -10px; bottom: -30px; width: 180px; }
+  }
+  @media (max-width: 480px) {
+    .float-card { display: none; }
+    .phone { width: 220px; }
+  }
   
   /* LOGOS */
   #logos { padding: 32px 0; border-top: 1px solid rgba(255,255,255,.06); border-bottom: 1px solid rgba(255,255,255,.06); }
@@ -161,23 +323,98 @@
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-glow"></div>
   <div class="container">
-    <div class="hero-badge"><span></span> Para micro y pequeñas empresas en Perú</div>
-    <h1>Pipeline_X busca empresas por ti y <span class="gradient-text">te las manda por WhatsApp</span></h1>
-    <p>Deja de perder horas buscando leads. Recibe un PDF con empresas verificadas, con teléfono y rubro listos para contactar.</p>
-    <ul style="list-style:none;max-width:540px;margin:0 auto 32px;text-align:left;display:flex;flex-direction:column;gap:10px;">
-      <li style="color:#94a3b8;font-size:15px;">✓ Deja de perder horas en Google Maps y SUNAT</li>
-      <li style="color:#94a3b8;font-size:15px;">✓ Recibe 20–30 negocios parecidos a tus mejores clientes</li>
-      <li style="color:#94a3b8;font-size:15px;">✓ Solo necesitas WhatsApp y saber abrir un PDF</li>
-    </ul>
-    <div class="hero-buttons">
-      <a href="https://wa.me/51902126765?text=Hola,%20quiero%20mi%20primer%20listado%20de%20empresas%20gratis" class="btn-primary" target="_blank">
-        📱 Probar gratis por WhatsApp
-      </a>
-      <a href="#how" class="btn-secondary">Ver cómo funciona</a>
+    <div class="hero-inner">
+
+      <!-- Texto -->
+      <div class="hero-text">
+        <div class="hero-badge"><span></span> Para micro y pequeñas empresas en Perú</div>
+        <h1>Pipeline_X busca empresas por ti y <span class="gradient-text">te las manda por WhatsApp</span></h1>
+        <p class="hero-sub">MYPE en Perú: deja de pasar horas buscando leads. Recibe un PDF con empresas verificadas, con teléfono y rubro listos para contactar.</p>
+        <ul class="hero-bullets">
+          <li>Deja de perder horas en Google Maps y SUNAT</li>
+          <li>Recibe 20–30 negocios parecidos a tus mejores clientes</li>
+          <li>Solo necesitas WhatsApp y saber abrir un PDF</li>
+        </ul>
+        <div class="hero-cta-group">
+          <a href="https://wa.me/51902126765?text=Hola,%20quiero%20mi%20primer%20listado%20de%20empresas%20gratis" class="btn-primary" target="_blank">
+            📱 Probar gratis por WhatsApp
+          </a>
+          <span class="hero-microcopy">Sin contratos largos. Primer listado sin compromiso.</span>
+        </div>
+      </div>
+
+      <!-- Visual: teléfono + tarjeta flotante -->
+      <div class="hero-visual">
+        <div class="phone-glow"></div>
+        <div class="phone-wrap">
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-status">
+              <span>9:41</span>
+              <span>▐▐▐ 100%</span>
+            </div>
+            <div class="wa-header">
+              <div class="wa-avatar">PX</div>
+              <div>
+                <div class="wa-name">Pipeline_X</div>
+                <div class="wa-online">● en línea</div>
+              </div>
+            </div>
+            <div class="wa-body">
+              <!-- Mensaje usuario -->
+              <div class="wa-user-msg">
+                <p>Ferreterías en Trujillo</p>
+                <div class="wa-time">9:38 ✓✓</div>
+              </div>
+              <!-- Respuesta bot -->
+              <div class="wa-msg">
+                <p>🔍 Buscando <strong>Ferreterías en Trujillo</strong>…<br>Esto toma unos 2 minutos ⏱️</p>
+                <div class="wa-time">9:38</div>
+              </div>
+              <!-- PDF -->
+              <div class="wa-msg" style="padding:0;overflow:hidden;border-radius:12px 12px 12px 2px;">
+                <div style="background:#1a2535;padding:10px 12px;display:flex;align-items:center;gap:10px;">
+                  <div class="wa-pdf-icon">📄</div>
+                  <div>
+                    <div class="wa-pdf-name">Reporte_Ferreterias_Trujillo.pdf</div>
+                    <div class="wa-pdf-size">18 leads · 2.3 MB</div>
+                  </div>
+                </div>
+                <div style="padding:8px 12px;">
+                  <p style="font-size:12px;color:#e2e8f0;margin:0;">¡Listo! 🚀 Aquí tienes tu reporte con <strong>18 ferreterías en Trujillo</strong>. Incluye teléfono, score y mensaje sugerido.</p>
+                  <div class="wa-time" style="margin-top:4px;">9:41</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta flotante extracto del PDF -->
+          <div class="float-card">
+            <div class="float-card-title">📊 Extracto del reporte</div>
+            <table class="float-table">
+              <tr>
+                <th>Negocio</th>
+                <th>Score</th>
+              </tr>
+              <tr>
+                <td>Ferret. El Clavo</td>
+                <td><span class="score-pill">92</span></td>
+              </tr>
+              <tr>
+                <td>Dist. San Andrés</td>
+                <td><span class="score-pill">87</span></td>
+              </tr>
+              <tr>
+                <td>Ferret. Central</td>
+                <td><span class="score-pill">81</span></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <p style="text-align:center;color:#475569;font-size:13px;margin-top:16px;">Sin contratos largos. Primer listado sin compromiso.</p>
   </div>
 </section>
 
