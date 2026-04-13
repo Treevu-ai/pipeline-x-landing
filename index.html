@@ -27,14 +27,21 @@
   }
 
   /* ── LAYOUT ─────────────────────────────────────────────────── */
-  /* Respond.io usa padding lateral amplio, sin max-width fijo en secciones */
   .wrap {
     width: 100%;
     max-width: 1280px;
     margin: 0 auto;
     padding: 0 48px;
   }
-  @media (max-width: 768px) { .wrap { padding: 0 20px; } }
+  /* Hero usa ancho completo sin max-width */
+  .hero-wrap {
+    width: 100%;
+    padding: 0 64px;
+  }
+  @media (max-width: 768px) {
+    .wrap { padding: 0 20px; }
+    .hero-wrap { padding: 0 20px; }
+  }
   section { padding: 112px 0; }
 
   /* ── NAV ─────────────────────────────────────────────────────── */
@@ -244,8 +251,13 @@
   }
 
   /* Hero responsive */
-  @media (max-width: 900px) {
-    .hero-inner { grid-template-columns: 1fr; gap: 60px; }
+  @media (max-width: 1024px) {
+    .hero-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .phone { width: 240px; }
+    .float-card { right: -8px; bottom: -28px; width: 190px; }
+  }
+  @media (max-width: 768px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 56px; }
     .hero-text { text-align: center; }
     .hero-sub { max-width: 100%; margin-left: auto; margin-right: auto; }
     .hero-bullets li { justify-content: center; }
@@ -446,7 +458,7 @@
 
 <!-- HERO -->
 <section id="hero">
-    <div class="wrap">
+  <div class="hero-wrap">
     <div class="hero-inner">
 
       <!-- Texto -->
@@ -537,8 +549,8 @@
         </div>
       </div>
 
-    </div>
-  </div>
+    </div><!-- /hero-inner -->
+  </div><!-- /hero-wrap -->
 </section>
 
 <!-- PAIN -->
