@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 const HERO_IMG  = 'https://images.pexels.com/photos/19985010/pexels-photo-19985010.jpeg?auto=compress&cs=tinysrgb&w=1600'
 const HERO_CAFE = 'https://images.unsplash.com/photo-1453614512568-c4024d13c247?auto=format&fit=crop&w=1600&q=80'
 const TG_BOT   = 'https://t.me/Pipeline_X_bot?start=demo'
-const WA_BOT   = 'https://wa.me/51902126765?text=' + encodeURIComponent('Hola, quiero ver mi demo gratuita de Pipeline_X')
+const WA_BOT   = 'https://wa.me/51902126765?text=' + encodeURIComponent('Hola, quiero mi primer listado de empresas gratis')
 
 // ── Paleta luxury B&W ─────────────────────────────────────────────────────────
 const DIM = 'rgba(255,255,255,0.05)'
@@ -20,9 +20,9 @@ const Gr = ({ children }) => <span style={GRAD_STYLE}>{children}</span>
 
 const CHIPS = [
   { icon: '🇵🇪', label: 'Hecho para Perú' },
-  { icon: '🏛️', label: 'SUNAT validado' },
-  { icon: '🤖', label: 'Optimizado con IA local' },
-  { icon: '🏷️', label: 'White-label' },
+  { icon: '🏛️', label: 'Datos verificados SUNAT' },
+  { icon: '📱', label: 'Solo necesitas WhatsApp' },
+  { icon: '⏱️', label: 'Primer reporte en 24 h' },
 ]
 
 const MOCK_LEADS = [
@@ -507,34 +507,31 @@ function Navbar({ onOpenForm }) {
 
 const TERMINAL_LINES = [
   // ── Scan 1 ────────────────────────────────────────────────────────────────
-  { text: '$ pipeline_x scan --target "contables Lima"',           type: 'cmd',    pause: 360 },
-  { text: '> Conectando a Google Maps API...',                     type: 'info',   pause: 190 },
-  { text: '> [████████████] 1,240 registros encontrados',          type: 'ok',     pause: 200 },
-  { text: '> Extrayendo: nombre, teléfono, dirección, rating',     type: 'info',   pause: 190 },
-  { text: '> Cruzando con SUNAT — RUC, régimen, CIIU...',         type: 'info',   pause: 210 },
-  { text: '> Aplicando score IA (0–100)...',                       type: 'info',   pause: 190 },
-  { text: '> ✓ 487 calificados   ✗ 362 descartados',              type: 'result', pause: 260 },
-  { text: '> Done in 23s — reporte listo.',                        type: 'ok',     pause: 200 },
-  { text: '',                                                        type: 'normal', pause: 55  },
+  { text: 'WhatsApp: "Ferreterías en Los Olivos, Lima"',            type: 'cmd',    pause: 360 },
+  { text: '> Buscando en Google Maps...',                           type: 'info',   pause: 190 },
+  { text: '> [████████████] 94 negocios encontrados',               type: 'ok',     pause: 200 },
+  { text: '> Verificando que existan y tengan teléfono...',         type: 'info',   pause: 210 },
+  { text: '> Priorizando los más activos y con mayor potencial...', type: 'info',   pause: 210 },
+  { text: '> ✓ 28 listos para llamar   ✗ 66 descartados',          type: 'result', pause: 260 },
+  { text: '> PDF generado — enviando a tu WhatsApp ✓',             type: 'ok',     pause: 200 },
+  { text: '',                                                         type: 'normal', pause: 55  },
   // ── Scan 2 ────────────────────────────────────────────────────────────────
-  { text: '$ pipeline_x scan --target "ferreterías Trujillo"',     type: 'cmd',    pause: 360 },
-  { text: '> Conectando a Google Maps API...',                     type: 'info',   pause: 190 },
-  { text: '> [████████████] 843 registros encontrados',            type: 'ok',     pause: 200 },
-  { text: '> Extrayendo: nombre, teléfono, dirección, rating',     type: 'info',   pause: 190 },
-  { text: '> Cruzando con SUNAT — RUC, régimen, CIIU...',         type: 'info',   pause: 210 },
-  { text: '> Aplicando score IA (0–100)...',                       type: 'info',   pause: 190 },
-  { text: '> ✓ 312 calificados   ✗ 198 descartados',              type: 'result', pause: 260 },
-  { text: '> Done in 19s — reporte listo.',                        type: 'ok',     pause: 200 },
-  { text: '',                                                        type: 'normal', pause: 55  },
+  { text: 'WhatsApp: "Restaurantes en Miraflores"',                 type: 'cmd',    pause: 360 },
+  { text: '> Buscando en Google Maps...',                           type: 'info',   pause: 190 },
+  { text: '> [████████████] 71 negocios encontrados',               type: 'ok',     pause: 200 },
+  { text: '> Verificando que existan y tengan teléfono...',         type: 'info',   pause: 210 },
+  { text: '> Priorizando los más activos y con mayor potencial...', type: 'info',   pause: 210 },
+  { text: '> ✓ 22 listos para llamar   ✗ 49 descartados',          type: 'result', pause: 260 },
+  { text: '> PDF generado — enviando a tu WhatsApp ✓',             type: 'ok',     pause: 200 },
+  { text: '',                                                         type: 'normal', pause: 55  },
   // ── Scan 3 ────────────────────────────────────────────────────────────────
-  { text: '$ pipeline_x scan --target "clínicas Arequipa"',        type: 'cmd',    pause: 360 },
-  { text: '> Conectando a Google Maps API...',                     type: 'info',   pause: 190 },
-  { text: '> [████████████] 621 registros encontrados',            type: 'ok',     pause: 200 },
-  { text: '> Extrayendo: nombre, teléfono, dirección, rating',     type: 'info',   pause: 190 },
-  { text: '> Cruzando con SUNAT — RUC, régimen, CIIU...',         type: 'info',   pause: 210 },
-  { text: '> Aplicando score IA (0–100)...',                       type: 'info',   pause: 190 },
-  { text: '> ✓ 248 calificados   ✗ 143 descartados',              type: 'result', pause: 260 },
-  { text: '> Done in 17s — reporte listo.',                        type: 'ok',     pause: 2200 },
+  { text: 'WhatsApp: "Clínicas en Arequipa"',                       type: 'cmd',    pause: 360 },
+  { text: '> Buscando en Google Maps...',                           type: 'info',   pause: 190 },
+  { text: '> [████████████] 58 negocios encontrados',               type: 'ok',     pause: 200 },
+  { text: '> Verificando que existan y tengan teléfono...',         type: 'info',   pause: 210 },
+  { text: '> Priorizando los más activos y con mayor potencial...', type: 'info',   pause: 210 },
+  { text: '> ✓ 19 listos para llamar   ✗ 39 descartados',          type: 'result', pause: 260 },
+  { text: '> PDF generado — enviando a tu WhatsApp ✓',             type: 'ok',     pause: 2200 },
 ]
 const LC = { cmd: '#e5e5e5', info: '#a0a0a0', ok: '#ffffff', result: '#cccccc', normal: '#b0b0b0' }
 
@@ -600,26 +597,26 @@ function Hero({ onOpenForm }) {
 
         {/* Izquierda */}
         <div className="lg:w-[46%] flex flex-col justify-center">
-          <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/75 mb-5">Contadores · Consultoras · Agencias · Resellers</p>
+          <p className="font-mono text-xs tracking-[0.2em] uppercase text-white/75 mb-5">Para dueños y gerentes de pequeños negocios en Perú</p>
 
           <h1 className="font-mono font-bold text-white leading-[1.1] mb-5" style={{ fontSize: 'clamp(1.9rem,4.5vw,3.1rem)' }}>
-            Tus clientes ya te preguntan cómo conseguir más clientes.<br />
-            <Gr>Cada vez que dices "eso no es lo mío", alguien más lo cobra.</Gr>
+            Consigue empresas para vender<br />
+            <Gr>en menos de 24 horas.</Gr>
           </h1>
           <p className="font-mono text-base text-white leading-relaxed mb-8"
              style={{textShadow: '0 1px 12px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,0.8)'}}>
-            Pipeline_X genera el reporte de prospectos en 24 h. Tú lo entregas con tu nombre y defines el precio. Primer reporte completamente gratis.
+            Te enviamos un PDF con 20–30 negocios reales en Perú, filtrados por rubro y ciudad, con teléfonos listos para llamar o escribir por WhatsApp. Primer reporte completamente gratis.
           </p>
 
           <ul className="space-y-2.5 mb-7">
             <li className="font-mono text-base text-white/85 flex items-center gap-3">
-              <span className="text-white/65">—</span> Sin herramientas que aprender ni equipo que contratar
+              <span className="text-white/65">—</span> Olvídate de pasar horas en Google Maps buscando uno por uno
             </li>
             <li className="font-mono text-base text-white/85 flex items-center gap-3">
-              <span className="text-white/65">—</span> Google Maps local + SUNAT — <Gr>validado para Perú, 15 ciudades</Gr>
+              <span className="text-white/65">—</span> Negocios parecidos a tus mejores clientes — <Gr>con datos verificados, 15 ciudades</Gr>
             </li>
             <li className="font-mono text-base text-white/85 flex items-center gap-3">
-              <span className="text-white/65">—</span> White-label: tu cliente recibe el reporte con tu marca, no la nuestra
+              <span className="text-white/65">—</span> Si tienes WhatsApp y sabes abrir un PDF, ya puedes usar Pipeline_X
             </li>
           </ul>
 
@@ -634,12 +631,12 @@ function Hero({ onOpenForm }) {
             ))}
           </div>
 
-          {/* ── Precio con economics de Agency ── */}
+          {/* ── Comparativa de costo ── */}
           <div className="flex gap-8 mb-10 border-t border-white/10 pt-8">
             {[
-              { v: 'S/400–600', l: 'cobras / reporte' },
-              { v: 'desde S/149', l: 'pagas / mes (Starter)', hi: true },
-              { v: 'S/1,099',  l: 'plan Reseller (reventa)' },
+              { v: 'S/800–1,200', l: 'cuesta un vendedor/mes' },
+              { v: 'desde S/149', l: 'con Pipeline_X/mes', hi: true },
+              { v: '3 días', l: 'de acceso completo gratis al escribirnos' },
             ].map(({ v, l, hi }) => (
               <div key={l}>
                 <div className="font-mono font-bold" style={{ fontSize: '1.15rem', ...(hi ? GRAD_STYLE : { color: '#fff' }) }}>{v}</div>
@@ -663,18 +660,12 @@ function Hero({ onOpenForm }) {
                     className="font-mono font-bold text-sm text-black px-7 py-3.5 active:scale-95 transition-all tracking-wide flex items-center gap-2"
                     style={{ background: '#25D366' }}>
                     <svg viewBox="0 0 24 24" style={{ width: 16, height: 16, fill: '#000', flexShrink: 0 }} aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
-                    Demo en WhatsApp
+                    Quiero mi primer listado gratis
                   </a>
-                  <a href={TG_BOT} target="_blank" rel="noopener noreferrer"
-                    className="font-mono font-bold text-sm text-black px-7 py-3.5 active:scale-95 transition-all tracking-wide flex items-center gap-2"
-                    style={{ background: '#2AABEE' }}>
-                    <svg viewBox="0 0 24 24" style={{ width: 16, height: 16, fill: '#000', flexShrink: 0 }} aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                    Demo en Telegram
+                  <a href="#como-funciona"
+                    className="font-mono text-xs text-white/60 hover:text-white/90 transition-colors tracking-wider underline underline-offset-4">
+                    Ver cómo funciona ↓
                   </a>
-                  <button onClick={onOpenForm}
-                    className="font-mono text-xs text-white/50 hover:text-white/80 transition-colors tracking-wider underline underline-offset-4">
-                    o solicitar por email
-                  </button>
                 </div>
               </>
             ) : (
@@ -742,8 +733,8 @@ const STEPS = [
         <line x1="23" y1="14" x2="26" y2="14"/>
       </svg>
     ),
-    title: 'Apunta al target',
-    body: 'Industria + ciudad. Cobertura en las 15 ciudades principales del Perú. Ej: "Estudios contables en Lima" o "Ferreterías en Trujillo". En menos de 5 minutos.',
+    title: 'Dinos qué vendes y en qué ciudad',
+    body: 'Escríbenos por WhatsApp con el rubro y la ciudad que quieres atacar. Ej: "Ferreterías en Trujillo" o "Restaurantes en Miraflores". Sin formularios complicados.',
   },
   {
     n: '02',
@@ -759,8 +750,8 @@ const STEPS = [
         <line x1="19" y1="21" x2="19" y2="25"/>
       </svg>
     ),
-    title: 'Pipeline_X escanea y valida',
-    body: 'Nuestro agente recorre Google Maps, extrae contactos reales y cruza datos oficiales de SUNAT (estado fiscal, régimen tributario, CIIU). Solo avanza con empresas activas y con alto potencial comercial.',
+    title: 'Buscamos los negocios que encajan',
+    body: 'Buscamos en Google Maps y verificamos que las empresas existan de verdad usando fuentes oficiales. Solo incluimos negocios activos con teléfono real — descartamos los que no sirven.',
   },
   {
     n: '03',
@@ -773,8 +764,8 @@ const STEPS = [
         <polyline points="9 10 11 10"/>
       </svg>
     ),
-    title: 'Recibe tu reporte',
-    body: 'En menos de 24 h por @Pipeline_X_bot: CSV + HTML listo para presentar con tu logo. Tú lo entregas, tú cobras.',
+    title: 'Recibes el PDF en tu WhatsApp',
+    body: 'En menos de 24 horas te llega un PDF con 20–30 negocios: nombre, distrito, teléfono y un mensaje listo para enviar. Solo abre el archivo y empieza a llamar.',
   },
 ]
 
@@ -824,11 +815,13 @@ function HowItWorks({ onOpenForm }) {
 
         {/* CTA al final de la sección */}
         <div className="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-8 border-t border-white/6">
-          <p className="font-mono text-sm text-white/55">Primer reporte gratis. Sin contratos. Sin tarjeta.</p>
-          <button onClick={onOpenForm}
-            className="font-mono font-bold text-sm text-black bg-white px-7 py-3.5 hover:bg-white/90 active:scale-95 transition-all tracking-wide w-full sm:w-fit whitespace-nowrap">
-            Solicitar reporte gratis →
-          </button>
+          <p className="font-mono text-sm text-white/55">Primer listado gratis. Sin contratos. Sin tarjeta.</p>
+          <a href={WA_BOT} target="_blank" rel="noopener noreferrer"
+            className="font-mono font-bold text-sm text-black px-7 py-3.5 active:scale-95 transition-all tracking-wide w-full sm:w-fit whitespace-nowrap flex items-center justify-center gap-2"
+            style={{ background: '#25D366' }}>
+            <svg viewBox="0 0 24 24" style={{ width: 15, height: 15, fill: '#000', flexShrink: 0 }} aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+            Quiero mi primer listado gratis →
+          </a>
         </div>
       </div>
     </section>
@@ -851,14 +844,14 @@ const CHANNELS = [
     sub:         '10 búsquedas/mes · 20 leads · sin contrato',
     items: [
       { text: '10 búsquedas/mes · 20 leads por búsqueda',     ok: true  },
-      { text: 'Score 0–100 + acción sugerida por IA',          ok: true  },
+      { text: 'Prioridad de cada negocio (quién puede pagar más)',ok: true  },
       { text: 'Entrega por WhatsApp',                          ok: true  },
-      { text: 'PDF con mensajes listos',                       ok: true  },
-      { text: 'Enrichment SUNAT',                              ok: false },
-      { text: 'Acceso API REST',                               ok: false },
+      { text: 'PDF con mensajes listos para enviar',           ok: true  },
+      { text: 'Datos verificados (empresa activa, teléfono)',  ok: false },
+      { text: 'Acceso API',                                    ok: false },
       { text: 'White-label',                                   ok: false },
     ],
-    note:  'Para freelancers y vendedores independientes.',
+    note:  'Para emprendedores y vendedores que recién arrancan.',
     cta:   'Elegir Básico →',
     dark:  false,
     hi:    false,
@@ -875,15 +868,15 @@ const CHANNELS = [
     annualSave:  'Ahorras S/360/año (~2 meses gratis)',
     sub:         'Reportes ilimitados · 30 leads · todo incluido',
     items: [
-      { text: 'Ilimitado · 30 leads calificados por búsqueda', ok: true  },
-      { text: 'Score 0–100 + acción sugerida por IA',         ok: true  },
-      { text: 'Enrichment SUNAT (capacidad de pago)',         ok: true  },
-      { text: 'Reporte HTML + Export CSV',                    ok: true  },
-      { text: 'Acceso API REST',                              ok: true  },
-      { text: 'Soporte por email',                            ok: true  },
-      { text: 'White-label',                                  ok: false },
+      { text: 'Ilimitado · 30 negocios listos por búsqueda',    ok: true  },
+      { text: 'Prioridad de cada negocio (quién llama primero)', ok: true },
+      { text: 'Empresa verificada: activa, con teléfono real',  ok: true  },
+      { text: 'PDF + archivo Excel descargable',               ok: true  },
+      { text: 'Soporte por WhatsApp',                          ok: true  },
+      { text: 'Acceso API',                                    ok: true  },
+      { text: 'White-label',                                   ok: false },
     ],
-    note:  'El trabajo de un vendedor dedicado a prospección, por el precio de una suscripción.',
+    note:  'El trabajo de prospectar toda la semana, por menos de lo que cuesta un empleado.',
     cta:   'Elegir Starter →',
     dark:  true,
     hi:    true,
@@ -900,13 +893,13 @@ const CHANNELS = [
     annualSave:  'Ahorras S/600/año (~2 meses gratis)',
     sub:         'Reportes ilimitados · 50 leads · equipos activos',
     items: [
-      { text: 'Ilimitado · 50 leads calificados por búsqueda', ok: true  },
-      { text: 'Score 0–100 + acción sugerida por IA',         ok: true  },
-      { text: 'Enrichment SUNAT + contactos web',             ok: true  },
-      { text: 'Reporte HTML + Export CSV',                    ok: true  },
-      { text: 'API REST + webhooks',                          ok: true  },
-      { text: 'Soporte prioritario en español',               ok: true  },
-      { text: 'White-label',                                  ok: false },
+      { text: 'Ilimitado · 50 negocios listos por búsqueda',    ok: true  },
+      { text: 'Prioridad de cada negocio (quién llama primero)', ok: true },
+      { text: 'Empresa verificada + datos de contacto web',    ok: true  },
+      { text: 'PDF + archivo Excel descargable',               ok: true  },
+      { text: 'API + integraciones',                           ok: true  },
+      { text: 'Soporte prioritario en español',                ok: true  },
+      { text: 'White-label',                                   ok: false },
     ],
     note:  'Con 2 clientes nuevos al mes ya se paga solo.',
     cta:   'Elegir Pro →',
@@ -941,11 +934,11 @@ const CHANNELS = [
 ]
 
 const COMMON_INCLUDES = [
-  'Prospectos con datos enriquecidos (teléfono, insights de empresa)',
-  'Agente IA con seguimiento básico automático',
-  'Reportes en PDF profesionales listos para entregar',
-  'Actualizaciones continuas de IA sin costo adicional',
-  'Garantía: si en el 1er mes no ves valor, te devolvemos el dinero',
+  'Negocios con teléfono real, verificados de fuentes oficiales',
+  'Mensaje listo para cada negocio — solo copia y envía',
+  'PDF profesional descargable en menos de 24 h',
+  'Mejoras continuas sin costo adicional',
+  'Garantía: si el 1er reporte no tiene 5 negocios útiles, te hacemos otro gratis',
 ]
 
 function TwoChannels({ onOpenForm }) {
@@ -1171,12 +1164,12 @@ function Testimonials() {
 
 const FEATURES = [
   { label: 'Precio mensual',            px: 'desde S/149', kommo: '$200+', hubspot: '$800+', leadsales: '$150+' },
-  { label: 'IA local (datos no salen)', px: true,     kommo: false,  hubspot: false,   leadsales: false  },
-  { label: 'Scraping Google Maps',       px: true,     kommo: false,  hubspot: false,   leadsales: false  },
-  { label: 'Validación SUNAT incluida',  px: true,     kommo: false,  hubspot: false,   leadsales: false  },
-  { label: 'White-label',                px: true,     kommo: false,  hubspot: false,   leadsales: false  },
-  { label: 'Para intermediarios',        px: true,     kommo: false,  hubspot: false,   leadsales: false  },
-  { label: 'Sin cobro por usuario/asiento', px: true,   kommo: false,  hubspot: false,   leadsales: false  },
+  { label: 'Funciona solo con WhatsApp',    px: true,     kommo: false,  hubspot: false,   leadsales: false  },
+  { label: 'Busca en Google Maps Perú',     px: true,     kommo: false,  hubspot: false,   leadsales: false  },
+  { label: 'Verifica empresa con SUNAT',    px: true,     kommo: false,  hubspot: false,   leadsales: false  },
+  { label: 'Precio en soles',               px: true,     kommo: false,  hubspot: false,   leadsales: false  },
+  { label: 'Entrega en menos de 24 h',      px: true,     kommo: false,  hubspot: false,   leadsales: false  },
+  { label: 'Sin cobro por usuario/asiento', px: true,     kommo: false,  hubspot: false,   leadsales: false  },
 ]
 const COLS = [
   { key: 'px',        label: 'Pipeline_X', hi: true  },
@@ -1201,7 +1194,7 @@ function Comparison({ onOpenForm }) {
           Por qué <Gr>Pipeline_X</Gr> es diferente
         </h2>
         <p className="font-mono text-sm text-white/60 mb-10 max-w-xl leading-relaxed">
-          Contratar a alguien para prospectar cuesta miles al mes. Las herramientas globales escalan rápido con créditos y límites. Pipeline_X entrega resultado real desde S/149/mes — sin stack, sin personal, sin sorpresas.
+          Contratar a alguien para buscar clientes cuesta miles al mes. Las herramientas gringas cobran en dólares y no conocen Perú. Pipeline_X entrega un listado real desde S/149/mes — sin complicaciones, sin sorpresas.
         </p>
         <p className="font-mono text-xs text-white/50 mb-2 sm:hidden">← desliza para ver más →</p>
         <div className="overflow-x-auto">
@@ -1289,10 +1282,12 @@ function ReportPreview({ onOpenForm }) {
             generado en 23 min · export .csv · pipeline_x v2.1
           </div>
         </div>
-        <button onClick={onOpenForm}
-          className="mt-8 w-full font-mono font-bold text-sm text-white bg-black py-4 hover:bg-black/80 active:scale-95 transition-all tracking-wide">
-          Quiero un reporte así para mis clientes →
-        </button>
+        <a href={WA_BOT} target="_blank" rel="noopener noreferrer"
+          className="mt-8 w-full font-mono font-bold text-sm text-black py-4 active:scale-95 transition-all tracking-wide flex items-center justify-center gap-2"
+          style={{ background: '#25D366' }}>
+          <svg viewBox="0 0 24 24" style={{ width: 15, height: 15, fill: '#000', flexShrink: 0 }} aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          Quiero mi primer listado gratis →
+        </a>
       </div>
     </section>
   )
@@ -1431,11 +1426,11 @@ function PricingCalculator({ onOpenForm }) {
 const FAQS = [
   {
     q: '¿Puedo probar antes de comprometerme?',
-    a: 'Sí. El primer reporte es 100% gratuito — sin tarjeta, sin contrato. Escríbenos por WhatsApp o Telegram (@Pipeline_X_bot), dinos industria + ciudad y recibes el PDF en ~2 minutos.',
+    a: 'Sí. El primer listado es 100% gratuito — sin tarjeta, sin contrato. Escríbenos por WhatsApp, dinos qué vendes y en qué ciudad, y recibes el PDF directo en tu chat en pocos minutos.',
   },
   {
     q: '¿Los leads son reales o inventados?',
-    a: 'Son reales. Los extraemos de Google Maps (nombre, teléfono, dirección, rating) y los cruzamos con SUNAT (RUC, régimen tributario, CIIU, estado activo). No usamos bases de datos compradas ni datos inventados.',
+    a: 'Son reales. Los buscamos en Google Maps (nombre, teléfono, dirección) y verificamos que la empresa exista y esté activa usando SUNAT. No usamos bases de datos compradas ni datos inventados.',
   },
   {
     q: '¿En qué moneda facturan?',
@@ -1451,7 +1446,7 @@ const FAQS = [
   },
   {
     q: '¿Necesito saber de tecnología?',
-    a: 'No. Solo escríbenos por WhatsApp o Telegram con industria + ciudad. El reporte llega en ~2 minutos directo a tu chat. Cero stack técnico.',
+    a: 'No. Solo escríbenos por WhatsApp con el rubro y la ciudad que buscas. El PDF llega directo a tu chat. Si sabes usar WhatsApp, ya puedes usar Pipeline_X.',
   },
   {
     q: '¿Hay contrato de permanencia?',
@@ -1505,12 +1500,14 @@ function Footer({ onOpenForm }) {
       <div className={`max-w-4xl mx-auto px-6 py-14 flex flex-col md:flex-row md:items-center md:justify-between gap-8 transition-all duration-700 ${vis ? 'opacity-100' : 'opacity-0'}`}>
         <div>
           <p className="font-mono font-bold text-white text-xl mb-2 tracking-tight">¿Cuándo empezamos?</p>
-          <p className="font-mono text-base text-white/80">Primer reporte sin costo. En 24 horas en tu bandeja.</p>
+          <p className="font-mono text-base text-white/80">Primer listado gratis. En menos de 24 horas en tu WhatsApp.</p>
         </div>
-        <button onClick={onOpenForm}
-          className="font-mono font-bold text-sm text-black bg-white px-10 py-4 hover:bg-white/90 active:scale-95 transition-all tracking-wide w-fit whitespace-nowrap">
-          Solicitar reporte gratis →
-        </button>
+        <a href={WA_BOT} target="_blank" rel="noopener noreferrer"
+          className="font-mono font-bold text-sm text-black px-10 py-4 active:scale-95 transition-all tracking-wide w-fit whitespace-nowrap flex items-center gap-2"
+          style={{ background: '#25D366' }}>
+          <svg viewBox="0 0 24 24" style={{ width: 15, height: 15, fill: '#000', flexShrink: 0 }} aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          Quiero mi primer listado gratis →
+        </a>
       </div>
       <div className="max-w-4xl mx-auto px-6 pb-8 border-t border-white/5 pt-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-3">

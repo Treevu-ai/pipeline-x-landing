@@ -3,7 +3,7 @@ import { useState } from 'react'
 // ── Configura estos valores antes de publicar ─────────────────────────────────
 const TELEGRAM_BOT  = 'Pipeline_X_bot'
 const WHATSAPP_NUM  = '51902126765'
-const WHATSAPP_TEXT = encodeURIComponent('Hola, quiero ver mi demo gratuita de Pipeline_X')
+const WHATSAPP_TEXT = encodeURIComponent('Hola, quiero mi primer listado de empresas gratis')
 const API           = 'https://agentepyme-api-production.up.railway.app'
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -165,10 +165,10 @@ export default function CTA() {
         <div className="text-center mb-10">
           <p className="font-mono text-terminal text-sm mb-3">// demo gratuita</p>
           <h2 className="text-3xl font-bold mb-3">
-            Prueba Pipeline_X <span className="gradient-text">ahora mismo</span>
+            Empieza ahora por <span className="gradient-text">WhatsApp</span>
           </h2>
           <p className="text-slate-400 text-sm">
-            Sin tarjeta · 10 leads reales de tu industria · Listo en 5 minutos
+            Escribe "hola" al bot y recibe tu primer reporte en minutos. Sin registro, sin apps.
           </p>
         </div>
 
@@ -184,8 +184,8 @@ export default function CTA() {
               </svg>
             </span>
             <span className="flex-1 text-left">
-              <span className="block text-base">Ver mi demo en WhatsApp</span>
-              <span className="block text-xs font-normal opacity-70">Abre WhatsApp · respuesta inmediata</span>
+              <span className="block text-base">Probar gratis por WhatsApp</span>
+              <span className="block text-xs font-normal opacity-70">Sin compromiso · 10 leads reales</span>
             </span>
             <span className="text-lg">→</span>
           </a>

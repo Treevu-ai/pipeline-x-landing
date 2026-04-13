@@ -1,33 +1,33 @@
 const FEATURES = [
   {
-    icon: '🗺️',
-    title: 'Scraping inteligente',
-    desc: 'Extrae empresas de Google Maps con nombre, industria, teléfono, email, sitio web y calificación. Opcional: consulta SUNAT por RUC.',
-  },
-  {
-    icon: '🤖',
-    title: 'Calificación con IA',
-    desc: 'Score 0-100, etapa CRM, encaje con el producto, timeline de compra, tomador de decisión y bloqueadores identificados.',
-  },
-  {
-    icon: '✉️',
-    title: 'Mensajes personalizados',
-    desc: 'Borradores adaptados al sector de cada lead. Retail habla de inventario, Logística de costos operativos, Construcción de flujo de caja.',
+    icon: '🔍',
+    title: 'Búsqueda inteligente',
+    desc: 'Encontramos negocios reales en Google Maps. Filtramos por industria, ciudad y señales de actividad (reseñas, horarios, fotos).',
   },
   {
     icon: '📊',
-    title: 'Pipeline visual',
-    desc: 'Exporta a CSV o consulta la API. Integra con tu CRM, Google Sheets o cualquier herramienta que ya usas.',
+    title: 'Puntaje automático',
+    desc: 'Cada lead recibe un score 0-100 basado en reseñas, rating, ubicación y señales de capacidad de pago. Sabrás a quién llamar primero.',
   },
   {
-    icon: '⚡',
-    title: 'API REST',
-    desc: 'Endpoints para scrape, qualify, enrich y pipeline completo. Jobs en background para queries grandes. Documentación incluida.',
+    icon: '💬',
+    title: 'Mensajes personalizados',
+    desc: 'Te entregamos borradores listos para copiar, adaptados al sector y al dolor típico de cada tipo de negocio.',
   },
   {
-    icon: '🔒',
-    title: 'Sin datos en la nube',
-    desc: 'Tus leads son tuyos. No almacenamos ni compartimos información de tus prospectos con terceros.',
+    icon: '📱',
+    title: 'Entrega por WhatsApp',
+    desc: 'Recibes tus reportes directo en WhatsApp. Sin logins, sin dashboards, sin instalar nada.',
+  },
+  {
+    icon: '📄',
+    title: 'PDF detallado',
+    desc: 'Cada reporte incluye nombre, distrito, rubro, teléfono, enlace a Maps, score y siguiente acción recomendada.',
+  },
+  {
+    icon: '♾️',
+    title: 'Búsquedas ilimitadas',
+    desc: 'En los planes de pago puedes generar todos los reportes que quieras al mes, sin límite.',
   },
 ]
 
@@ -37,7 +37,8 @@ export default function Features() {
       <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-16">
           <p className="font-mono text-terminal text-sm mb-3">// capacidades</p>
-          <h2 className="text-4xl font-bold">Todo lo que necesitas para prospectar</h2>
+          <h2 className="text-4xl font-bold">Lo que incluye</h2>
+          <p className="text-slate-400 mt-4">Todo lo que necesitas para prospectar sin complicarte.</p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {FEATURES.map((f) => (

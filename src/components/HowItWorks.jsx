@@ -1,23 +1,23 @@
 const STEPS = [
   {
     num: '01',
-    title: 'Define tu búsqueda',
-    desc: 'Escribe la industria y ciudad que quieres atacar. "Retail Lima", "Logística Bogotá", "Construcción Trujillo".',
-    code: '$ pipeline_x scan "Retail Lima" --limit 100',
+    title: 'Le dices al bot qué buscas',
+    desc: 'Le mandas un mensaje tipo "Ferreterías en Trujillo" o "Clínicas en Arequipa". El bot entiende tu industria y ciudad automáticamente.',
+    code: 'WhatsApp: "Clínicas en Lima"',
     color: 'from-purple-600 to-purple-800',
   },
   {
     num: '02',
-    title: 'La IA califica cada lead',
-    desc: 'Pipeline_X analiza cada empresa con IA: asigna score 0-100, detecta el tomador de decisión y estima el timeline de compra.',
-    code: '✓ Bodega Central SAC — score: 82 — Calificado',
+    title: 'Nosotros buscamos y calificamos',
+    desc: 'Pipeline_X busca negocios reales en Google Maps, cruza datos con SUNAT y asigna un puntaje 0-100 a cada empresa.',
+    code: 'Score: 85 — Ferretería El Tornillo',
     color: 'from-emerald-600 to-emerald-800',
   },
   {
     num: '03',
-    title: 'Mensajes listos para enviar',
-    desc: 'Recibe un borrador personalizado por industria para cada lead calificado. Email o WhatsApp. Solo copia, revisa y envía.',
-    code: '"Hola [Nombre], vi que manejan +30 facturas pendientes..."',
+    title: 'Recibes el PDF por WhatsApp',
+    desc: 'En minutos recibes un PDF con empresas calificadas, datos de contacto y borradores de mensajes personalizados por industria.',
+    code: 'WhatsApp: "Aquí está tu reporte..."',
     color: 'from-blue-600 to-blue-800',
   },
 ]
@@ -28,7 +28,7 @@ export default function HowItWorks() {
       <div className="text-center mb-16">
         <p className="font-mono text-terminal text-sm mb-3">// proceso</p>
         <h2 className="text-4xl font-bold">Cómo funciona</h2>
-        <p className="text-slate-400 mt-4 max-w-md mx-auto">De cero a leads calificados con mensajes listos en menos de 5 minutos.</p>
+        <p className="text-slate-400 mt-4 max-w-md mx-auto">3 pasos, todo por WhatsApp. Sin instalar apps.</p>
       </div>
 
       <div className="space-y-6">

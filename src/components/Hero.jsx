@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 // ── Configura estos valores antes de publicar ─────────────────────────────────
 const TELEGRAM_BOT  = 'Pipeline_X_bot'
 const WHATSAPP_NUM  = '51902126765'
-const WHATSAPP_TEXT = encodeURIComponent('Hola, quiero ver mi demo gratuita de Pipeline_X')
+const WHATSAPP_TEXT = encodeURIComponent('Hola, quiero mi primer listado de empresas gratis')
 // ─────────────────────────────────────────────────────────────────────────────
 
 const TELEGRAM_URL  = `https://t.me/${TELEGRAM_BOT}?start=demo`
@@ -72,28 +72,26 @@ export default function Hero() {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-xs text-slate-300 mb-8 font-mono">
           <span className="w-1.5 h-1.5 rounded-full bg-terminal animate-pulse" />
-          Para dueños y gerentes de pequeños negocios en Perú
+          Para micro y pequeñas empresas en Perú
         </div>
 
         {/* Headline */}
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight mb-6 text-white drop-shadow-lg">
-          ¿Buscas más clientes pero<br />
-          <span className="gradient-text">no tienes equipo de ventas?</span>
+          Consigue empresas para vender<br />
+          <span className="gradient-text">en menos de 24 horas</span>
         </h1>
 
         <p className="text-lg text-slate-300 max-w-2xl mx-auto mb-3 leading-relaxed drop-shadow">
-          Dinos a quién buscas y en qué ciudad. En minutos recibes
-          directo en tu WhatsApp una lista de prospectos calificados —
-          con teléfono, score y mensaje listo para enviar.
+          Deja de perder horas buscando leads. Recibe un PDF con empresas verificadas, 
+          con teléfono y rubro listos para contactar — todo por WhatsApp.
         </p>
 
         {/* Comparativa de ahorro */}
-        <p className="text-sm text-slate-400 mb-10 font-mono">
-          <span className="text-red-400 line-through mr-2">S/1,200/mes en un vendedor</span>
-          <span className="text-terminal font-bold">S/149/mes con Pipeline_X</span>
-          <span className="text-slate-500 mx-2">·</span>
-          Sin tarjeta · 10 leads gratis · Listo en 5 min
-        </p>
+        <div className="text-sm text-slate-400 mb-10 space-y-1 font-mono">
+          <p>✓ Deja de perder horas en Google Maps y SUNAT</p>
+          <p>✓ Recibe 20–30 negocios similares a tus mejores clientes</p>
+          <p>✓ Solo necesitas WhatsApp y saber abrir un PDF</p>
+        </div>
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
@@ -107,7 +105,7 @@ export default function Hero() {
             <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
             </svg>
-            Ver mi demo en WhatsApp
+            Probar gratis por WhatsApp
           </a>
 
           <a
