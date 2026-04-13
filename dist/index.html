@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline_X — SDR Automatizado para MIPYME en LatAm</title>
+<meta name="description" content="Encuentra leads calificados en Google Maps, califícalos con IA y recibe mensajes de outreach listos. Todo en minutos, sin CRM costoso.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #e2e8f0; line-height: 1.6; overflow-x: hidden; }
+  
+  h1,h2,h3,h4 { font-weight: 700; line-height: 1.2; }
+  .gradient-text { background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 96px 0; }
+  
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+  
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(16px); background: rgba(10,10,15,.7); border-bottom: 1px solid rgba(255,255,255,.06); }
+  .nav-logo { font-size: 20px; font-weight: 800; background: linear-gradient(135deg, #6366f1, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 500; transition: color .2s; }
+  .nav-links a:hover { color: #e2e8f0; }
+  .nav-cta { background: linear-gradient(135deg, #6366f1, #a855f7); color: white; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 600; transition: opacity .2s; }
+  .nav-cta:hover { opacity: .85; }
+  
+  /* HERO */
+  #hero { padding: 160px 0 96px; text-align: center; position: relative; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(99,102,241,.12); border: 1px solid rgba(99,102,241,.3); color: #a5b4fc; padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; margin-bottom: 32px; }
+  .hero-badge span { width: 6px; height: 6px; background: #a855f7; border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+  #hero h1 { font-size: clamp(36px, 6vw, 68px); margin-bottom: 24px; max-width: 900px; margin-left: auto; margin-right: auto; }
+  #hero p { font-size: clamp(16px, 2vw, 20px); color: #94a3b8; max-width: 640px; margin: 0 auto 48px; }
+  .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { background: linear-gradient(135deg, #6366f1, #a855f7); color: white; padding: 16px 36px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; transition: transform .2s, box-shadow .2s; box-shadow: 0 0 40px rgba(99,102,241,.4); display: inline-flex; align-items: center; gap: 8px; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(99,102,241,.6); }
+  .btn-secondary { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); color: #e2e8f0; padding: 16px 36px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 16px; transition: background .2s; }
+  .btn-secondary:hover { background: rgba(255,255,255,.09); }
+  .hero-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-60%); width: 800px; height: 500px; background: radial-gradient(ellipse, rgba(99,102,241,.15) 0%, transparent 70%); pointer-events: none; z-index: -1; }
+  
+  /* LOGOS */
+  #logos { padding: 32px 0; border-top: 1px solid rgba(255,255,255,.06); border-bottom: 1px solid rgba(255,255,255,.06); }
+  .logos-label { text-align: center; font-size: 13px; color: #475569; margin-bottom: 24px; text-transform: uppercase; letter-spacing: .1em; }
+  .logos-row { display: flex; gap: 48px; justify-content: center; align-items: center; flex-wrap: wrap; }
+  .logos-row span { color: #334155; font-size: 15px; font-weight: 700; letter-spacing: .05em; }
+  
+  /* PAIN */
+  #pain { background: linear-gradient(180deg, #0a0a0f 0%, #0f0a1e 100%); }
+  #pain h2 { font-size: clamp(28px, 4vw, 44px); text-align: center; margin-bottom: 16px; }
+  #pain .subtitle { text-align: center; color: #64748b; font-size: 18px; margin-bottom: 64px; }
+  .pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .pain-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07); border-radius: 16px; padding: 28px; }
+  .pain-icon { font-size: 28px; margin-bottom: 16px; }
+  .pain-card h3 { font-size: 18px; margin-bottom: 8px; color: #f1f5f9; }
+  .pain-card p { color: #64748b; font-size: 15px; }
+  
+  /* HOW */
+  #how h2 { font-size: clamp(28px, 4vw, 44px); text-align: center; margin-bottom: 16px; }
+  #how .subtitle { text-align: center; color: #64748b; font-size: 18px; margin-bottom: 72px; }
+  .steps { display: flex; flex-direction: column; gap: 0; max-width: 780px; margin: 0 auto; }
+  .step { display: flex; gap: 32px; align-items: flex-start; padding: 32px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+  .step:last-child { border-bottom: none; }
+  .step-num { flex-shrink: 0; width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #6366f1, #a855f7); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; }
+  .step-body h3 { font-size: 20px; margin-bottom: 8px; color: #f1f5f9; }
+  .step-body p { color: #64748b; font-size: 15px; }
+  
+  /* FEATURES */
+  #features { background: linear-gradient(180deg, #0a0a0f 0%, #0d0a1a 100%); }
+  #features h2 { font-size: clamp(28px, 4vw, 44px); text-align: center; margin-bottom: 16px; }
+  #features .subtitle { text-align: center; color: #64748b; font-size: 18px; margin-bottom: 72px; }
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+  .feature-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07); border-radius: 20px; padding: 32px; transition: border-color .2s, transform .2s; }
+  .feature-card:hover { border-color: rgba(99,102,241,.4); transform: translateY(-4px); }
+  .feature-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px; }
+  .feature-card h3 { font-size: 18px; margin-bottom: 10px; color: #f1f5f9; }
+  .feature-card p { color: #64748b; font-size: 15px; }
+  
+  /* RESULTS */
+  #results { text-align: center; }
+  #results h2 { font-size: clamp(28px, 4vw, 44px); margin-bottom: 16px; }
+  #results .subtitle { color: #64748b; font-size: 18px; margin-bottom: 72px; }
+  .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 72px; }
+  .metric-card { background: rgba(99,102,241,.08); border: 1px solid rgba(99,102,241,.2); border-radius: 20px; padding: 40px 24px; }
+  .metric-num { font-size: 52px; font-weight: 800; background: linear-gradient(135deg, #6366f1, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .metric-label { color: #94a3b8; font-size: 15px; margin-top: 8px; }
+  
+  /* PRICING */
+  #pricing { background: linear-gradient(180deg, #0a0a0f 0%, #0f0a1e 100%); }
+  #pricing h2 { font-size: clamp(28px, 4vw, 44px); text-align: center; margin-bottom: 16px; }
+  #pricing .subtitle { text-align: center; color: #64748b; font-size: 18px; margin-bottom: 72px; }
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 1000px; margin: 0 auto; }
+  .pricing-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); border-radius: 20px; padding: 36px; }
+  .pricing-card.featured { background: linear-gradient(135deg, rgba(99,102,241,.12), rgba(168,85,247,.08)); border-color: rgba(99,102,241,.4); position: relative; }
+  .pricing-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg,#6366f1,#a855f7); color: white; padding: 4px 16px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+  .pricing-plan { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: #6366f1; margin-bottom: 12px; }
+  .pricing-price { font-size: 48px; font-weight: 800; color: #f1f5f9; margin-bottom: 4px; }
+  .pricing-price span { font-size: 18px; color: #475569; font-weight: 400; }
+  .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin: 28px 0; }
+  .pricing-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: #94a3b8; }
+  .pricing-features li::before { content: '✓'; color: #22c55e; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .btn-plan { display: block; text-align: center; padding: 14px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 15px; transition: all .2s; }
+  .btn-plan-primary { background: linear-gradient(135deg,#6366f1,#a855f7); color: white; }
+  .btn-plan-primary:hover { opacity: .85; }
+  .btn-plan-secondary { background: rgba(255,255,255,.06); color: #e2e8f0; border: 1px solid rgba(255,255,255,.1); }
+  .btn-plan-secondary:hover { background: rgba(255,255,255,.1); }
+  
+  /* FAQ */
+  #faq { background: linear-gradient(180deg, #0a0a0f 0%, #0f0a1e 100%); }
+  #faq h2 { font-size: clamp(28px, 4vw, 44px); text-align: center; margin-bottom: 64px; }
+  .faq-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+  .faq-item { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07); border-radius: 14px; overflow: hidden; }
+  .faq-q { padding: 20px 24px; font-weight: 600; font-size: 16px; color: #f1f5f9; cursor: pointer; display: flex; justify-content: space-between; align-items: center; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+  .faq-q:hover { background: rgba(255,255,255,.02); }
+  .faq-icon { color: #6366f1; font-size: 20px; transition: transform .3s; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease, padding .35s; color: #64748b; font-size: 15px; line-height: 1.7; padding: 0 24px; }
+  .faq-item.open .faq-a { max-height: 300px; padding: 0 24px 20px; }
+  
+  /* CTA */
+  #cta-final { text-align: center; }
+  .cta-box { background: linear-gradient(135deg, rgba(99,102,241,.15), rgba(168,85,247,.1)); border: 1px solid rgba(99,102,241,.25); border-radius: 28px; padding: 80px 40px; max-width: 780px; margin: 0 auto; position: relative; overflow: hidden; }
+  .cta-box::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse at 50% 0%, rgba(99,102,241,.2) 0%, transparent 70%); pointer-events:none; }
+  #cta-final h2 { font-size: clamp(28px, 4vw, 44px); margin-bottom: 20px; }
+  #cta-final p { color: #94a3b8; font-size: 18px; margin-bottom: 40px; max-width: 520px; margin-left: auto; margin-right: auto; }
+  .cta-note { margin-top: 20px; font-size: 13px; color: #475569; }
+  
+  /* FOOTER */
+  footer { border-top: 1px solid rgba(255,255,255,.06); padding: 40px 24px; text-align: center; color: #334155; font-size: 13px; }
+  footer a { color: #475569; text-decoration: none; }
+  footer a:hover { color: #94a3b8; }
+  
+  /* Referral Banner */
+  .referral-banner { position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(135deg,#6366f1,#a855f7); color: white; padding: 12px; text-align: center; font-size: 14px; font-weight: 600; z-index: 1000; }
+  
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .step { flex-direction: column; gap: 16px; }
+    .cta-box { padding: 48px 24px; }
+    .pricing-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Pipeline_X</div>
+  <ul class="nav-links">
+    <li><a href="#how">Cómo funciona</a></li>
+    <li><a href="#features">Funciones</a></li>
+    <li><a href="#pricing">Precios</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#cta-final" class="nav-cta">Probar gratis</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-badge"><span></span> SDR automatizado para MIPYME en LatAm</div>
+    <h1>Encuentra leads calificados <span class="gradient-text">en minutos, no en semanas</span></h1>
+    <p>Pipeline_X busca en Google Maps, califica con IA y te entrega un PDF con leads + mensajes de outreach listos. Sin CRM. Sin complicaciones.</p>
+    <div class="hero-buttons">
+      <a href="https://wa.me/51903176598?text=Hola,%20quiero%20probar%20Pipeline_X%20gratis" class="btn-primary" target="_blank">
+        📱 Probar gratis por WhatsApp
+      </a>
+      <a href="#how" class="btn-secondary">Ver cómo funciona</a>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN -->
+<section id="pain">
+  <div class="container">
+    <h2>El problema que resolvemos</h2>
+    <p class="subtitle">Si eres dueño de MIPYME o freelancer, pierdes horas buscando clientes.</p>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">⏱️</div>
+        <h3>Pierdes 4+ horas por búsqueda</h3>
+        <p>Google Maps, Excel, verificar kontakto por kontakto... repetido para cada campaña.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">📊</div>
+        <h3>Sin forma de priorizar</h3>
+        <p>100 leads hallados, pero ¿cuáles están listos para comprar? No tienes scoring.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">💬</div>
+        <h3>Primer mensaje genérico</h3>
+        <p>Copias el mismo texto para todos. No personalizas por industria ni dolor.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how">
+  <div class="container">
+    <h2>Cómo funciona</h2>
+    <p class="subtitle">3 pasos, todo por WhatsApp. Sin instalar apps.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Escribes qué buscas</h3>
+          <p>"Ferreterías en Trujillo" o "Clínicas privadas en Arequipa". El bot entiende tu industria y ciudad automáticamente.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Buscamos y calificamos</h3>
+          <p>Extraemos datos de Google Maps, cruzamos con SUNAT, y asignamos un score 0–100 a cada empresa según tu ICP.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Recibes el PDF</h3>
+          <p>Te llega un reporte con leads calificados, datos de kontakto y borradores de mensaje personalizados por industria.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <h2>Lo que incluye</h2>
+    <p class="subtitle">Todo lo que necesitas para prospectar sin complicarte.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(99,102,241,.15);">🔍</div>
+        <h3>Búsqueda inteligente</h3>
+        <p>Encuentra negocios reales en Google Maps. Filtra por industria, ciudad y señales de actividad.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(34,197,94,.15);">📊</div>
+        <h3>Scoring automático</h3>
+        <p>Cada lead recibe un score 0–100 basado en reseñas, rating, ubicación, y señales de capacidad de pago.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(249,115,22,.15);">📝</div>
+        <h3>Mensajes personalizados</h3>
+        <p>Borradores de outreach listos para copiar. Adaptados al sector y dolor de cada negocio.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(168,85,247,.15);">📱</div>
+        <h3>WhatsApp delivery</h3>
+        <p>Recibe tus reportes directo en WhatsApp. Sin apps extra, sin logins complicados.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(236,72,153,.15);">📄</div>
+        <h3>PDF detallado</h3>
+        <p>Cada reporte incluye empresa, kontakto, score, señales positivas/negativas y siguiente acción recomendada.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(14,165,233,.15);">🔄</div>
+        <h3>Búsquedas ilimitadas</h3>
+        <p>En planes de pago, genera todos los reportes que quieras. Sin límite mensual.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="container">
+    <h2>Resultados que importan</h2>
+    <p class="subtitle">No vanity metrics. Solo lo que impacta tu pipeline.</p>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-num">15<span style="font-size:24px">min</span></div>
+        <div class="metric-label">Tiempo de búsqueda</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num">80<span>%</span></div>
+        <div class="metric-label">Leads con kontakto real</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num">30</div>
+        <div class="metric-label">Leads por reporte</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num">0</div>
+        <div class="metric-label">Apps que instalar</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <h2>Precios <span class="gradient-text">simples</span></h2>
+    <p class="subtitle">Sin contratos. Sin.setup fee. Cancela cuando quieras.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-plan">Free</div>
+        <div class="pricing-price">S/0<span>/siempre</span></div>
+        <ul class="pricing-features">
+          <li>10 leads por búsqueda</li>
+          <li>1 búsqueda por día</li>
+          <li>PDF demo (leads limitados)</li>
+          <li>WhatsApp delivery</li>
+          <li>Sin tarjeta requerida</li>
+        </ul>
+        <a href="https://wa.me/51903176598?text=Hola,%20quiero%20probar%20gratis" class="btn-plan btn-plan-secondary" target="_blank">Probar gratis</a>
+      </div>
+      
+      <div class="pricing-card featured">
+        <div class="pricing-badge">Recomendado</div>
+        <div class="pricing-plan">Starter</div>
+        <div class="pricing-price">S/149<span>/mes</span></div>
+        <ul class="pricing-features">
+          <li>30 leads por búsqueda</li>
+          <li>Búsquedas ilimitadas</li>
+          <li>PDF completo sin límites</li>
+          <li>Validación SUNAT incluida</li>
+          <li>WhatsApp delivery</li>
+          <li>Scoring avanzado</li>
+        </ul>
+        <a href="https://wa.me/51903176598?text=Hola,%20quiero%20activar%20Starter" class="btn-plan btn-plan-primary" target="_blank">Empezar con Starter</a>
+      </div>
+      
+      <div class="pricing-card">
+        <div class="pricing-plan">Pro</div>
+        <div class="pricing-price">S/ 299<span>/mes</span></div>
+        <ul class="pricing-features">
+          <li>50 leads por búsqueda</li>
+          <li>Búsquedas ilimitadas</li>
+          <li>API REST access</li>
+          <li>Enriquecimiento completo</li>
+          <li>Soporte prioritario</li>
+        </ul>
+        <a href="https://wa.me/51903176598?text=Hola,%20quiero%20activar%20Pro" class="btn-plan btn-plan-secondary" target="_blank">Empezar con Pro</a>
+      </div>
+      
+      <div class="pricing-card">
+        <div class="pricing-plan">Reseller</div>
+        <div class="pricing-price">S/ 1,099<span>/mes</span></div>
+        <ul class="pricing-features">
+          <li>100 leads por búsqueda</li>
+          <li>Multi-cuenta (5 clientes)</li>
+          <li>White-label disponible</li>
+          <li>API + Webhooks</li>
+          <li>Soporte dedicado</li>
+        </ul>
+        <a href="https://wa.me/51903176598?text=Hola,%20soy%20agencia%20y%20quiero%20info%20de%20Reseller" class="btn-plan btn-plan-secondary" target="_blank">Contactar ventas</a>
+      </div>
+    </div>
+    <p style="text-align:center;color:#64748b;font-size:14px;margin-top:32px;">
+      🎁 <strong>Todos empiezan con 3 días de trial completo</strong> — Sin tarjeta
+    </p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <h2>Preguntas <span class="gradient-text">frecuentes</span></h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">¿Necesito instalar algo? <span class="faq-icon">+</span></div>
+        <div class="faq-a">No. Pipeline_X funciona 100% por WhatsApp. No hay apps que instalar, no hay dashboards que aprender. Solo abres WhatsApp y escribes "hola".</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿De dónde salen los datos? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Los datos provienen de Google Maps (nombre, dirección, teléfono, reseñas, rating, sitio web) y se enriquecen con información pública de SUNAT cuando está disponible.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿El agente envía mensajes automáticamente? <span class="faq-icon">+</span></div>
+        <div class="faq-a">No. El agente califica y redacta borradores que tú revisas y decides enviar. Siempre hay un humano en el loop. Esto reduce riesgo legal y mantiene la calidad del outreach.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Puedo cambiar de plan? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Sí. Puedes upgradear o cancelar cuando quieras por WhatsApp. Sin penalidades ni permanencia mínima.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Funciona para cualquier industria? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Yes. El bot está entrenado para entender búsquedas en español neutro latinoamericano. Funciona mejor para MIPYMEs B2B: ferreterías, clínicas, constructoras, logísticas, consultoras, etc.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Qué países cubre? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Actualmente Perú. Próximamente: Colombia, México, Chile. La validación SUNAT es exclusiva de Perú; otros países tendrán otras fuentes de verificación.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="cta-final">
+  <div class="container">
+    <div class="cta-box">
+      <div class="hero-badge" style="margin-bottom:28px"><span></span> 3 días gratis — Sin tarjeta</div>
+      <h2>Empieza ahora por <span class="gradient-text">WhatsApp</span></h2>
+      <p>Escribe "hola" al bot y recibe tu primer reporte en 15 minutos. Sin registro, sin apps.</p>
+      <a href="https://wa.me/51903176598?text=Hola,%20quiero%20probar%20Pipeline_X" class="btn-primary" target="_blank" style="display:inline-flex;align-items:center;gap:10px;">
+        📱 Abrir WhatsApp
+      </a>
+      <p class="cta-note">No guardamos tu número más de 30 días. Puedes borrar tus datos cuando quieras.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p style="margin-bottom:12px">
+    <a href="#how">Cómo funciona</a> &nbsp;·&nbsp;
+    <a href="#features">Funciones</a> &nbsp;·&nbsp;
+    <a href="#pricing">Precios</a> &nbsp;·&nbsp;
+    <a href="#faq">FAQ</a> &nbsp;·&nbsp;
+    <a href="mailto:hola@pipelinex.app">Contacto</a>
+  </p>
+  <p>© 2025 Pipeline_X — SDR automatizado para MIPYME en LatAm</p>
+</footer>
+
+<script>
+  // API Configuration
+  const API_BASE = 'https://agentepyme-api-production.up.railway.app';
+  
+  // Referral code handling
+  const urlParams = new URLSearchParams(window.location.search);
+  const referralCode = urlParams.get('ref');
+  
+  // Show referral banner if code present
+  if (referralCode) {
+    fetch(`${API_BASE}/auth/referral/${referralCode}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.code) {
+          const banner = document.createElement('div');
+          banner.className = 'referral-banner';
+          banner.innerHTML = `🎉 ¡Te invitó un amigo! Usa el código <strong>${data.code}</strong> para obtener beneficios extra.`;
+          document.body.prepend(banner);
+          document.body.style.paddingTop = '44px';
+        }
+      })
+      .catch(() => {});
+  }
+  
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+  
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+  
+  // Count-up animation
+  const countUp = (el, target) => {
+    let start = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { el.textContent = target; clearInterval(timer); return; }
+      el.textContent = Math.floor(start);
+    }, 16);
+  };
+  
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.metric-num').forEach(el => {
+          const text = el.textContent;
+          const num = parseInt(text);
+          if (!isNaN(num)) countUp(el, num);
+        });
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  
+  const metricsSection = document.querySelector('.metrics-grid');
+  if (metricsSection) observer.observe(metricsSection);
+</script>
+</body>
+</html>

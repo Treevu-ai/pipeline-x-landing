@@ -635,7 +635,7 @@ function Hero({ onOpenForm }) {
           <div className="flex gap-8 mb-10 border-t border-white/10 pt-8">
             {[
               { v: 'S/800–1,200', l: 'cuesta un vendedor/mes' },
-              { v: 'desde S/149', l: 'con Pipeline_X/mes', hi: true },
+              { v: 'desde S/129', l: 'con Pipeline_X/mes', hi: true },
               { v: '3 días', l: 'de acceso completo gratis al escribirnos' },
             ].map(({ v, l, hi }) => (
               <div key={l}>
@@ -860,8 +860,8 @@ const CHANNELS = [
     tag:         'Starter',
     badge:       'Más popular',
     badgeStyle:  { background: '#00d4aa', color: '#000' },
-    monthly:     'S/149',
-    annual:      'S/119',
+    monthly:     'S/129',
+    annual:      'S/109',
     unit:        '/mes',
     solesMonthly: '($39 USD)',
     solesAnnual:  '($29 USD)',
@@ -1087,7 +1087,7 @@ function AddonPacks({ onOpenForm }) {
             <div>
               <p className="font-mono text-xs tracking-widest uppercase text-white/40 mb-1">Pack extra</p>
               <div className="flex items-baseline gap-2">
-                <span className="font-mono font-bold text-white" style={{ fontSize: '2rem' }}>S/149</span>
+                <span className="font-mono font-bold text-white" style={{ fontSize: '2rem' }}>S/129</span>
               </div>
               <p className="font-mono text-xs text-white/50 mt-1">($39 USD) · 3 reportes adicionales</p>
             </div>
@@ -1163,7 +1163,7 @@ function Testimonials() {
 // ── Comparative ───────────────────────────────────────────────────────────────
 
 const FEATURES = [
-  { label: 'Precio mensual',            px: 'desde S/149', kommo: '$200+', hubspot: '$800+', leadsales: '$150+' },
+  { label: 'Precio mensual',            px: 'desde S/129', kommo: '$200+', hubspot: '$800+', leadsales: '$150+' },
   { label: 'Funciona solo con WhatsApp',    px: true,     kommo: false,  hubspot: false,   leadsales: false  },
   { label: 'Busca en Google Maps Perú',     px: true,     kommo: false,  hubspot: false,   leadsales: false  },
   { label: 'Verifica empresa con SUNAT',    px: true,     kommo: false,  hubspot: false,   leadsales: false  },
@@ -1194,7 +1194,7 @@ function Comparison({ onOpenForm }) {
           Por qué <Gr>Pipeline_X</Gr> es diferente
         </h2>
         <p className="font-mono text-sm text-white/60 mb-10 max-w-xl leading-relaxed">
-          Contratar a alguien para buscar clientes cuesta miles al mes. Las herramientas gringas cobran en dólares y no conocen Perú. Pipeline_X entrega un listado real desde S/149/mes — sin complicaciones, sin sorpresas.
+          Contratar a alguien para buscar clientes cuesta miles al mes. Las herramientas gringas cobran en dólares y no conocen Perú. Pipeline_X entrega un listado real desde S/129/mes — sin complicaciones, sin sorpresas.
         </p>
         <p className="font-mono text-xs text-white/50 mb-2 sm:hidden">← desliza para ver más →</p>
         <div className="overflow-x-auto">
@@ -1305,12 +1305,12 @@ const CALC_PLANS = {
     heading:    'S/59/mes',
   },
   starter: {
-    label:      'Starter S/149',
+    label:      'Starter S/129',
     cost:       149,
-    costStr:    'S/149/mes',
+    costStr:    'S/129/mes',
     costNote:   '($39 USD)',
     currency:   'S/',
-    heading:    'S/149/mes',
+    heading:    'S/129/mes',
   },
   reseller: {
     label:      'Reseller S/1,099',
@@ -1434,7 +1434,7 @@ const FAQS = [
   },
   {
     q: '¿En qué moneda facturan?',
-    a: 'Todos los planes tienen precio en soles. Starter: S/149/mes. Pro: S/299/mes. Reseller: S/1,099/mes. También aceptamos pago en USD ($39 / $79 / $299) al tipo de cambio vigente.',
+    a: 'Todos los planes tienen precio en soles. Starter: S/129/mes. Pro: S/299/mes. Reseller: S/1,099/mes. También aceptamos pago en USD ($39 / $79 / $299) al tipo de cambio vigente.',
   },
   {
     q: '¿Qué pasa si necesito más reportes en un mes?',
