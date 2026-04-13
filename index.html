@@ -709,9 +709,78 @@
     <a href="#pricing">Precios</a>
     <a href="#faq">FAQ</a>
     <a href="mailto:hola@pipelinex.app">Contacto</a>
+    <a href="#terminos" id="link-terminos">Términos y privacidad</a>
   </div>
   <p>© 2026 Pipeline_X — Para MYPE en Perú</p>
 </footer>
+
+<!-- MODAL TÉRMINOS Y PRIVACIDAD -->
+<div id="modal-terminos" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;overflow-y:auto;padding:40px 20px;">
+  <div style="max-width:760px;margin:0 auto;background:#111;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:48px 40px;font-family:'IBM Plex Mono',monospace;color:#e2e8f0;font-size:14px;line-height:1.8;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
+      <h2 style="color:#25D366;font-size:18px;font-weight:700;">Términos de Servicio y Política de Privacidad</h2>
+      <button onclick="document.getElementById('modal-terminos').style.display='none'" style="background:none;border:none;color:#6b7280;font-size:24px;cursor:pointer;font-family:monospace;">✕</button>
+    </div>
+
+    <p style="color:#6b7280;font-size:12px;margin-bottom:32px;">Última actualización: abril 2026 · Pipeline_X es operado por Ricardo Cuba, Lima, Perú · contacto@pipelinex.app</p>
+
+    <h3 style="color:#f0f0f0;margin:24px 0 10px;font-size:15px;">1. Qué es Pipeline_X</h3>
+    <p>Pipeline_X es un servicio de prospección B2B que extrae datos públicos de Google Maps y fuentes públicas de SUNAT, los procesa con inteligencia artificial y te los entrega por WhatsApp en formato PDF. No es una herramienta de spam ni de envío masivo de mensajes.</p>
+
+    <h3 style="color:#f0f0f0;margin:24px 0 10px;font-size:15px;">2. Datos que recopilamos</h3>
+    <p>Recopilamos únicamente:</p>
+    <ul style="margin:8px 0 8px 20px;color:#94a3b8;">
+      <li>Tu número de WhatsApp (para entregarte los reportes)</li>
+      <li>Tu nombre (si nos lo compartes)</li>
+      <li>Las búsquedas que realizas (rubro + ciudad)</li>
+      <li>Fecha y hora de tus interacciones con el bot</li>
+    </ul>
+    <p>No recopilamos contraseñas, datos bancarios (los pagos se verifican manualmente por transferencia) ni información sensible.</p>
+
+    <h3 style="color:#f0f0f0;margin:24px 0 10px;font-size:15px;">3. Cómo usamos tus datos</h3>
+    <ul style="margin:8px 0 8px 20px;color:#94a3b8;">
+      <li>Entregarte los reportes que solicitas</li>
+      <li>Enviarte seguimientos relacionados con tus búsquedas (máx. 2 mensajes por semana)</li>
+      <li>Mejorar la calidad del servicio</li>
+    </ul>
+    <p>No vendemos ni compartimos tus datos con terceros bajo ninguna circunstancia.</p>
+
+    <h3 style="color:#f0f0f0;margin:24px 0 10px;font-size:15px;">4. Datos de los leads (empresas en el PDF)</h3>
+    <p>Los datos de empresas incluidos en los reportes provienen de fuentes públicas: Google Maps y SUNAT. Son datos de contacto comercial de personas jurídicas (negocios), no de personas naturales. El uso de esta información es tu responsabilidad. No debes usarla para spam, acoso ni actividades ilegales.</p>
+
+    <h3 style="color:#f0f0f0;margin:24px 0 10px;font-size:15px;">5. Retención de datos</h3>
+    <p>Conservamos tu número de WhatsApp e historial de búsquedas por un máximo de <strong>30 días</strong> tras tu última interacción. Puedes solicitar la eliminación de tus datos en cualquier momento escribiendo "borrar mis datos" al bot o enviando un correo a <strong>contacto@pipelinex.app</strong>.</p>
+
+    <h3 style="color:#f0f0f0;margin:24px 0 10px;font-size:15px;">6. Pagos y cancelaciones</h3>
+    <p>Los pagos se realizan por transferencia bancaria o Yape. No almacenamos datos de tarjetas. Puedes cancelar tu plan en cualquier momento escribiendo "cancelar plan" al bot de WhatsApp. Seguirás teniendo acceso hasta el fin del período pagado. No hay reembolsos parciales por períodos no usados, salvo decisión discrecional del equipo.</p>
+
+    <h3 style="color:#f0f0f0;margin:24px 0 10px;font-size:15px;">7. Garantía y calidad</h3>
+    <p>Si un reporte no contiene datos verificables o tiene errores evidentes, lo regeneramos sin costo adicional. No garantizamos que las empresas listadas estén activas o sean contactables al momento de la entrega, ya que los datos provienen de fuentes públicas que pueden no estar actualizadas.</p>
+
+    <h3 style="color:#f0f0f0;margin:24px 0 10px;font-size:15px;">8. Uso aceptable</h3>
+    <p>Está prohibido usar Pipeline_X para:</p>
+    <ul style="margin:8px 0 8px 20px;color:#94a3b8;">
+      <li>Enviar mensajes no solicitados en masa (spam)</li>
+      <li>Actividades ilegales o fraudulentas</li>
+      <li>Revender los datos sin autorización escrita</li>
+      <li>Automatizar el contacto con leads sin intervención humana</li>
+    </ul>
+    <p>El incumplimiento puede resultar en la cancelación inmediata del servicio sin reembolso.</p>
+
+    <h3 style="color:#f0f0f0;margin:24px 0 10px;font-size:15px;">9. Limitación de responsabilidad</h3>
+    <p>Pipeline_X no se responsabiliza por los resultados comerciales derivados del uso de los reportes. Los datos son un punto de partida para tu prospección, no una garantía de ventas.</p>
+
+    <h3 style="color:#f0f0f0;margin:24px 0 10px;font-size:15px;">10. Cambios a estos términos</h3>
+    <p>Notificaremos cambios significativos por WhatsApp con al menos 7 días de anticipación. El uso continuado del servicio implica la aceptación de los términos vigentes.</p>
+
+    <h3 style="color:#f0f0f0;margin:24px 0 10px;font-size:15px;">11. Contacto</h3>
+    <p>Para cualquier consulta sobre privacidad o estos términos: <strong>contacto@pipelinex.app</strong> o escribe "ayuda privacidad" al bot.</p>
+
+    <div style="margin-top:40px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);text-align:center;">
+      <button onclick="document.getElementById('modal-terminos').style.display='none'" style="background:#25D366;color:#000;border:none;padding:12px 32px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-weight:700;cursor:pointer;font-size:14px;">Entendido, cerrar</button>
+    </div>
+  </div>
+</div>
 
 <script>
   const WA_URL = 'https://wa.me/51902126765?text=Hola,%20quiero%20mi%20primer%20listado%20de%20empresas%20gratis';
@@ -734,6 +803,19 @@
       })
       .catch(() => {});
   }
+
+  // Términos y privacidad modal
+  document.getElementById('link-terminos').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('modal-terminos').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('modal-terminos').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('modal-terminos')) {
+      document.getElementById('modal-terminos').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  });
 
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(q => {
