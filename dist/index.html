@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pipeline_X — Consigue empresas para vender en Perú</title>
 <meta name="description" content="Pipeline_X busca empresas por ti y te las manda por WhatsApp. MYPE en Perú: recibe un PDF con negocios verificados, teléfono y rubro listos para contactar.">
+<script>
+  // Redirect /planes y /pricing a la sección #pricing de esta misma página
+  if (window.location.pathname === '/planes' || window.location.pathname === '/pricing') {
+    window.location.replace('/#pricing');
+  }
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
