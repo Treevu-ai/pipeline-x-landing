@@ -289,9 +289,8 @@
 
   /* ── PRICING ─────────────────────────────────────────────────── */
   #pricing { background: var(--bg); }
-  .pricing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
-  @media (max-width: 1024px) { .pricing-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .pricing-grid { grid-template-columns: 1fr; } }
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+  @media (max-width: 768px) { .pricing-grid { grid-template-columns: 1fr; } }
   .pricing-card { background: var(--bg); padding: 36px 28px; display: flex; flex-direction: column; transition: background .15s; }
   .pricing-card.featured { background: var(--bg-surface); position: relative; }
   .pricing-badge {
@@ -604,6 +603,7 @@
     <h2 class="section-title">Precios simples</h2>
     <p class="section-sub">Sin contratos. Sin costo de instalación. Cancela cuando quieras.</p>
     <div class="pricing-grid">
+
       <div class="pricing-card">
         <div class="pricing-plan">Free</div>
         <div class="pricing-price">S/0<span>/siempre</span></div>
@@ -628,7 +628,7 @@
           <li>Validación SUNAT incluida</li>
           <li>Entrega por WhatsApp</li>
           <li>Scoring avanzado</li>
-          <li>Mensajes personalizados</li>
+          <li>Mensajes personalizados por rubro</li>
         </ul>
         <a href="https://wa.me/51902126765?text=Hola,%20quiero%20activar%20el%20plan%20Starter" class="btn-plan btn-plan-primary" target="_blank">Empezar con Starter</a>
       </div>
@@ -641,23 +641,11 @@
           <li>Búsquedas ilimitadas</li>
           <li>Acceso API REST</li>
           <li>Enriquecimiento de datos completo</li>
-          <li>Soporte prioritario</li>
+          <li>Soporte prioritario por WhatsApp</li>
         </ul>
         <a href="https://wa.me/51902126765?text=Hola,%20quiero%20activar%20el%20plan%20Pro" class="btn-plan btn-plan-secondary" target="_blank">Empezar con Pro</a>
       </div>
 
-      <div class="pricing-card">
-        <div class="pricing-plan">Reseller</div>
-        <div class="pricing-price">S/1,099<span>/mes</span></div>
-        <ul class="pricing-features">
-          <li>100 leads por búsqueda</li>
-          <li>Multi-cuenta (hasta 5 clientes)</li>
-          <li>White-label disponible</li>
-          <li>API + Webhooks</li>
-          <li>Soporte dedicado</li>
-        </ul>
-        <a href="https://wa.me/51902126765?text=Hola,%20soy%20agencia%20y%20quiero%20info%20del%20plan%20Reseller" class="btn-plan btn-plan-secondary" target="_blank">Contactar ventas</a>
-      </div>
     </div>
     <p style="text-align:center;color:#64748b;font-size:14px;margin-top:32px;">
       🎁 <strong>Todos empiezan con 3 días de trial completo</strong> — Sin tarjeta
