@@ -4,11 +4,10 @@
  *
  * Variables de entorno requeridas en Vercel:
  *   NOTION_PIPELINE_TOKEN  — token de la integración de Notion
+ *   NOTION_LEADS_DB_ID     — ID de la base de datos de leads en Notion
  *   TELEGRAM_BOT_TOKEN     — token del bot (@BotFather)
  *   TELEGRAM_ADMIN_CHAT_ID — chat_id del admin (obtener con /start en @userinfobot)
  */
-
-const DB_ID = 'c8e55705-b3ab-4e79-a977-cd4f7c64dd51'
 
 async function notifyTelegram(nombre, contacto, canal, tipo, ciudad, target) {
   const botToken = process.env.TELEGRAM_BOT_TOKEN
@@ -46,6 +45,11 @@ export default async function handler(req, res) {
   const token = process.env.NOTION_PIPELINE_TOKEN
   if (!token) {
     return res.status(500).json({ error: 'NOTION_PIPELINE_TOKEN not configured' })
+  }
+
+  const dbId = process.env.NOTION_LEADS_DB_ID
+  if (!dbId) {
+    return res.status(500).json({ error: 'NOTION_LEADS_DB_ID not configured' })
   }
 
   const { nombre, contacto, canal, tipo, ciudad, target } = req.body || {}
@@ -100,7 +104,7 @@ export default async function handler(req, res) {
         'Notion-Version': '2022-06-28',
       },
       body: JSON.stringify({
-        parent: { database_id: DB_ID },
+        parent: { database_id: dbId },
         properties,
       }),
     })
