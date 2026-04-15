@@ -605,7 +605,7 @@ function Hero({ onOpenForm }) {
           </h1>
           <p className="font-mono text-base text-white leading-relaxed mb-8"
              style={{textShadow: '0 1px 12px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,0.8)'}}>
-            Te enviamos un PDF con 20–30 negocios reales en Perú, filtrados por rubro y ciudad, con teléfonos listos para llamar o escribir por WhatsApp. Primer reporte completamente gratis.
+            Recibe 20–30 empresas calificadas por IA — con score de prioridad, capacidad de pago estimada y primer mensaje listo. Solo dinos el rubro y la ciudad.
           </p>
 
           <ul className="space-y-2.5 mb-7">
@@ -717,6 +717,42 @@ function Hero({ onOpenForm }) {
   )
 }
 
+// ── Franja de inteligencia comercial ─────────────────────────────────────────
+
+const INTEL_COLS = [
+  {
+    icon: '🏛️',
+    title: 'Verificado con SUNAT',
+    desc: 'RUC activo, rubro real, sin empresas fantasma ni números que no existen.',
+  },
+  {
+    icon: '📊',
+    title: 'Score de calidad',
+    desc: 'Quién tiene mayor capacidad de pago y señales de urgencia de compra.',
+  },
+  {
+    icon: '⚡',
+    title: 'Acción recomendada',
+    desc: 'Si llamar hoy, enviar email o dar seguimiento — listo antes de abrir el teléfono.',
+  },
+]
+
+function IntelligenceStrip() {
+  return (
+    <div className="border-b border-white/6" style={{ background: 'rgba(0,0,0,0.96)' }}>
+      <div className="max-w-5xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x divide-white/8">
+        {INTEL_COLS.map(({ icon, title, desc }) => (
+          <div key={title} className="px-0 md:px-10 py-8 md:py-0 first:pl-0 last:pr-0">
+            <div className="text-2xl mb-4">{icon}</div>
+            <h3 className="font-mono font-bold text-white text-sm tracking-wide mb-2">{title}</h3>
+            <p className="font-mono text-xs text-white/55 leading-relaxed">{desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // ── ¿Cómo funciona? ───────────────────────────────────────────────────────────
 
 const STEPS = [
@@ -751,7 +787,7 @@ const STEPS = [
       </svg>
     ),
     title: 'Buscamos los negocios que encajan',
-    body: 'Buscamos en Google Maps y verificamos que las empresas existan de verdad usando fuentes oficiales. Solo incluimos negocios activos con teléfono real — descartamos los que no sirven.',
+    body: 'Cada empresa recibe un score según su solvencia (verificada con SUNAT), actividad digital y señales de compra. Sabes a quién llamar primero — y por qué.',
   },
   {
     n: '03',
@@ -843,8 +879,8 @@ const CHANNELS = [
     annualSave:  'Ahorras S/120/año',
     sub:         '10 búsquedas/mes · 20 leads · sin contrato',
     items: [
+      { text: 'Score de prioridad: sabes quién puede pagar más antes de llamar.', ok: true },
       { text: '10 búsquedas/mes · 20 leads por búsqueda',     ok: true  },
-      { text: 'Prioridad de cada negocio (quién puede pagar más)',ok: true  },
       { text: 'Entrega por WhatsApp',                          ok: true  },
       { text: 'PDF con mensajes listos para enviar',           ok: true  },
       { text: 'Datos verificados (empresa activa, teléfono)',  ok: false },
@@ -1549,6 +1585,7 @@ export default function App() {
       <Navbar onOpenForm={() => setFormOpen(true)} />
       <Hero onOpenForm={() => setFormOpen(true)} />
       <SocialProofStrip />
+      <IntelligenceStrip />
       <HowItWorks onOpenForm={() => setFormOpen(true)} />
       <TwoChannels onOpenForm={() => setFormOpen(true)} />
       <AddonPacks onOpenForm={() => setFormOpen(true)} />
