@@ -733,7 +733,7 @@ const STEPS = [
         <line x1="23" y1="14" x2="26" y2="14"/>
       </svg>
     ),
-    title: 'Dinos qué vendes y en qué ciudad',
+    title: 'Dinos qué negocios quieres contactar',
     body: 'Escríbenos por WhatsApp con el rubro y la ciudad que quieres atacar. Ej: "Ferreterías en Trujillo" o "Restaurantes en Miraflores". Sin formularios complicados.',
   },
   {
