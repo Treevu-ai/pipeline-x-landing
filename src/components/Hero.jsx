@@ -72,25 +72,25 @@ export default function Hero() {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-xs text-slate-300 mb-8 font-mono">
           <span className="w-1.5 h-1.5 rounded-full bg-terminal animate-pulse" />
-          Para micro y pequeñas empresas en Perú
+          Para agentes, consultores y vendedores B2B en Perú
         </div>
 
         {/* Headline */}
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight mb-6 text-white drop-shadow-lg">
-          Consigue empresas para vender<br />
-          <span className="gradient-text">en menos de 24 horas</span>
+          Tu agente SDR automático:<br />
+          <span className="gradient-text">escanea, califica y te entrega prospectos</span>
         </h1>
 
         <p className="text-lg text-slate-300 max-w-2xl mx-auto mb-3 leading-relaxed drop-shadow">
-          Deja de perder horas buscando leads. Recibe un PDF con empresas verificadas, 
-          con teléfono y rubro listos para contactar — todo por WhatsApp.
+          Deja de buscar clientes a mano. Pipeline_X escanea Google Maps, califica cada empresa
+          con IA y te entrega solo los que valen la pena — en tu WhatsApp, en menos de 24 horas.
         </p>
 
         {/* Comparativa de ahorro */}
         <div className="text-sm text-slate-400 mb-10 space-y-1 font-mono">
-          <p>✓ Deja de perder horas en Google Maps y SUNAT</p>
-          <p>✓ Recibe 20–30 negocios similares a tus mejores clientes</p>
-          <p>✓ Solo necesitas WhatsApp y saber abrir un PDF</p>
+          <p>✓ Prospecta cualquier rubro y ciudad del Perú</p>
+          <p>✓ La IA descarta los leads fríos — tú solo contactas los calificados</p>
+          <p>✓ Listo en tu WhatsApp antes de que termine el día</p>
         </div>
 
         {/* CTAs */}
