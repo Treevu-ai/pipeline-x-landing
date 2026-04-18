@@ -26,20 +26,29 @@ Empresas MIPYME que quieren prospectos para su propio equipo de ventas. Misma me
 
 ---
 
-## Precio y margen
+## Precio y margen (oferta actual en landing)
+
+| Plan | Precio |
+|---|---|
+| Básico | **S/59 / mes** |
+| Starter | **S/129 / mes** |
+| Pro | **S/299 / mes** |
+| Reseller (white-label) | **S/1,099 / mes** |
+
+**Referencia comercial para reventa (Reseller):**
 
 | | Monto |
 |---|---|
-| Precio Pipeline_X | **S/149 / mes** |
+| Precio Pipeline_X (Reseller) | **S/1,099 / mes** |
 | Tarifa sugerida al cliente final | **S/400–600 / mes** |
-| Margen neto del intermediario | **S/250+ / mes por cliente** |
+| Punto de equilibrio aprox. | **3 clientes** |
 
 El intermediario define su propio precio. La calculadora en la landing usa S/500 como referencia.
 
-**Ejemplo con 10 clientes:**
+**Ejemplo con 10 clientes (a S/500):**
 - Ingresos del intermediario: S/5,000
-- Pago a Pipeline_X: S/1,490
-- Margen: S/3,510 / mes
+- Pago a Pipeline_X (Reseller): S/1,099
+- Margen: S/3,901 / mes
 
 ---
 
@@ -49,7 +58,7 @@ Vs. competencia (Kommo, HubSpot, Leadsales):
 
 | | Pipeline_X | Alternativas |
 |---|---|---|
-| Precio | S/149 | $150–$800+ |
+| Precio | desde S/59 | $150–$800+ |
 | Moneda | Soles | Dólares |
 | Scraping Google Maps | ✓ | ✗ |
 | White-label | ✓ | ✗ |
@@ -61,9 +70,11 @@ Vs. competencia (Kommo, HubSpot, Leadsales):
 ## Embudo de adquisición
 
 1. **Landing** `pipelinex.app` → CTA "Solicitar reporte gratis"
-2. **Lead form** → captura nombre, WhatsApp, tipo de empresa, ciudad → guarda en Supabase (`pipeline_x_leads`)
-3. **Telegram** → bot `@Pipeline_X_bot` para confirmar y entregar el reporte
-4. **Primer reporte gratuito** → gancho de conversión, sin contratos
+2. **Lead form** → captura nombre, canal de contacto, tipo de empresa, ciudad y target
+3. **API `/api/save-lead`** → guarda lead en base de datos de Notion
+4. **Telegram interno** → notificación automática al admin (si está configurado)
+5. **Telegram bot** `@Pipeline_X_bot` → canal de entrega/demo para el usuario
+6. **Primer reporte gratuito** → gancho de conversión, sin contratos
 
 ---
 
@@ -72,11 +83,10 @@ Vs. competencia (Kommo, HubSpot, Leadsales):
 | Componente | Tecnología | Dónde |
 |---|---|---|
 | Landing | Vite + React + Tailwind | Vercel (`pipelinex.app`) |
-| Backend SDR API | FastAPI + Python | Render (`agentepyme-sdr`) |
-| LLM | Claude Haiku (primario) / Groq (fallback) | Cloud |
-| Scraping | Playwright + Google Maps | Render |
-| Base de datos leads | Supabase | `pipeline_x_leads` |
-| Bot demo | Telegram `@Pipeline_X_bot` | — |
+| API de captura de leads | Vercel Serverless (`/api/save-lead`) | Vercel |
+| Base de datos de leads | Notion Database API | Workspace Notion |
+| Notificaciones internas | Telegram Bot API | Telegram |
+| Bot demo | Telegram `@Pipeline_X_bot` | Telegram |
 
 ---
 
